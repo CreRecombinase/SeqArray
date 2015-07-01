@@ -1,0 +1,158 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert to a VCF file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqGDS2VCF {SeqArray}"><tr><td>seqGDS2VCF {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert to a VCF file</h2>
+
+<h3>Description</h3>
+
+<p>Convert a GDS file to a VCF file
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqGDS2VCF(gdsfile, vcf.fn, info.var=NULL, fmt.var=NULL, verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>vcf.fn</code></td>
+<td>
+<p>the file name, output a file of VCF format</p>
+</td></tr>
+<tr valign="top"><td><code>info.var</code></td>
+<td>
+<p>a list of variable names in the INFO field, or NULL for
+using all variables; <code>character(0)</code> for no variable
+in the INFO field</p>
+</td></tr>
+<tr valign="top"><td><code>fmt.var</code></td>
+<td>
+<p>a list of variable names in the FORMAT field, or NULL for
+using all variables; <code>character(0)</code> for no variable
+in the FORMAT field</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if TRUE, show information</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code><a href="seqSetFilter.html">seqSetFilter</a></code> can be used to define a subset of data for
+the export.
+</p>
+<p>GDS &ndash; Genomic Data Structures used for storing genetic array-oriented
+data, and the file format used in the <a href="../../gdsfmt/html/gdsfmt-package.html">gdsfmt</a> package.
+</p>
+<p>VCF &ndash; The Variant Call Format (VCF), which is a generic format for
+storing DNA polymorphism data such as SNPs, insertions, deletions and
+structural variants, together with rich annotations.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return the file name of VCF file with an absolute path.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>References</h3>
+
+<p>The variant call format and VCFtools.
+Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA, Handsaker RE,
+Lunter G, Marth GT, Sherry ST, McVean G, Durbin R; 1000 Genomes Project Analysis Group.
+Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
+</p>
+<p><a href="http://corearray.sourceforge.net/">http://corearray.sourceforge.net/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file of GDS
+gds.fn &lt;- seqExampleFileName("gds")
+# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+
+# display
+(f &lt;- seqOpen(gds.fn))
+
+# output the first 10 samples
+samp.id &lt;- seqGetData(f, "sample.id")
+seqSetFilter(f, sample.id=samp.id[1:5])
+
+
+# convert
+seqGDS2VCF(f, "tmp.vcf.gz")
+
+# no INFO and FORMAT
+seqGDS2VCF(f, "tmp1.vcf.gz", info.var=character(0), fmt.var=character(0))
+
+# output BN,GP,AA,DP,HM2 in INFO (the variables are in this order), no FORMAT
+seqGDS2VCF(f, "tmp2.vcf.gz", info.var=c("BN","GP","AA","DP","HM2"), fmt.var=character(0))
+
+
+# read
+(txt &lt;- readLines("tmp.vcf.gz", n=20))
+(txt &lt;- readLines("tmp1.vcf.gz", n=20))
+(txt &lt;- readLines("tmp2.vcf.gz", n=20))
+
+
+
+
+
+#########################################################################
+# Users could compare the new VCF file with the original VCF file
+# call "diff" in Unix (a command line tool comparing files line by line)
+
+# using all samples and variants
+seqSetFilter(f)
+
+# convert
+seqGDS2VCF(f, "tmp.vcf.gz")
+
+
+# file.copy(seqExampleFileName("vcf"), "old.vcf.gz", overwrite=TRUE)
+# system("diff &lt;(gunzip -c old.vcf.gz) &lt;(gunzip -c tmp.vcf.gz)")
+
+# 1a2,3
+# &gt; ##fileDate=20130309
+# &gt; ##source=SeqArray_RPackage_v1.0
+
+# LOOK GOOD!
+
+
+# delete temporary files
+unlink(c("tmp.vcf.gz", "tmp1.vcf.gz", "tmp2.vcf.gz"))
+
+# close the GDS file
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

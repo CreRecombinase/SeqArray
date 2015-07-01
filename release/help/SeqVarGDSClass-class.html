@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: SeqVarGDSClass</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for SeqVarGDSClass {SeqArray}"><tr><td>SeqVarGDSClass {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>SeqVarGDSClass</h2>
+
+<h3>Description</h3>
+
+<p>A <code>SeqVarGDSClass</code> object provides access to a GDS file containing
+Variant Call Format (VCF) data. It extends <code><a href="../../gdsfmt/html/gds.class.html">gds.class</a></code>.
+</p>
+
+
+<h3>Details</h3>
+
+<p>A sequencing GDS file is created from a VCF file with
+<code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>. This file can be opened with <code><a href="seqOpen.html">seqOpen</a></code>
+to create a <code>SeqVarGDSClass</code> object.
+</p>
+
+
+<h3>Accessors</h3>
+
+<p>In the following code snippets <code>x</code> is a SeqVarGDSClass object.
+</p>
+
+<dl>
+<dt></dt><dd>
+<p><code>granges(x)</code>:
+Returns the chromosome and position of variants as a
+<code>GRanges</code> object.  Names correspond to the variant.id.
+</p>
+</dd>
+<dt></dt><dd>
+<p><code>ref(x)</code>:
+Returns the reference alleles as a <code><a href="../../Biostrings/html/XStringSet-class.html">DNAStringSet</a></code>.
+</p>
+</dd>
+<dt></dt><dd>
+<p><code>alt(x)</code>:
+Returns the alternate alleles as a <code><a href="../../Biostrings/html/XStringSetList-class.html">DNAStringSetList</a></code>.
+</p>
+</dd>
+<dt></dt><dd>
+<p><code>filt(x)</code>:
+Returns the filter data.
+</p>
+</dd>
+<dt></dt><dd>
+<p><code>qual(x)</code>:
+Returns the quality scores.
+</p>
+</dd>
+</dl>
+
+<p>Other data can be accessed with <code><a href="seqGetData.html">seqGetData</a></code>.
+</p>
+
+
+<h3>Coercion methods</h3>
+
+<p>In the following code snippets <code>x</code> is a SeqVarGDSClass object.
+</p>
+
+<dl>
+<dt></dt><dd>
+<p><code>asVCF(x, info=NULL, geno=NULL)</code>:
+Coerces a SeqVarGDSClass object to a
+<a href="../../VariantAnnotation/html/VCF-class.html">VCF-class</a> object.  Row names correspond
+to the variant.id.  <code>info</code>
+and <code>geno</code> specify the 'INFO' and
+'GENO' (FORMAT) fields to return, respectively.  If not
+specified, all fields are returned; if 'NA' no fields are
+returned.  Use <code><a href="seqSetFilter.html">seqSetFilter</a></code> prior to calling
+<code>asVCF</code> to specify samples and variants to return.
+</p>
+</dd>
+</dl>
+
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng, Stephanie Gogarten</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="../../gdsfmt/html/gds.class.html">gds.class</a></code>,
+<code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>,
+<code><a href="seqOpen.html">seqOpen</a></code>,
+<code><a href="seqGetData.html">seqGetData</a></code>,
+<code><a href="seqSetFilter.html">seqSetFilter</a></code>,
+<code><a href="seqClose-methods.html">seqClose</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+gds &lt;- seqOpen(seqExampleFileName("gds"))
+gds
+
+## sample ID
+head(seqGetData(gds, "sample.id"))
+
+## variants
+granges(gds)
+
+## alleles as comma-separated character strings
+head(seqGetData(gds, "allele"))
+
+## alleles as DNAStringSet or DNAStringSetList
+ref(gds)
+alt(gds)
+
+## genotype
+geno &lt;- seqGetData(gds, "genotype")
+dim(geno)
+## dimensions are: allele, sample, variant
+geno[1,1:10,1:5]
+
+## rsID
+head(seqGetData(gds, "annotation/id"))
+
+## alternate allele count
+head(seqGetData(gds, "annotation/info/AC"))
+
+## individual read depth
+depth &lt;- seqGetData(gds, "annotation/format/DP")
+names(depth)
+## VCF header defined DP as variable-length data
+table(depth$length)
+## all length 1, so depth$data should be a sample by variant matrix
+dim(depth$data)
+depth$data[1:10,1:5]
+
+seqClose(gds)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

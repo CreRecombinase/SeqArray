@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Merge Multiple Sequencing GDS Files</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqMerge {SeqArray}"><tr><td>seqMerge {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Merge Multiple Sequencing GDS Files</h2>
+
+<h3>Description</h3>
+
+<p>Merge multiple sequencing GDS files
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqMerge(gds.fn, out.fn, compress.option = seqCompress.Option(),
+	verbose = TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gds.fn</code></td>
+<td>
+<p>the file names of multiple GDS files</p>
+</td></tr>
+<tr valign="top"><td><code>out.fn</code></td>
+<td>
+<p>the output file name</p>
+</td></tr>
+<tr valign="top"><td><code>compress.option</code></td>
+<td>
+<p>specify the compression options, by default
+<code><a href="seqCompress.Option.html">seqCompress.Option</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if TRUE, show information</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The current implementation of <code>seqMerge</code> extracts and merges the genotypic
+data only without any annotation. Users can specify multiple VCF files in
+<code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code> to export a single GDS file.
+</p>
+
+
+<h3>Value</h3>
+
+<p>None.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>
+</p>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

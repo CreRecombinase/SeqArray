@@ -1,0 +1,159 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reformat VCF files</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqVCF2GDS {SeqArray}"><tr><td>seqVCF2GDS {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Reformat VCF files</h2>
+
+<h3>Description</h3>
+
+<p>Reformat Variant Call Format (VCF) files.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqVCF2GDS(vcf.fn, out.fn, header = NULL, genotype.var.name = "GT",
+    compress.option = seqCompress.Option(), info.import=NULL, fmt.import=NULL,
+    ignore.chr.prefix="chr", raise.error=TRUE, verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>vcf.fn</code></td>
+<td>
+<p>the file name(s) of VCF format</p>
+</td></tr>
+<tr valign="top"><td><code>out.fn</code></td>
+<td>
+<p>the file name of output GDS file</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>if NULL, <code>header</code> is set to be
+<code><a href="seqVCF.Header.html">seqVCF.Header</a>(vcf.fn)</code></p>
+</td></tr>
+<tr valign="top"><td><code>genotype.var.name</code></td>
+<td>
+<p>the ID for genotypic data in the FORMAT column;
+&quot;GT&quot; by default, VCFv4.0</p>
+</td></tr>
+<tr valign="top"><td><code>compress.option</code></td>
+<td>
+<p>specify the compression options, by default
+<code><a href="seqCompress.Option.html">seqCompress.Option</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>info.import</code></td>
+<td>
+<p>characters, the variable name(s) in the INFO field
+for import; or <code>NULL</code> for all variables</p>
+</td></tr>
+<tr valign="top"><td><code>fmt.import</code></td>
+<td>
+<p>characters, the variable name(s) in the FORMAT field
+for import; or <code>NULL</code> for all variables</p>
+</td></tr>
+<tr valign="top"><td><code>ignore.chr.prefix</code></td>
+<td>
+<p>a vector of character, indicating the prefix of
+chromosome which should be ignored, like &quot;chr&quot;; it is not
+case-sensitive</p>
+</td></tr>
+<tr valign="top"><td><code>raise.error</code></td>
+<td>
+<p><code>TRUE</code>: throw an error if numeric conversion fails;
+<code>FALSE</code>: get missing value if numeric conversion fails</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if TRUE, show information</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>GDS &ndash; Genomic Data Structures used for storing genetic array-oriented
+data, and the file format used in the <a href="../../gdsfmt/html/gdsfmt-package.html">gdsfmt</a> package.
+</p>
+<p>VCF &ndash; The Variant Call Format (VCF), which is a generic format for
+storing DNA polymorphism data such as SNPs, insertions, deletions and
+structural variants, together with rich annotations.
+</p>
+<p>If there are more than one files in <code>vcf.fn</code>, <code>seqVCF2GDS</code> will
+merge all dataset together if they contain the same samples. It is useful
+to merge genomic variants if VCF data are divided by chromosomes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return the file name of GDS format with an absolute path.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>References</h3>
+
+<p>The variant call format and VCFtools.
+Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA,
+Handsaker RE, Lunter G, Marth GT, Sherry ST, McVean G, Durbin R;
+1000 Genomes Project Analysis Group.
+Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
+</p>
+<p><a href="http://corearray.sourceforge.net/">http://corearray.sourceforge.net/</a>
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqVCF.Header.html">seqVCF.Header</a></code>, <code><a href="seqCompress.Option.html">seqCompress.Option</a></code>,
+<code><a href="seqGDS2VCF.html">seqGDS2VCF</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file name of VCF
+vcf.fn &lt;- seqExampleFileName("vcf")
+# or vcf.fn &lt;- "C:/YourFolder/Your_VCF_File.vcf"
+
+# convert
+seqVCF2GDS(vcf.fn, "tmp.gds")
+
+# display
+(f &lt;- seqOpen("tmp.gds"))
+seqClose(f)
+
+
+
+# convert without the INFO fields
+seqVCF2GDS(vcf.fn, "tmp.gds", info.import=character(0))
+
+# display
+(f &lt;- seqOpen("tmp.gds"))
+seqClose(f)
+
+
+
+# convert without the INFO fields
+seqVCF2GDS(vcf.fn, "tmp.gds",
+    info.import=character(0), fmt.import=character(0))
+
+# display
+(f &lt;- seqOpen("tmp.gds"))
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

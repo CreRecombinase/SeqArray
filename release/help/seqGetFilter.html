@@ -1,0 +1,105 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get the Filter of Samples and Variants</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqGetFilter {SeqArray}"><tr><td>seqGetFilter {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get the Filter of Samples and Variants</h2>
+
+<h3>Description</h3>
+
+<p>Get the filter of samples and variants
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqGetFilter(gdsfile)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>It is strongly suggested to call <code>seqOpen</code> instead of
+<code><a href="../../gdsfmt/html/openfn.gds.html">openfn.gds</a></code>, since <code>seqOpen</code> will initialize the
+internal data for <code>seqGetData</code>, <code>seqApply</code>, etc.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return a list:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>sample.sel</code></td>
+<td>
+<p>a logical vector for selected samples</p>
+</td></tr>
+<tr valign="top"><td><code>variant.sel</code></td>
+<td>
+<p>a logical vector for selected variants</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file of GDS
+gds.fn &lt;- seqExampleFileName("gds")
+# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+
+# display
+(f &lt;- seqOpen(gds.fn))
+
+# get 'sample.id
+(samp.id &lt;- seqGetData(f, "sample.id"))
+# "NA06984" "NA06985" "NA06986" ...
+
+# get 'variant.id'
+head(variant.id &lt;- seqGetData(f, "variant.id"))
+
+
+# set sample and variant filters
+seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10)])
+set.seed(100)
+seqSetFilter(f, variant.id=sample(variant.id, 10))
+
+# get filter
+z &lt;- seqGetFilter(f)
+
+# the number of selected samples
+sum(z$sample.sel)
+# the number of selected variants
+sum(z$variant.sel)
+
+
+# close the GDS file
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,124 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set a filter to sample or variant</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqSetFilter {SeqArray}"><tr><td>seqSetFilter {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Set a filter to sample or variant</h2>
+
+<h3>Description</h3>
+
+<p>Set a filter to sample and/or variant
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqSetFilter(gdsfile, sample.id=NULL, variant.id=NULL,
+    samp.sel=NULL, variant.sel=NULL, action=c("set", "push", "push+set", "pop"),
+    verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>sample.id</code></td>
+<td>
+<p>IDs of selected samples</p>
+</td></tr>
+<tr valign="top"><td><code>variant.id</code></td>
+<td>
+<p>IDs of selected variants</p>
+</td></tr>
+<tr valign="top"><td><code>samp.sel</code></td>
+<td>
+<p>a logical vector indicating the selected samples</p>
+</td></tr>
+<tr valign="top"><td><code>variant.sel</code></td>
+<td>
+<p>a logical vector indicating the selected variants</p>
+</td></tr>
+<tr valign="top"><td><code>action</code></td>
+<td>
+<p><code>"set"</code> &ndash; set the current filter via <code>sample.id</code>,
+<code>variant.id</code>, <code>samp.sel</code> or <code>variant.sel</code>;
+<code>"push"</code> &ndash; push the current filter to the stack, and it could
+be recovered by <code>"pop"</code> later, no change on the current
+filter;
+<code>"push+set"</code> &ndash; push the current filter to the stack, and changes
+the current filter via <code>sample.id</code>, <code>variant.id</code>,
+<code>samp.sel</code> or <code>variant.sel</code>;
+<code>"pop"</code> &ndash; pop up the last filter</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if TRUE, show information</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>None.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqGetFilter.html">seqGetFilter</a></code>,
+<code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file of GDS
+gds.fn &lt;- seqExampleFileName("gds")
+# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+
+# display
+(f &lt;- seqOpen(gds.fn))
+
+# get 'sample.id
+(samp.id &lt;- seqGetData(f, "sample.id"))
+# "NA06984" "NA06985" "NA06986" ...
+
+# get 'variant.id'
+head(variant.id &lt;- seqGetData(f, "variant.id"))
+
+# get 'chromosome'
+table(seqGetData(f, "chromosome"))
+
+# get 'allele'
+head(seqGetData(f, "allele"))
+# "T,C" "G,A" "G,A" ...
+
+
+# set sample and variant filters
+seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10)])
+set.seed(100)
+seqSetFilter(f, variant.id=sample(variant.id, 10))
+
+# get genotypic data
+seqGetData(f, "genotype")
+
+
+# close the GDS file
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,121 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Parse the header of a VCF file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqVCF.Header {SeqArray}"><tr><td>seqVCF.Header {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Parse the header of a VCF file</h2>
+
+<h3>Description</h3>
+
+<p>Parse the header of a VCF file
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqVCF.Header(vcf.fn)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>vcf.fn</code></td>
+<td>
+<p>the file name of VCF</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The ID description contains four columns:
+ID &ndash; variable name;
+Number &ndash; the number of elements, see the webpage of the 1000 Genomes Project;
+Type &ndash; data type;
+Description &ndash; a variable description.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return a list (with a class name &quot;SeqVCFHeaderClass&quot;, S3 object):
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>fileformat</code></td>
+<td>
+<p>the file format</p>
+</td></tr>
+<tr valign="top"><td><code>info</code></td>
+<td>
+<p>the ID description in the INFO field</p>
+</td></tr>
+<tr valign="top"><td><code>filter</code></td>
+<td>
+<p>the ID description in the FILTER field</p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>the ID description in the FORMAT field</p>
+</td></tr>
+<tr valign="top"><td><code>alt</code></td>
+<td>
+<p>the ID description in the ALT field</p>
+</td></tr>
+<tr valign="top"><td><code>contig</code></td>
+<td>
+<p>the description in the contig field</p>
+</td></tr>
+<tr valign="top"><td><code>assembly</code></td>
+<td>
+<p>the link of assembly</p>
+</td></tr>
+<tr valign="top"><td><code>header</code></td>
+<td>
+<p>the other header lines</p>
+</td></tr>
+<tr valign="top"><td><code>num.ploidy</code></td>
+<td>
+<p>the number of ploidy, two for humans</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>References</h3>
+
+<p><a href="http://www.1000genomes.org/wiki/Analysis/Variant Call Format/vcf-variant-call-format-version-41">http://www.1000genomes.org/wiki/Analysis/Variant Call Format/vcf-variant-call-format-version-41</a>
+</p>
+<p>The variant call format and VCFtools.
+Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA, Handsaker RE,
+Lunter G, Marth GT, Sherry ST, McVean G, Durbin R; 1000 Genomes Project Analysis Group.
+Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
+</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqVCF.SampID.html">seqVCF.SampID</a></code>, <code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file name of VCF
+(vcf.fn &lt;- seqExampleFileName("vcf"))
+# or vcf.fn &lt;- "C:/YourFolder/Your_VCF_File.vcf"
+
+# get sample id
+seqVCF.Header(vcf.fn)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

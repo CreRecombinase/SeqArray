@@ -1,0 +1,78 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Compression Options for Importing VCF File(s)</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqCompress.Option {SeqArray}"><tr><td>seqCompress.Option {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Compression Options for Importing VCF File(s)</h2>
+
+<h3>Description</h3>
+
+<p>Get compression options for importing VCF file(s)
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqCompress.Option(default="ZIP.MAX", ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>default</code></td>
+<td>
+<p>the default compression level</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional arguments</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Return a list with a class name &quot;seqCompress.class&quot;.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file of VCF
+(vcf.fn &lt;- seqExampleFileName("vcf"))
+# or vcf.fn &lt;- "C:/YourFolder/Your_VCF_File.vcf"
+
+# convert
+seqVCF2GDS(vcf.fn, "tmp1.gds", compress.option = seqCompress.Option())
+(f1 &lt;- seqOpen("tmp1.gds"))
+
+
+# does not compress the genotypic data
+seqVCF2GDS(vcf.fn, "tmp2.gds", compress.option = seqCompress.Option(genotype=""))
+(f2 &lt;- seqOpen("tmp2.gds"))
+
+
+# close and remove
+seqClose(f1)
+seqClose(f2)
+unlink(c("tmp1.gds", "tmp2.gds"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

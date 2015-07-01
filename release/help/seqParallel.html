@@ -1,0 +1,144 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Apply Functions in Parallel</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqParallel {SeqArray}"><tr><td>seqParallel {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Apply Functions in Parallel</h2>
+
+<h3>Description</h3>
+
+<p>Apply a user-defined function in parallel
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqParallel(cl, gdsfile, FUN = function(gdsfile, ...) NULL,
+	split=c("by.variant", "by.sample", "none"), .combine=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>cl</code></td>
+<td>
+<p>NULL or a cluster object, created by the package <a href="../../parallel/html/parallel.html">parallel</a>
+or <a href="http://CRAN.R-project.org/package=snow">snow</a></p>
+</td></tr>
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>FUN</code></td>
+<td>
+<p>the function to be applied</p>
+</td></tr>
+<tr valign="top"><td><code>split</code></td>
+<td>
+<p>split the dataset by variant or sample according to multiple
+processes, or &quot;none&quot; for no split</p>
+</td></tr>
+<tr valign="top"><td><code>.combine</code></td>
+<td>
+<p>define a fucntion for combining results from different processes;
+by default, <code>'c'</code> is used; if <code>.combine==""</code>, return <code>invisible()</code></p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional arguments to <code>FUN</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>cl = NULL</code> or <code>length(cl) == 0</code>, the function simply calls
+<code>FUN(gdsfile, ...)</code>; otherwise, it splits jobs to different processes and calls
+<code>FUN(gdsfile, ...)</code> on each process, the optional arguments are passed to different
+processes.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A vector or list of values.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqSetFilter.html">seqSetFilter</a></code>,
+<code><a href="seqGetData.html">seqGetData</a></code>
+<code><a href="seqApply.html">seqApply</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(parallel)
+
+# Use option cl.core to choose an appropriate cluster size or number of cores
+cl &lt;- makeCluster(getOption("cl.cores", 2))
+
+
+# the file of GDS
+gds.fn &lt;- seqExampleFileName("gds")
+# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+
+# display
+(f &lt;- seqOpen(gds.fn))
+
+# the uniprocessor version
+afreq1 &lt;- seqParallel(NULL, f, FUN = function(gdsfile) {
+		seqApply(gdsfile, "genotype", as.is="double",
+			FUN=function(x) mean(x==0, na.rm=TRUE))
+	}, split = "by.variant")
+
+length(afreq1)
+summary(afreq1)
+
+
+# run in parallel
+afreq2 &lt;- seqParallel(cl, f, FUN = function(gdsfile) {
+		seqApply(gdsfile, "genotype", as.is="double",
+			FUN=function(x) mean(x==0, na.rm=TRUE))
+	}, split = "by.variant")
+
+length(afreq2)
+summary(afreq2)
+
+
+# check
+all(afreq1 == afreq2)
+
+
+################################################################
+# check -- variant splits
+
+seqParallel(cl, f, FUN = function(gdsfile) {
+		v &lt;- seqGetFilter(gdsfile)
+		sum(v$variant.sel)
+	}, split = "by.variant")
+# [1] 674 674
+
+
+################################################################
+
+stopCluster(cl)
+
+# close the GDS file
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

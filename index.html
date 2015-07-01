@@ -1,0 +1,117 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <title>SeqArray by zhengxwen</title>
+
+    <link rel="stylesheet" href="stylesheets/styles.css">
+    <link rel="stylesheet" href="stylesheets/github-light.css">
+    <script src="javascripts/scale.fix.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
+    <!--[if lt IE 9]>
+    <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+  </head>
+  <body>
+    <div class="wrapper">
+      <header>
+        <h1 class="header">SeqArray</h1>
+        <p class="header">Big Data Management of Genome-wide Sequencing Variants</p>
+
+        <ul>
+          <li class="download"><a class="buttons" href="https://github.com/zhengxwen/SeqArray/zipball/master">Download ZIP</a></li>
+          <li class="download"><a class="buttons" href="https://github.com/zhengxwen/SeqArray/tarball/master">Download TAR</a></li>
+          <li><a class="buttons github" href="https://github.com/zhengxwen/SeqArray">View On GitHub</a></li>
+        </ul>
+
+        <p class="header">This project is maintained by <a class="header name" href="https://github.com/zhengxwen">zhengxwen</a></p>
+
+
+      </header>
+      <section>
+        <h1>
+<a id="seqarray-big-data-management-of-genome-wide-sequencing-variants" class="anchor" href="#seqarray-big-data-management-of-genome-wide-sequencing-variants" aria-hidden="true"><span class="octicon octicon-link"></span></a>SeqArray: Big Data Management of Genome-Wide Sequencing Variants</h1>
+
+<p><a href="https://travis-ci.org/zhengxwen/SeqArray"><img src="https://travis-ci.org/zhengxwen/SeqArray.png" alt="Build Status"></a></p>
+
+<h2>
+<a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
+
+<p>Big data management of genome-wide variants using the CoreArray C++ library:
+genotypic data and annotations are stored in an array-oriented manner,
+offering efficient access of genetic variants using the R programming language.</p>
+
+<h2>
+<a id="bioconductor" class="anchor" href="#bioconductor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bioconductor:</h2>
+
+<p>Release Version: v1.8.0</p>
+
+<p><a href="http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html">http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html</a></p>
+
+<p>Development Version: v1.9.6</p>
+
+<p><a href="http://www.bioconductor.org/packages/devel/bioc/html/SeqArray.html">http://www.bioconductor.org/packages/devel/bioc/html/SeqArray.html</a></p>
+
+<h2>
+<a id="tutorials" class="anchor" href="#tutorials" aria-hidden="true"><span class="octicon octicon-link"></span></a>Tutorials</h2>
+
+<p><a href="http://www.bioconductor.org/packages/release/bioc/vignettes/SeqArray/inst/doc/SeqArrayTutorial.pdf">http://www.bioconductor.org/packages/release/bioc/vignettes/SeqArray/inst/doc/SeqArrayTutorial.pdf</a></p>
+
+<p><a href="http://www.bioconductor.org/packages/devel/bioc/vignettes/SeqArray/inst/doc/SeqArrayTutorial.html">http://www.bioconductor.org/packages/devel/bioc/vignettes/SeqArray/inst/doc/SeqArrayTutorial.html</a></p>
+
+<h2>
+<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+
+<ul>
+<li>Bioconductor repository:</li>
+</ul>
+
+<div class="highlight highlight-R"><pre>source(<span class="pl-s"><span class="pl-pds">"</span>http://bioconductor.org/biocLite.R<span class="pl-pds">"</span></span>)
+biocLite(<span class="pl-s"><span class="pl-pds">"</span>SeqArray<span class="pl-pds">"</span></span>)</pre></div>
+
+<ul>
+<li>Development version from Github:</li>
+</ul>
+
+<div class="highlight highlight-R"><pre>library(<span class="pl-s"><span class="pl-pds">"</span>devtools<span class="pl-pds">"</span></span>)
+install_github(<span class="pl-s"><span class="pl-pds">"</span>zhengxwen/gdsfmt<span class="pl-pds">"</span></span>)
+install_github(<span class="pl-s"><span class="pl-pds">"</span>zhengxwen/SeqArray<span class="pl-pds">"</span></span>)</pre></div>
+
+<p>The <code>install_github()</code> approach requires that you build from source, i.e. <code>make</code> and compilers must be installed on your system -- see the <a href="http://cran.r-project.org/faqs.html">R FAQ</a> for your operating system; you may also need to install dependencies manually.</p>
+
+<ul>
+<li>Install the package from the source code:
+<a href="https://github.com/zhengxwen/gdsfmt/tarball/master">gdsfmt</a>,
+<a href="https://github.com/zhengxwen/SeqArray/tarball/master">SeqArray</a>
+</li>
+</ul>
+
+<div class="highlight highlight-sh"><pre>wget --no-check-certificate https://github.com/zhengxwen/gdsfmt/tarball/master -O gdsfmt_latest.tar.gz
+wget --no-check-certificate https://github.com/zhengxwen/SeqArray/tarball/master -O SeqArray_latest.tar.gz
+<span class="pl-c">## Or</span>
+curl -L https://github.com/zhengxwen/gdsfmt/tarball/master/ -o gdsfmt_latest.tar.gz
+curl -L https://github.com/zhengxwen/SeqArray/tarball/master/ -o SeqArray_latest.tar.gz
+
+<span class="pl-c">## Install</span>
+R CMD INSTALL gdsfmt_latest.tar.gz
+R CMD INSTALL SeqArray_latest.tar.gz</pre></div>
+      </section>
+      <footer>
+        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+      </footer>
+    </div>
+    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
+		          <script type="text/javascript">
+            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+          </script>
+          <script type="text/javascript">
+            try {
+              var pageTracker = _gat._getTracker("UA-64689611-1");
+            pageTracker._trackPageview();
+            } catch(err) {}
+          </script>
+
+  </body>
+</html>

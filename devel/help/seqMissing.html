@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Missing genotype percentage</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqMissing {SeqArray}"><tr><td>seqMissing {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Missing genotype percentage</h2>
+
+<h3>Description</h3>
+
+<p>Calculate the missing rates per variant or per sample.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqMissing(gdsfile, per.variant=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>per.variant</code></td>
+<td>
+<p>missing rate per variant if <code>TRUE</code>, or
+missing rate per sample if <code>FALSE</code></p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>A vector of missing rates.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqOpen.html">seqOpen</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file of GDS
+gds.fn &lt;- seqExampleFileName("gds")
+# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+
+# display
+(f &lt;- seqOpen(gds.fn))
+
+summary(seqMissing(f, TRUE))
+
+summary(seqMissing(f, FALSE))
+
+# close the GDS file
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

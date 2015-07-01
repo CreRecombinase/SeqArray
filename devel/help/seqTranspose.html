@@ -1,0 +1,99 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Transpose Data Array</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqTranspose {SeqArray}"><tr><td>seqTranspose {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Transpose Data Array</h2>
+
+<h3>Description</h3>
+
+<p>Transpose data array or matrix for possibly higher-speed access.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqTranspose(gdsfile, var.name, compress=NULL, verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>var.name</code></td>
+<td>
+<p>the variable name with '/' as a separator</p>
+</td></tr>
+<tr valign="top"><td><code>compress</code></td>
+<td>
+<p>the compression option used in
+<code><a href="../../gdsfmt/html/add.gdsn.html">add.gdsn</a></code>; or determine automatically
+if <code>NULL</code></p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if TRUE, show information</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>It is designed for possibly higher-speed access. More details will be
+provided in the future version.
+</p>
+
+
+<h3>Value</h3>
+
+<p>None.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file name of VCF
+(vcf.fn &lt;- seqExampleFileName("vcf"))
+# or vcf.fn &lt;- "C:/YourFolder/Your_VCF_File.vcf"
+
+# convert
+seqVCF2GDS(vcf.fn, "tmp.gds")
+
+# list the structure of GDS variables
+f &lt;- seqOpen("tmp.gds", FALSE)
+f
+
+seqTranspose(f, "genotype/data")
+f
+
+# the original array
+index.gdsn(f, "genotype/data")
+# the transposed array
+index.gdsn(f, "genotype/~data")
+
+# close
+seqClose(f)
+unlink("tmp.gds")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

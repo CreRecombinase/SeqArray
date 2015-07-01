@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Chromosome selection</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqSetFilterChrom {SeqArray}"><tr><td>seqSetFilterChrom {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Chromosome selection</h2>
+
+<h3>Description</h3>
+
+<p>Select the variants according to the specified chromosome(s).
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqSetFilterChrom(gdsfile, include=NULL, is.num=NA)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>include</code></td>
+<td>
+<p>NULL, or character for specified chromosome(s)</p>
+</td></tr>
+<tr valign="top"><td><code>is.num</code></td>
+<td>
+<p>a logical variable: <code>TRUE</code>, chromosome code is numeric;
+<code>FALSE</code>, chromosome is not numeric</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>None.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqSetFilter.html">seqSetFilter</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file of GDS
+gds.fn &lt;- seqExampleFileName("gds")
+# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+
+f &lt;- seqOpen(gds.fn)
+seqSummary(f)
+
+
+seqSetFilterChrom(f, is.num=TRUE)
+seqSummary(f, "genotype", check="none")
+
+seqSetFilterChrom(f, is.num=FALSE)
+seqSummary(f, "genotype", check="none")
+
+seqSetFilterChrom(f, 1:4)
+seqSummary(f, "genotype", check="none")
+table(seqGetData(f, "chromosome"))
+
+
+# close the GDS file
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

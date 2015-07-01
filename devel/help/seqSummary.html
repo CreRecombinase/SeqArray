@@ -1,0 +1,153 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get the summary of a GDS file</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqSummary {SeqArray}"><tr><td>seqSummary {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get the summary of a GDS file</h2>
+
+<h3>Description</h3>
+
+<p>Get the summary of a sequencing GDS file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqSummary(gdsfile, varname=NULL, check=c("check", "full.check", "none"),
+    verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>varname</code></td>
+<td>
+<p>if <code>NULL</code>, check the whole GDS file; or a character
+specifying variable name, and return a description of that variable.
+See details.</p>
+</td></tr>
+<tr valign="top"><td><code>check</code></td>
+<td>
+<p>should be one of &quot;check&quot;, &quot;full.check&quot;, &quot;none&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if <code>TRUE</code>, display information</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>If <code>check = "check"</code>, this function performs regular checking:
+dimensions of variables, etc. If <code>check = "full.check"</code>, it performs
+more checking: unique sample id, unique variant id, whether genotypic data
+are in a valid range or not, etc.
+</p>
+
+
+<h3>Value</h3>
+
+<p>If <code>varname = NULL</code>, then return a list:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>filename</code></td>
+<td>
+<p>the file name</p>
+</td></tr>
+<tr valign="top"><td><code>format.version</code></td>
+<td>
+<p>the sequencing format in GDS</p>
+</td></tr>
+<tr valign="top"><td><code>num.of.sample</code></td>
+<td>
+<p>the number of samples</p>
+</td></tr>
+<tr valign="top"><td><code>num.of.variant</code></td>
+<td>
+<p>the number of variants</p>
+</td></tr>
+<tr valign="top"><td><code>info</code></td>
+<td>
+<p>the description of the INFO field: <code>var.name</code>,
+<code>number</code>, <code>type</code> and <code>description</code></p>
+</td></tr>
+<tr valign="top"><td><code>format</code></td>
+<td>
+<p>the description of the FORMAT field: <code>var.name</code>,
+<code>number</code>, <code>type</code> and <code>description</code></p>
+</td></tr>
+<tr valign="top"><td><code>sample.annot</code></td>
+<td>
+<p>the description of the sample annotation:
+<code>var.name</code></p>
+</td></tr>
+</table>
+<p>If <code>varname = "genotype" or "phase"</code>, then return a list:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>dim</code></td>
+<td>
+<p>dim[1] &ndash; ploidy, dim[2] &ndash; the number of samples,
+dim[3] &ndash; the number of variants</p>
+</td></tr>
+<tr valign="top"><td><code>seldim</code></td>
+<td>
+<p>seldim[1] &ndash; the number of selected samples,
+seldim[2] &ndash; the number of selected variants</p>
+</td></tr>
+</table>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+(gds.fn &lt;- seqExampleFileName("gds"))
+# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+
+seqSummary(gds.fn)
+
+seqSummary(gds.fn, "genotype")
+
+
+######################################################
+# display
+f &lt;- seqOpen(gds.fn)
+
+# get 'sample.id
+samp.id &lt;- seqGetData(f, "sample.id")
+# get 'variant.id'
+variant.id &lt;- seqGetData(f, "variant.id")
+
+# set sample and variant filters
+seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10)])
+set.seed(100)
+seqSetFilter(f, variant.id=sample(variant.id, 10))
+
+seqSummary(f, "genotype")
+
+# close a GDS file
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Open a Sequencing GDS File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqOpen {SeqArray}"><tr><td>seqOpen {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Open a Sequencing GDS File</h2>
+
+<h3>Description</h3>
+
+<p>Open a sequencing GDS file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqOpen(gds.fn, readonly=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gds.fn</code></td>
+<td>
+<p>the file name</p>
+</td></tr>
+<tr valign="top"><td><code>readonly</code></td>
+<td>
+<p>whether read-only or not</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>It is strongly suggested to call <code>seqOpen</code> instead of
+<code><a href="../../gdsfmt/html/openfn.gds.html">openfn.gds</a></code>, since <code>seqOpen</code> will perform internal checking
+for data integrality.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return an object of class <code><a href="../../gdsfmt/html/gds.class.html">gds.class</a></code>.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+gds.fn &lt;- seqExampleFileName("gds")
+# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+
+# open the GDS file
+gdsfile &lt;- seqOpen(gds.fn)
+
+# display the contents of the GDS file in a hierarchical structure
+gdsfile
+
+# close the GDS file
+seqClose(gdsfile)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.6 <a href="00Index.html">Index</a>]</div>
+</body></html>

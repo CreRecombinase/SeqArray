@@ -49,7 +49,7 @@ offering efficient access of genetic variants using the R programming language.<
 
 <p><a href="http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html">http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html</a></p>
 
-<p>Development Version: v1.9.6</p>
+<p>Development Version: v1.9.--</p>
 
 <p><a href="http://www.bioconductor.org/packages/devel/bioc/html/SeqArray.html">http://www.bioconductor.org/packages/devel/bioc/html/SeqArray.html</a></p>
 
@@ -60,58 +60,22 @@ offering efficient access of genetic variants using the R programming language.<
 
 <p>Develop Branch: <a href="devel/SeqArrayTutorial.html">Tutorial</a>, <a href="devel/help/00Index.html">Help Documents</a></p>
 
-<h2>
-<a id="installation" class="anchor" href="#installation" aria-hidden="true"><span class="octicon octicon-link"></span></a>Installation</h2>
+<footer>
+  <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
+</footer>
+</div>
 
-<ul>
-<li>Bioconductor repository:</li>
-</ul>
+<!--[if !IE]><script>fixScale(document);</script><![endif]-->
+<script type="text/javascript">
+  var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+  document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+  try {
+    var pageTracker = _gat._getTracker("UA-64689611-1");
+  pageTracker._trackPageview();
+  } catch(err) {}
+</script>
 
-<div class="highlight highlight-R"><pre>source(<span class="pl-s"><span class="pl-pds">"</span>http://bioconductor.org/biocLite.R<span class="pl-pds">"</span></span>)
-biocLite(<span class="pl-s"><span class="pl-pds">"</span>SeqArray<span class="pl-pds">"</span></span>)</pre></div>
-
-<ul>
-<li>Development version from Github:</li>
-</ul>
-
-<div class="highlight highlight-R"><pre>library(<span class="pl-s"><span class="pl-pds">"</span>devtools<span class="pl-pds">"</span></span>)
-install_github(<span class="pl-s"><span class="pl-pds">"</span>zhengxwen/gdsfmt<span class="pl-pds">"</span></span>)
-install_github(<span class="pl-s"><span class="pl-pds">"</span>zhengxwen/SeqArray<span class="pl-pds">"</span></span>)</pre></div>
-
-<p>The <code>install_github()</code> approach requires that you build from source, i.e. <code>make</code> and compilers must be installed on your system -- see the <a href="http://cran.r-project.org/faqs.html">R FAQ</a> for your operating system; you may also need to install dependencies manually.</p>
-
-<ul>
-<li>Install the package from the source code:
-<a href="https://github.com/zhengxwen/gdsfmt/tarball/master">gdsfmt</a>,
-<a href="https://github.com/zhengxwen/SeqArray/tarball/master">SeqArray</a>
-</li>
-</ul>
-
-<div class="highlight highlight-sh"><pre>wget --no-check-certificate https://github.com/zhengxwen/gdsfmt/tarball/master -O gdsfmt_latest.tar.gz
-wget --no-check-certificate https://github.com/zhengxwen/SeqArray/tarball/master -O SeqArray_latest.tar.gz
-<span class="pl-c">## Or</span>
-curl -L https://github.com/zhengxwen/gdsfmt/tarball/master/ -o gdsfmt_latest.tar.gz
-curl -L https://github.com/zhengxwen/SeqArray/tarball/master/ -o SeqArray_latest.tar.gz
-
-<span class="pl-c">## Install</span>
-R CMD INSTALL gdsfmt_latest.tar.gz
-R CMD INSTALL SeqArray_latest.tar.gz</pre></div>
-      </section>
-      <footer>
-        <p><small>Hosted on <a href="https://pages.github.com">GitHub Pages</a> using the Dinky theme</small></p>
-      </footer>
-    </div>
-    <!--[if !IE]><script>fixScale(document);</script><![endif]-->
-		          <script type="text/javascript">
-            var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
-            document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
-          </script>
-          <script type="text/javascript">
-            try {
-              var pageTracker = _gat._getTracker("UA-64689611-1");
-            pageTracker._trackPageview();
-            } catch(err) {}
-          </script>
-
-  </body>
+</body>
 </html>

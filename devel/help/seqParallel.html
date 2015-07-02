@@ -16,8 +16,8 @@
 <h3>Usage</h3>
 
 <pre>
-seqParallel(cl, gdsfile, FUN = function(gdsfile, ...) NULL,
-    split=c("by.variant", "by.sample", "none"), .combine=NULL, ...)
+seqParallel(cl, gdsfile, FUN, split=c("by.variant", "by.sample", "none"),
+    .combine="unlist", .selection.flag=FALSE, ...)
 </pre>
 
 
@@ -26,8 +26,12 @@ seqParallel(cl, gdsfile, FUN = function(gdsfile, ...) NULL,
 <table summary="R argblock">
 <tr valign="top"><td><code>cl</code></td>
 <td>
-<p>NULL or a cluster object, created by the package <a href="../../parallel/html/parallel.html">parallel</a>
-or <a href="http://CRAN.R-project.org/package=snow">snow</a></p>
+<p><code>NULL</code> or <code>FALSE</code>: serial processing; <code>TRUE</code>:
+parallel processing with the maximum number of cores minor one;
+a numeric value: the number of cores to be used;
+a cluster object for parallel processing, created by the functions
+in the package <code><a href="../../lattice/html/splom.html">parallel</a></code>, like <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code>.
+See details</p>
 </td></tr>
 <tr valign="top"><td><code>gdsfile</code></td>
 <td>
@@ -35,7 +39,8 @@ or <a href="http://CRAN.R-project.org/package=snow">snow</a></p>
 </td></tr>
 <tr valign="top"><td><code>FUN</code></td>
 <td>
-<p>the function to be applied</p>
+<p>the function to be applied, should be like
+<code>FUN(gdsfile, ...)</code></p>
 </td></tr>
 <tr valign="top"><td><code>split</code></td>
 <td>
@@ -44,8 +49,16 @@ processes, or &quot;none&quot; for no split</p>
 </td></tr>
 <tr valign="top"><td><code>.combine</code></td>
 <td>
-<p>define a fucntion for combining results from different processes;
-by default, <code>'c'</code> is used; if <code>.combine==""</code>, return <code>invisible()</code></p>
+<p>define a fucntion for combining results from different
+processes; by default, <code>"unlist"</code> is used, to produce a vector
+which contains all the atomic components; <code>"list"</code>, return a list
+of results created by processes; <code>"none"</code>, no return; or a
+function, like &quot;+&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>.selection.flag</code></td>
+<td>
+<p><code>TRUE</code> &ndash; passes a logical vector of selection
+to the second argument of <code>FUN(gdsfile, selection, ...)</code></p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
@@ -56,10 +69,11 @@ by default, <code>'c'</code> is used; if <code>.combine==""</code>, return <code
 
 <h3>Details</h3>
 
-<p>If <code>cl = NULL</code> or <code>length(cl) == 0</code>, the function simply calls
-<code>FUN(gdsfile, ...)</code>; otherwise, it splits jobs to different processes and calls
-<code>FUN(gdsfile, ...)</code> on each process, the optional arguments are passed to different
-processes.
+<p>When <code>cl</code> is <code>TRUE</code> or a numeric value, forking techniques are
+used to create a new child process as a copy of the current R process, see
+<code><a href="../../parallel/html/mcfork.html">mcfork</a></code>. However, forking is not available on Windows, so serial
+processing is used instead. In order to use multiple processes on Windows,
+users have to create a cluster object via <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code>.
 </p>
 
 
@@ -76,8 +90,7 @@ processes.
 
 <h3>See Also</h3>
 
-<p><code><a href="seqSetFilter.html">seqSetFilter</a></code>,
-<code><a href="seqGetData.html">seqGetData</a></code>
+<p><code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code><a href="seqGetData.html">seqGetData</a></code>,
 <code><a href="seqApply.html">seqApply</a></code>
 </p>
 
@@ -140,5 +153,5 @@ stopCluster(cl)
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.7 <a href="00Index.html">Index</a>]</div>
 </body></html>

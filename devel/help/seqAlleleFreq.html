@@ -16,7 +16,7 @@
 <h3>Usage</h3>
 
 <pre>
-seqAlleleFreq(gdsfile, ref.allele=0L)
+seqAlleleFreq(gdsfile, ref.allele=0L, parallel=FALSE)
 </pre>
 
 
@@ -29,15 +29,28 @@ seqAlleleFreq(gdsfile, ref.allele=0L)
 </td></tr>
 <tr valign="top"><td><code>ref.allele</code></td>
 <td>
-<p><code>0</code> refers to the reference allele, <code>1</code> is the
-first alternative allele, ...; <code>NA</code></p>
+<p><code>NULL</code>, a single numeric value, a numeric vector
+or a character vector; see Value</p>
+</td></tr>
+<tr valign="top"><td><code>parallel</code></td>
+<td>
+<p><code>FALSE</code> (serial processing), <code>TRUE</code> (parallel
+processing) or other value; <code>parallel</code> is passed to the argument
+<code>cl</code> in <code><a href="seqParallel.html">seqParallel</a></code>, see <code><a href="seqParallel.html">seqParallel</a></code>
+for more details.</p>
 </td></tr>
 </table>
 
 
 <h3>Value</h3>
 
-<p>A vector of allele frequencies.
+<p>If <code>ref.allele=NULL</code>, the function returns a list of allele
+frequencies according to all allele per site. If <code>ref.allele</code> is a single
+numeric value (like <code>0L</code>), it returns a numeric vector for the specified
+alleles (<code>0L</code> for the reference allele, <code>1L</code> for the first alternative
+allele, etc). If <code>ref.allele</code> is a numeric vector, <code>ref.allele</code>
+specifies each allele per site. If <code>ref.allele</code> is a character vector,\
+<code>ref.allele</code> specifies the desired allele for each site.
 </p>
 
 
@@ -48,7 +61,8 @@ first alternative allele, ...; <code>NA</code></p>
 
 <h3>See Also</h3>
 
-<p><code><a href="seqOpen.html">seqOpen</a></code>
+<p><code><a href="seqNumAllele.html">seqNumAllele</a></code>, <code><a href="seqMissing.html">seqMissing</a></code>,
+<code><a href="seqParallel.html">seqParallel</a></code>
 </p>
 
 
@@ -62,12 +76,18 @@ gds.fn &lt;- seqExampleFileName("gds")
 # display
 f &lt;- seqOpen(gds.fn)
 
+head(seqAlleleFreq(f, NULL))
+
 summary(seqAlleleFreq(f, 0L))
+
+
+AA &lt;- toupper(seqGetData(f, "annotation/info/AA")$data)
+summary(seqAlleleFreq(f, AA))
 
 
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.7 <a href="00Index.html">Index</a>]</div>
 </body></html>

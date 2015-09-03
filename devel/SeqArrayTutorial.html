@@ -76,6 +76,7 @@ img {
 <li><a href="#modification">Modification</a></li>
 </ul></li>
 <li><a href="#data-processing">Data Processing</a><ul>
+<li><a href="#functions-for-data-analysis">Functions for Data Analysis</a></li>
 <li><a href="#get-data">Get Data</a></li>
 <li><a href="#apply-functions-over-array-margins">Apply Functions Over Array Margins</a></li>
 <li><a href="#apply-functions-in-parallel">Apply Functions in Parallel</a></li>
@@ -132,7 +133,7 @@ img {
 </tr>
 <tr class="even">
 <td align="left">seqSummary</td>
-<td align="left">Gets the summary of a sequencing GDS file (Num. of samples, Num. of variants, INFO/FORMAT variables, etc)</td>
+<td align="left">Gets the summary of a sequence GDS file (Num. of samples, Num. of variants, INFO/FORMAT variables, etc)</td>
 </tr>
 <tr class="odd">
 <td align="left">seqSetFilter</td>
@@ -140,7 +141,7 @@ img {
 </tr>
 <tr class="even">
 <td align="left">seqGetData</td>
-<td align="left">Gets data from a sequencing GDS file (from a subset of data)</td>
+<td align="left">Gets data from a sequence GDS file (from a subset of data)</td>
 </tr>
 <tr class="odd">
 <td align="left">seqApply</td>
@@ -161,15 +162,15 @@ img {
 <p>To support efficient memory management for genome-wide numerical data, the <a href="http://www.bioconductor.org/packages/release/bioc/html/gdsfmt.html">gdsfmt</a> package provides the genomic data structure (GDS) file format for array-oriented bioinformatic data based on the CoreArray library, which is a container for storing genotypic and annotation data. The GDS format supports data blocking so that only the subset of data that is being processed needs to reside in memory.</p>
 <pre class="r"><code># load the R package SeqArray
 library(SeqArray)</code></pre>
-<pre><code>## Loading required package: gdsfmt</code></pre>
+<pre><code>## Loading required package: gdsfmt
+## Creating a generic function for 'nchar' from package 'base' in package 'S4Vectors'</code></pre>
 <p>Here is a typical GDS file shipped with the SeqArray package:</p>
 <pre class="r"><code>gds.fn &lt;- seqExampleFileName(&quot;gds&quot;)
 # or gds.fn &lt;- &quot;C:/YourFolder/Your_GDS_File.gds&quot;
 gds.fn</code></pre>
-<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rinstac3857302c1e/SeqArray/extdata/CEU_Exon.gds&quot;</code></pre>
+<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rinst47e66f2d70c1/SeqArray/extdata/CEU_Exon.gds&quot;</code></pre>
 <pre class="r"><code>seqSummary(gds.fn)</code></pre>
-<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rinstac3857302c1e/SeqArray/extdata/CEU_Exon.gds
-## Format Version: v1.0
+<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rinst47e66f2d70c1/SeqArray/extdata/CEU_Exon.gds
 ## The number of samples: 90
 ## The number of variants: 1348
 ## The chromosomes:
@@ -192,7 +193,8 @@ gds.fn</code></pre>
 ##  BN, 1, Integer, First dbSNP build #
 ## Annotation, FORMAT variable(s):
 ##  DP, ., Integer, Read Depth from MOSAIK BAM
-## Annotation, sample variable(s): family</code></pre>
+## Annotation, sample variable(s):
+##  family</code></pre>
 <p><code>seqExampleFileName()</code> returns the file name of a GDS file used as an example in <a href="http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html">SeqArray</a>, and it is a subset of data from the 1000 Genomes Project. <code>seqSummary()</code> summarizes the genotypes and annotations stored in the GDS file.</p>
 <pre class="r"><code># open a GDS file
 genofile &lt;- seqOpen(gds.fn)
@@ -200,83 +202,91 @@ genofile &lt;- seqOpen(gds.fn)
 # display the contents of the GDS file in a hierarchical structure
 genofile</code></pre>
 <pre><code>## Object of class &quot;SeqVarGDSClass&quot;
-## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rinstac3857302c1e/SeqArray/extdata/CEU_Exon.gds
+## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rinst47e66f2d70c1/SeqArray/extdata/CEU_Exon.gds (396.5 KB)
 ## +    [  ] *
 ## |--+ description   [  ] *
-## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%) }
-## |--+ variant.id   { Int32 1348 ZIP_RA(35.72%) }
-## |--+ position   { Int32 1348 ZIP_RA(86.44%) }
-## |--+ chromosome   { VStr8 1348 ZIP_RA(2.66%) }
-## |--+ allele   { VStr8 1348 ZIP_RA(17.19%) }
+## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%), 222 bytes }
+## |--+ variant.id   { Int32 1348 ZIP_RA(35.72%), 1.9 KB }
+## |--+ position   { Int32 1348 ZIP_RA(86.44%), 4.7 KB }
+## |--+ chromosome   { VStr8 1348 ZIP_RA(2.66%), 91 bytes }
+## |--+ allele   { VStr8 1348 ZIP_RA(17.19%), 928 bytes }
 ## |--+ genotype   [  ] *
-## |  |--+ data   { Bit2 2x90x1348 ZIP_RA(28.39%) }
-## |  |--+ ~data   { Bit2 2x1348x90 ZIP_RA(36.04%) }
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
+## |  |--+ data   { Bit2 2x90x1348 ZIP_RA(28.39%), 17.2 KB }
+## |  |--+ ~data   { Bit2 2x1348x90 ZIP_RA(36.04%), 21.9 KB }
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Int16 0 ZIP_RA, 17 bytes }
 ## |--+ phase   [  ]
-## |  |--+ data   { Bit1 90x1348 ZIP_RA(0.36%) }
-## |  |--+ ~data   { Bit1 1348x90 ZIP_RA(0.36%) }
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
-## |  |--+ extra   { Bit1 0 ZIP_RA }
+## |  |--+ data   { Bit1 90x1348 ZIP_RA(0.36%), 55 bytes }
+## |  |--+ ~data   { Bit1 1348x90 ZIP_RA(0.36%), 55 bytes }
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Bit1 0 ZIP_RA, 17 bytes }
 ## |--+ annotation   [  ]
-## |  |--+ id   { VStr8 1348 ZIP_RA(41.02%) }
-## |  |--+ qual   { Float32 1348 ZIP_RA(0.91%) }
-## |  |--+ filter   { Int32,factor 1348 ZIP_RA(0.89%) } *
+## |  |--+ id   { VStr8 1348 ZIP_RA(41.02%), 6.0 KB }
+## |  |--+ qual   { Float32 1348 ZIP_RA(0.91%), 49 bytes }
+## |  |--+ filter   { Int32,factor 1348 ZIP_RA(0.89%), 48 bytes } *
 ## |  |--+ info   [  ]
-## |  |  |--+ AA   { VStr8 1348 ZIP_RA(24.22%) } *
-## |  |  |--+ AC   { Int32 1348 ZIP_RA(27.23%) } *
-## |  |  |--+ AN   { Int32 1348 ZIP_RA(20.62%) } *
-## |  |  |--+ DP   { Int32 1348 ZIP_RA(62.57%) } *
-## |  |  |--+ HM2   { Bit1 1348 ZIP_RA(117.16%) } *
-## |  |  |--+ HM3   { Bit1 1348 ZIP_RA(117.16%) } *
-## |  |  |--+ OR   { VStr8 1348 ZIP_RA(13.98%) } *
-## |  |  |--+ GP   { VStr8 1348 ZIP_RA(34.36%) } *
+## |  |  |--+ AA   { VStr8 1348 ZIP_RA(24.22%), 653 bytes } *
+## |  |  |--+ AC   { Int32 1348 ZIP_RA(27.23%), 1.5 KB } *
+## |  |  |--+ AN   { Int32 1348 ZIP_RA(20.62%), 1.1 KB } *
+## |  |  |--+ DP   { Int32 1348 ZIP_RA(62.57%), 3.4 KB } *
+## |  |  |--+ HM2   { Bit1 1348 ZIP_RA(117.16%), 198 bytes } *
+## |  |  |--+ HM3   { Bit1 1348 ZIP_RA(117.16%), 198 bytes } *
+## |  |  |--+ OR   { VStr8 1348 ZIP_RA(13.98%), 238 bytes } *
+## |  |  |--+ GP   { VStr8 1348 ZIP_RA(34.36%), 5.4 KB } *
+## |  |  |--+ BN   { Int32 1348 ZIP_RA(21.64%), 1.2 KB } *
 ## |  |--+ format   [  ]
 ## |  |  |--+ DP   [  ] *
-## |  |  |  |--+ data   { Int32 90x1348 ZIP_RA(33.83%) }
-## |  |  |  |--+ ~data   { Int32 1348x90 ZIP_RA(32.23%) }
+## |  |  |  |--+ data   { Int32 90x1348 ZIP_RA(33.83%), 164.2 KB }
+## |  |  |  |--+ ~data   { Int32 1348x90 ZIP_RA(32.23%), 156.4 KB }
 ## |--+ sample.annotation   [  ]
-## |  |--+ family   { VStr8 90 ZIP_RA(35.47%) }</code></pre>
+## |  |--+ family   { VStr8 90 ZIP_RA(35.47%), 144 bytes }</code></pre>
 <p>For those who would like to know how variable-length genotypic data and annotations are stored in an array-oriented manner, <code>print(, all=TRUE)</code> displays all contents including hidden structures:</p>
 <pre class="r"><code># display all contents of the GDS file
 print(genofile, all=TRUE)</code></pre>
-<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rinstac3857302c1e/SeqArray/extdata/CEU_Exon.gds
+<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rinst47e66f2d70c1/SeqArray/extdata/CEU_Exon.gds (396.5 KB)
 ## +    [  ] *
 ## |--+ description   [  ] *
-## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%) }
-## |--+ variant.id   { Int32 1348 ZIP_RA(35.72%) }
-## |--+ position   { Int32 1348 ZIP_RA(86.44%) }
-## |--+ chromosome   { VStr8 1348 ZIP_RA(2.66%) }
-## |--+ allele   { VStr8 1348 ZIP_RA(17.19%) }
+## |  |--+ vcf.header   [ data.frame ] *
+## |  |  |--+ id   { VStr8 1, 10 bytes }
+## |  |  |--+ value   { VStr8 1, 21 bytes }
+## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%), 222 bytes }
+## |--+ variant.id   { Int32 1348 ZIP_RA(35.72%), 1.9 KB }
+## |--+ position   { Int32 1348 ZIP_RA(86.44%), 4.7 KB }
+## |--+ chromosome   { VStr8 1348 ZIP_RA(2.66%), 91 bytes }
+## |--+ allele   { VStr8 1348 ZIP_RA(17.19%), 928 bytes }
 ## |--+ genotype   [  ] *
-## |  |--+ data   { Bit2 2x90x1348 ZIP_RA(28.39%) }
-## |  |--+ ~data   { Bit2 2x1348x90 ZIP_RA(36.04%) }
-## |  |--+ @data   { UInt8 1348 ZIP_RA(2.82%) } *
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
+## |  |--+ data   { Bit2 2x90x1348 ZIP_RA(28.39%), 17.2 KB }
+## |  |--+ ~data   { Bit2 2x1348x90 ZIP_RA(36.04%), 21.9 KB }
+## |  |--+ @data   { UInt8 1348 ZIP_RA(2.82%), 38 bytes } *
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Int16 0 ZIP_RA, 17 bytes }
 ## |--+ phase   [  ]
-## |  |--+ data   { Bit1 90x1348 ZIP_RA(0.36%) }
-## |  |--+ ~data   { Bit1 1348x90 ZIP_RA(0.36%) }
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
-## |  |--+ extra   { Bit1 0 ZIP_RA }
+## |  |--+ data   { Bit1 90x1348 ZIP_RA(0.36%), 55 bytes }
+## |  |--+ ~data   { Bit1 1348x90 ZIP_RA(0.36%), 55 bytes }
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Bit1 0 ZIP_RA, 17 bytes }
 ## |--+ annotation   [  ]
-## |  |--+ id   { VStr8 1348 ZIP_RA(41.02%) }
-## |  |--+ qual   { Float32 1348 ZIP_RA(0.91%) }
-## |  |--+ filter   { Int32,factor 1348 ZIP_RA(0.89%) } *
+## |  |--+ id   { VStr8 1348 ZIP_RA(41.02%), 6.0 KB }
+## |  |--+ qual   { Float32 1348 ZIP_RA(0.91%), 49 bytes }
+## |  |--+ filter   { Int32,factor 1348 ZIP_RA(0.89%), 48 bytes } *
 ## |  |--+ info   [  ]
-## |  |  |--+ AA   { VStr8 1348 ZIP_RA(24.22%) } *
-## |  |  |--+ @AA   { Int32 1348 ZIP_RA(0.89%) } *
-## |  |  |--+ AC   { Int32 1348 ZIP_RA(27.23%) } *
-## |  |  |--+ AN   { Int32 1348 ZIP_RA(20.62%) } *
-## |  |  |--+ DP   { Int32 1348 ZIP_RA(62.57%) } *
-## |  |  |--+ HM2   { Bit1 1348 ZIP_RA(117.16%) } *
-## |  |  |--+ HM3   { Bit1 1348 ZIP_RA(117.16%) } *
-## |  |  |--+ OR   { VStr8 1348 ZIP_RA(13.98%) } *
-## |  |  |--+ GP   { VStr8 1348 ZIP_RA(34.36%) } *
+## |  |  |--+ AA   { VStr8 1348 ZIP_RA(24.22%), 653 bytes } *
+## |  |  |--+ @AA   { Int32 1348 ZIP_RA(0.89%), 48 bytes } *
+## |  |  |--+ AC   { Int32 1348 ZIP_RA(27.23%), 1.5 KB } *
+## |  |  |--+ AN   { Int32 1348 ZIP_RA(20.62%), 1.1 KB } *
+## |  |  |--+ DP   { Int32 1348 ZIP_RA(62.57%), 3.4 KB } *
+## |  |  |--+ HM2   { Bit1 1348 ZIP_RA(117.16%), 198 bytes } *
+## |  |  |--+ HM3   { Bit1 1348 ZIP_RA(117.16%), 198 bytes } *
+## |  |  |--+ OR   { VStr8 1348 ZIP_RA(13.98%), 238 bytes } *
+## |  |  |--+ GP   { VStr8 1348 ZIP_RA(34.36%), 5.4 KB } *
+## |  |  |--+ BN   { Int32 1348 ZIP_RA(21.64%), 1.2 KB } *
 ## |  |--+ format   [  ]
 ## |  |  |--+ DP   [  ] *
-## |  |  |  |--+ data   { Int32 90x1348 ZIP_RA(33.83%) }
-## |  |  |  |--+ ~data   { Int32 1348x90 ZIP_RA(32.23%) }
+## |  |  |  |--+ data   { Int32 90x1348 ZIP_RA(33.83%), 164.2 KB }
+## |  |  |  |--+ ~data   { Int32 1348x90 ZIP_RA(32.23%), 156.4 KB }
+## |  |  |  |--+ @data   { Int32 1348 ZIP_RA(0.89%), 48 bytes } *
 ## |--+ sample.annotation   [  ]
-## |  |--+ family   { VStr8 90 ZIP_RA(35.47%) }</code></pre>
+## |  |--+ family   { VStr8 90 ZIP_RA(35.47%), 144 bytes }</code></pre>
 <pre class="r"><code># close the GDS file
 seqClose(genofile)</code></pre>
 <p>The output lists all variables stored in the GDS file. At the first level, it stores variables <code>sample.id</code>, <code>variant.id</code>, etc. The additional information are displayed in the square brackets indicating data type, size, compressed or not + compression ratio, where <code>Bit2</code> indicates that each byte encodes up to four alleles since one byte consists of eight bits, and <code>VStr8</code> indicates variable-length character. The annotations are stored in the directory <code>annotation</code>, which includes the fields of ID, QUAL, FILTER, INFO and FORMAT corresponding to the original VCF file(s). All of the functions in <a href="http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html">SeqArray</a> require a minimum set of variables in the annotation data:</p>
@@ -340,7 +350,7 @@ seqClose(genofile)</code></pre>
 vcf.fn &lt;- seqExampleFileName(&quot;vcf&quot;)
 # or vcf.fn &lt;- &quot;C:/YourFolder/Your_VCF_File.vcf&quot;
 vcf.fn</code></pre>
-<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rinstac3857302c1e/SeqArray/extdata/CEU_Exon.vcf.gz&quot;</code></pre>
+<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rinst47e66f2d70c1/SeqArray/extdata/CEU_Exon.vcf.gz&quot;</code></pre>
 <pre class="r"><code># parse the header
 seqVCF.Header(vcf.fn)</code></pre>
 <pre><code>## $fileformat
@@ -391,18 +401,19 @@ seqVCF2GDS(vcf.fn, &quot;tmp.gds&quot;)</code></pre>
 ##  file format: VCFv4.0
 ##  the number of sets of chromosomes (ploidy): 2
 ##  the number of samples: 90
-## Parsing &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rinstac3857302c1e/SeqArray/extdata/CEU_Exon.vcf.gz&quot; ...
-## + genotype/data   { Bit2 2x90x1348 ZIP_RA }
+##  GDS genotype storage: bit2
+## Parsing &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rinst47e66f2d70c1/SeqArray/extdata/CEU_Exon.vcf.gz&quot; ...
+## + genotype/data   { Bit2 2x90x1348 ZIP_RA, 17 bytes }
 ## Done.
 ## Optimize the access efficiency ...
 ## Clean up the fragments of GDS file:
-##  open the file &quot;tmp.gds&quot; (size: 218293).
+##  open the file &quot;tmp.gds&quot; (size: 218281).
 ##  # of fragments in total: 162.
 ##  save it to &quot;tmp.gds.tmp&quot;.
-##  rename &quot;tmp.gds.tmp&quot; (size: 217165).
+##  rename &quot;tmp.gds.tmp&quot; (size: 217153).
 ##  # of fragments in total: 68.</code></pre>
 <pre class="r"><code>seqSummary(&quot;tmp.gds&quot;)</code></pre>
-<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rbuildac383b6aa7d3/SeqArray/vignettes/tmp.gds
+<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rbuild47e61b0526aa/SeqArray/vignettes/tmp.gds
 ## Format Version: v1.0
 ## The number of samples: 90
 ## The number of variants: 1348
@@ -426,7 +437,8 @@ seqVCF2GDS(vcf.fn, &quot;tmp.gds&quot;)</code></pre>
 ##  BN, 1, Integer, First dbSNP build #
 ## Annotation, FORMAT variable(s):
 ##  DP, ., Integer, Read Depth from MOSAIK BAM
-## Annotation, sample variable(s):</code></pre>
+## Annotation, sample variable(s):
+##  </code></pre>
 </div>
 <div id="export-to-a-vcf-file" class="section level2">
 <h2>Export to a VCF File</h2>
@@ -448,7 +460,7 @@ seqGDS2VCF(genofile, &quot;tmp.vcf.gz&quot;)</code></pre>
 z &lt;- readLines(&quot;tmp.vcf.gz&quot;, n=20)
 for (i in z) cat(substr(i, 1, 76), &quot; ...\n&quot;, sep=&quot;&quot;)</code></pre>
 <pre><code>## ##fileformat=VCFv4.0 ...
-## ##fileDate=20150630 ...
+## ##fileDate=20150901 ...
 ## ##source=SeqArray_RPackage_v1.0 ...
 ## ##INFO=&lt;ID=AA,Number=.,Type=String,Description=&quot;Ancestral Allele&quot;&gt; ...
 ## ##INFO=&lt;ID=AC,Number=1,Type=Integer,Description=&quot;total number of alternate a ...
@@ -478,7 +490,7 @@ seqGDS2VCF(genofile, &quot;tmp2.vcf.gz&quot;, info.var=c(&quot;BN&quot;,&quot;GP
 z &lt;- readLines(&quot;tmp2.vcf.gz&quot;, n=15)
 for (i in z) cat(substr(i, 1, 56), &quot; ...\n&quot;, sep=&quot;&quot;)</code></pre>
 <pre><code>## ##fileformat=VCFv4.0 ...
-## ##fileDate=20150630 ...
+## ##fileDate=20150901 ...
 ## ##source=SeqArray_RPackage_v1.0 ...
 ## ##INFO=&lt;ID=BN,Number=1,Type=Integer,Description=&quot;First d ...
 ## ##INFO=&lt;ID=GP,Number=1,Type=String,Description=&quot;GRCh37 p ...
@@ -524,37 +536,39 @@ genofile &lt;- seqOpen(&quot;tmp.gds&quot;, readonly=FALSE)
 # display the original structure
 genofile</code></pre>
 <pre><code>## Object of class &quot;SeqVarGDSClass&quot;
-## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rbuildac383b6aa7d3/SeqArray/vignettes/tmp.gds
+## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rbuild47e61b0526aa/SeqArray/vignettes/tmp.gds (217.2 KB)
 ## +    [  ] *
 ## |--+ description   [  ] *
-## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%) }
-## |--+ variant.id   { Int32 1348 ZIP_RA(35.72%) }
-## |--+ position   { Int32 1348 ZIP_RA(86.44%) }
-## |--+ chromosome   { VStr8 1348 ZIP_RA(2.66%) }
-## |--+ allele   { VStr8 1348 ZIP_RA(17.19%) }
+## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%), 222 bytes }
+## |--+ variant.id   { Int32 1348 ZIP_RA(35.72%), 1.9 KB }
+## |--+ position   { Int32 1348 ZIP_RA(86.44%), 4.7 KB }
+## |--+ chromosome   { VStr8 1348 ZIP_RA(2.66%), 91 bytes }
+## |--+ allele   { VStr8 1348 ZIP_RA(17.19%), 928 bytes }
 ## |--+ genotype   [  ] *
-## |  |--+ data   { Bit2 2x90x1348 ZIP_RA(28.39%) }
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
+## |  |--+ data   { Bit2 2x90x1348 ZIP_RA(28.39%), 17.2 KB }
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Int16 0 ZIP_RA, 17 bytes }
 ## |--+ phase   [  ]
-## |  |--+ data   { Bit1 90x1348 ZIP_RA(0.36%) }
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
-## |  |--+ extra   { Bit1 0 ZIP_RA }
+## |  |--+ data   { Bit1 90x1348 ZIP_RA(0.36%), 55 bytes }
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Bit1 0 ZIP_RA, 17 bytes }
 ## |--+ annotation   [  ]
-## |  |--+ id   { VStr8 1348 ZIP_RA(41.02%) }
-## |  |--+ qual   { Float32 1348 ZIP_RA(0.91%) }
-## |  |--+ filter   { Int32,factor 1348 ZIP_RA(0.89%) } *
+## |  |--+ id   { VStr8 1348 ZIP_RA(41.02%), 6.0 KB }
+## |  |--+ qual   { Float32 1348 ZIP_RA(0.91%), 49 bytes }
+## |  |--+ filter   { Int32,factor 1348 ZIP_RA(0.89%), 48 bytes } *
 ## |  |--+ info   [  ]
-## |  |  |--+ AA   { VStr8 1348 ZIP_RA(24.22%) } *
-## |  |  |--+ AC   { Int32 1348 ZIP_RA(27.23%) } *
-## |  |  |--+ AN   { Int32 1348 ZIP_RA(20.62%) } *
-## |  |  |--+ DP   { Int32 1348 ZIP_RA(62.57%) } *
-## |  |  |--+ HM2   { Bit1 1348 ZIP_RA(117.16%) } *
-## |  |  |--+ HM3   { Bit1 1348 ZIP_RA(117.16%) } *
-## |  |  |--+ OR   { VStr8 1348 ZIP_RA(13.98%) } *
-## |  |  |--+ GP   { VStr8 1348 ZIP_RA(34.36%) } *
+## |  |  |--+ AA   { VStr8 1348 ZIP_RA(24.22%), 653 bytes } *
+## |  |  |--+ AC   { Int32 1348 ZIP_RA(27.23%), 1.5 KB } *
+## |  |  |--+ AN   { Int32 1348 ZIP_RA(20.62%), 1.1 KB } *
+## |  |  |--+ DP   { Int32 1348 ZIP_RA(62.57%), 3.4 KB } *
+## |  |  |--+ HM2   { Bit1 1348 ZIP_RA(117.16%), 198 bytes } *
+## |  |  |--+ HM3   { Bit1 1348 ZIP_RA(117.16%), 198 bytes } *
+## |  |  |--+ OR   { VStr8 1348 ZIP_RA(13.98%), 238 bytes } *
+## |  |  |--+ GP   { VStr8 1348 ZIP_RA(34.36%), 5.4 KB } *
+## |  |  |--+ BN   { Int32 1348 ZIP_RA(21.64%), 1.2 KB } *
 ## |  |--+ format   [  ]
 ## |  |  |--+ DP   [  ] *
-## |  |  |  |--+ data   { Int32 90x1348 ZIP_RA(33.83%) }
+## |  |  |  |--+ data   { Int32 90x1348 ZIP_RA(33.83%), 164.2 KB }
 ## |--+ sample.annotation   [  ]</code></pre>
 <pre class="r"><code># delete &quot;HM2&quot;, &quot;HM3&quot;, &quot;AA&quot;, &quot;OR&quot; and &quot;DP&quot;
 seqDelete(genofile, info.varname=c(&quot;HM2&quot;, &quot;HM3&quot;, &quot;AA&quot;, &quot;OR&quot;),
@@ -564,31 +578,32 @@ seqDelete(genofile, info.varname=c(&quot;HM2&quot;, &quot;HM3&quot;, &quot;AA&qu
 <pre class="r"><code># display
 genofile</code></pre>
 <pre><code>## Object of class &quot;SeqVarGDSClass&quot;
-## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rbuildac383b6aa7d3/SeqArray/vignettes/tmp.gds
+## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rbuild47e61b0526aa/SeqArray/vignettes/tmp.gds (217.2 KB)
 ## +    [  ] *
 ## |--+ description   [  ] *
-## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%) }
-## |--+ variant.id   { Int32 1348 ZIP_RA(35.72%) }
-## |--+ position   { Int32 1348 ZIP_RA(86.44%) }
-## |--+ chromosome   { VStr8 1348 ZIP_RA(2.66%) }
-## |--+ allele   { VStr8 1348 ZIP_RA(17.19%) }
+## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%), 222 bytes }
+## |--+ variant.id   { Int32 1348 ZIP_RA(35.72%), 1.9 KB }
+## |--+ position   { Int32 1348 ZIP_RA(86.44%), 4.7 KB }
+## |--+ chromosome   { VStr8 1348 ZIP_RA(2.66%), 91 bytes }
+## |--+ allele   { VStr8 1348 ZIP_RA(17.19%), 928 bytes }
 ## |--+ genotype   [  ] *
-## |  |--+ data   { Bit2 2x90x1348 ZIP_RA(28.39%) }
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
+## |  |--+ data   { Bit2 2x90x1348 ZIP_RA(28.39%), 17.2 KB }
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Int16 0 ZIP_RA, 17 bytes }
 ## |--+ phase   [  ]
-## |  |--+ data   { Bit1 90x1348 ZIP_RA(0.36%) }
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
-## |  |--+ extra   { Bit1 0 ZIP_RA }
+## |  |--+ data   { Bit1 90x1348 ZIP_RA(0.36%), 55 bytes }
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Bit1 0 ZIP_RA, 17 bytes }
 ## |--+ annotation   [  ]
-## |  |--+ id   { VStr8 1348 ZIP_RA(41.02%) }
-## |  |--+ qual   { Float32 1348 ZIP_RA(0.91%) }
-## |  |--+ filter   { Int32,factor 1348 ZIP_RA(0.89%) } *
+## |  |--+ id   { VStr8 1348 ZIP_RA(41.02%), 6.0 KB }
+## |  |--+ qual   { Float32 1348 ZIP_RA(0.91%), 49 bytes }
+## |  |--+ filter   { Int32,factor 1348 ZIP_RA(0.89%), 48 bytes } *
 ## |  |--+ info   [  ]
-## |  |  |--+ AC   { Int32 1348 ZIP_RA(27.23%) } *
-## |  |  |--+ AN   { Int32 1348 ZIP_RA(20.62%) } *
-## |  |  |--+ DP   { Int32 1348 ZIP_RA(62.57%) } *
-## |  |  |--+ GP   { VStr8 1348 ZIP_RA(34.36%) } *
-## |  |  |--+ BN   { Int32 1348 ZIP_RA(21.64%) } *
+## |  |  |--+ AC   { Int32 1348 ZIP_RA(27.23%), 1.5 KB } *
+## |  |  |--+ AN   { Int32 1348 ZIP_RA(20.62%), 1.1 KB } *
+## |  |  |--+ DP   { Int32 1348 ZIP_RA(62.57%), 3.4 KB } *
+## |  |  |--+ GP   { VStr8 1348 ZIP_RA(34.36%), 5.4 KB } *
+## |  |  |--+ BN   { Int32 1348 ZIP_RA(21.64%), 1.2 KB } *
 ## |  |--+ format   [  ]
 ## |--+ sample.annotation   [  ]</code></pre>
 <pre class="r"><code># close the GDS file
@@ -597,15 +612,54 @@ seqClose(genofile)
 # clean up the fragments, reduce the file size
 cleanup.gds(&quot;tmp.gds&quot;)</code></pre>
 <pre><code>## Clean up the fragments of GDS file:
-##  open the file &quot;tmp.gds&quot; (size: 217165).
+##  open the file &quot;tmp.gds&quot; (size: 217153).
 ##  # of fragments in total: 68.
 ##  save it to &quot;tmp.gds.tmp&quot;.
-##  rename &quot;tmp.gds.tmp&quot; (size: 49950).
+##  rename &quot;tmp.gds.tmp&quot; (size: 49938).
 ##  # of fragments in total: 53.</code></pre>
 </div>
 </div>
 <div id="data-processing" class="section level1">
 <h1>Data Processing</h1>
+<div id="functions-for-data-analysis" class="section level2">
+<h2>Functions for Data Analysis</h2>
+<p><strong>Table 2</strong>: A list of functions for data analysis.</p>
+<table>
+<thead>
+<tr class="header">
+<th align="left">Function</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">seqGetData</td>
+<td align="left">Gets data from a sequence GDS file (from a subset of data). <a href="http://zhengxwen.github.io/SeqArray/devel/help/seqGetData.html">LINK</a></td>
+</tr>
+<tr class="even">
+<td align="left">seqApply</td>
+<td align="left">Applies a user-defined function over array margins. <a href="http://zhengxwen.github.io/SeqArray/devel/help/seqApply.html">LINK</a></td>
+</tr>
+<tr class="odd">
+<td align="left">seqNumAllele</td>
+<td align="left">Number of alleles per site. <a href="http://zhengxwen.github.io/SeqArray/devel/help/seqNumAllele.html">LINK</a></td>
+</tr>
+<tr class="even">
+<td align="left">seqMissing</td>
+<td align="left">Missing genotype percentage. <a href="http://zhengxwen.github.io/SeqArray/devel/help/seqMissing.html">LINK</a></td>
+</tr>
+<tr class="odd">
+<td align="left">seqAlleleFreq</td>
+<td align="left">Allele frequency. <a href="http://zhengxwen.github.io/SeqArray/devel/help/seqAlleleFreq.html">LINK</a></td>
+</tr>
+<tr class="even">
+<td align="left">…</td>
+<td align="left"><a href="http://zhengxwen.github.io/SeqArray/devel/help/00Index.html">LINK</a></td>
+</tr>
+</tbody>
+</table>
+<p>~</p>
+</div>
 <div id="get-data" class="section level2">
 <h2>Get Data</h2>
 <pre class="r"><code># open a GDS file
@@ -1265,7 +1319,7 @@ stopCluster(cl)</code></pre>
 <p>Now, “RefAlleleFreq” is a function in R.</p>
 <pre class="r"><code>RefAlleleFreq</code></pre>
 <pre><code>## function (x) 
-## .Primitive(&quot;.Call&quot;)(&lt;pointer: 0x10c18fa50&gt;, x)</code></pre>
+## .Primitive(&quot;.Call&quot;)(&lt;pointer: 0x1068a6a50&gt;, x)</code></pre>
 <pre class="r"><code>afreq &lt;- seqApply(genofile, &quot;genotype&quot;, RefAlleleFreq,
     as.is=&quot;double&quot;, margin=&quot;by.variant&quot;)
 
@@ -1289,50 +1343,51 @@ library(SNPRelate)</code></pre>
 <pre><code>## SNPRelate -- supported by Streaming SIMD Extensions 2 (SSE2)</code></pre>
 <pre class="r"><code># 1000 Genomes, Phase 1, chromosome 22
 (gds.fn &lt;- seqExampleFileName(&quot;KG_Phase1&quot;))</code></pre>
-<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rinstac3857302c1e/SeqArray/extdata/1KG_phase1_release_v3_chr22.gds&quot;</code></pre>
+<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rinst47e66f2d70c1/SeqArray/extdata/1KG_phase1_release_v3_chr22.gds&quot;</code></pre>
 <pre class="r"><code># open a GDS file
 genofile &lt;- seqOpen(gds.fn)
 
 # display the contents of the GDS file in a hierarchical structure
 genofile</code></pre>
 <pre><code>## Object of class &quot;SeqVarGDSClass&quot;
-## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpAQl2JS/Rinstac3857302c1e/SeqArray/extdata/1KG_phase1_release_v3_chr22.gds
+## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEUUleq/Rinst47e66f2d70c1/SeqArray/extdata/1KG_phase1_release_v3_chr22.gds (1.4 MB)
 ## +    [  ] *
 ## |--+ description   [  ] *
-## |--+ sample.id   { VStr8 1092 ZIP_RA(26.22%) }
-## |--+ variant.id   { Int32 19773 ZIP_RA(34.66%) }
-## |--+ position   { Int32 19773 ZIP_RA(80.81%) }
-## |--+ chromosome   { VStr8 19773 ZIP_RA(0.17%) }
-## |--+ allele   { VStr8 19773 ZIP_RA(25.61%) }
+## |--+ sample.id   { VStr8 1092 ZIP_RA(26.22%), 2.3 KB }
+## |--+ variant.id   { Int32 19773 ZIP_RA(34.66%), 27.4 KB }
+## |--+ position   { Int32 19773 ZIP_RA(80.81%), 63.9 KB }
+## |--+ chromosome   { VStr8 19773 ZIP_RA(0.17%), 101 bytes }
+## |--+ allele   { VStr8 19773 ZIP_RA(25.61%), 126.3 KB }
 ## |--+ genotype   [  ] *
-## |  |--+ data   { Bit2 2x1092x19773 ZIP_RA(9.94%) }
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
+## |  |--+ data   { Bit2 2x1092x19773 ZIP_RA(9.94%), 1.1 MB }
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Int16 0 ZIP_RA, 17 bytes }
 ## |--+ phase   [  ]
-## |  |--+ data   { Bit1 1092x19773 ZIP_RA(0.10%) }
-## |  |--+ extra.index   { Int32 3x0 ZIP_RA } *
-## |  |--+ extra   { Bit1 0 ZIP_RA }
+## |  |--+ data   { Bit1 1092x19773 ZIP_RA(0.10%), 2.7 KB }
+## |  |--+ extra.index   { Int32 3x0 ZIP_RA, 17 bytes } *
+## |  |--+ extra   { Bit1 0 ZIP_RA, 17 bytes }
 ## |--+ annotation   [  ]
-## |  |--+ id   { VStr8 19773 ZIP_RA(39.24%) }
-## |  |--+ qual   { Float32 19773 ZIP_RA(3.80%) }
-## |  |--+ filter   { Int32,factor 19773 ZIP_RA(0.15%) } *
+## |  |--+ id   { VStr8 19773 ZIP_RA(39.24%), 85.7 KB }
+## |  |--+ qual   { Float32 19773 ZIP_RA(3.80%), 3.0 KB }
+## |  |--+ filter   { Int32,factor 19773 ZIP_RA(0.15%), 120 bytes } *
 ## |  |--+ info   [  ]
 ## |  |--+ format   [  ]
 ## |--+ sample.annotation   [  ]
-## |  |--+ Sample   { VStr8 1092 ZIP_RA(26.22%) }
-## |  |--+ Family.ID   { VStr8 1092 ZIP_RA(25.78%) }
-## |  |--+ Population   { VStr8 1092 ZIP_RA(3.53%) }
-## |  |--+ Population.Description   { VStr8 1092 ZIP_RA(1.53%) }
-## |  |--+ Gender   { VStr8 1092 ZIP_RA(4.40%) }
-## |  |--+ Relationship   { VStr8 1092 ZIP_RA(5.25%) }
-## |  |--+ Unexpected.Parent.Child   { VStr8 1092 ZIP_RA(11.31%) }
-## |  |--+ Non.Paternity   { VStr8 1092 ZIP_RA(6.12%) }
-## |  |--+ Siblings   { VStr8 1092 ZIP_RA(13.87%) }
-## |  |--+ Grandparents   { VStr8 1092 ZIP_RA(4.55%) }
-## |  |--+ Avuncular   { VStr8 1092 ZIP_RA(12.66%) }
-## |  |--+ Half.Siblings   { VStr8 1092 ZIP_RA(4.94%) }
-## |  |--+ Unknown.Second.Order   { VStr8 1092 ZIP_RA(15.87%) }
-## |  |--+ Third.Order   { VStr8 1092 ZIP_RA(9.45%) }
-## |  |--+ Other.Comments   { VStr8 1092 ZIP_RA(3.30%) }</code></pre>
+## |  |--+ Sample   { VStr8 1092 ZIP_RA(26.22%), 2.3 KB }
+## |  |--+ Family.ID   { VStr8 1092 ZIP_RA(25.78%), 1.9 KB }
+## |  |--+ Population   { VStr8 1092 ZIP_RA(3.53%), 154 bytes }
+## |  |--+ Population.Description   { VStr8 1092 ZIP_RA(1.53%), 497 bytes }
+## |  |--+ Gender   { VStr8 1092 ZIP_RA(4.40%), 290 bytes }
+## |  |--+ Relationship   { VStr8 1092 ZIP_RA(5.25%), 264 bytes }
+## |  |--+ Unexpected.Parent.Child   { VStr8 1092 ZIP_RA(11.31%), 144 bytes }
+## |  |--+ Non.Paternity   { VStr8 1092 ZIP_RA(6.12%), 69 bytes }
+## |  |--+ Siblings   { VStr8 1092 ZIP_RA(13.87%), 193 bytes }
+## |  |--+ Grandparents   { VStr8 1092 ZIP_RA(4.55%), 51 bytes }
+## |  |--+ Avuncular   { VStr8 1092 ZIP_RA(12.66%), 183 bytes }
+## |  |--+ Half.Siblings   { VStr8 1092 ZIP_RA(4.94%), 55 bytes }
+## |  |--+ Unknown.Second.Order   { VStr8 1092 ZIP_RA(15.87%), 223 bytes }
+## |  |--+ Third.Order   { VStr8 1092 ZIP_RA(9.45%), 117 bytes }
+## |  |--+ Other.Comments   { VStr8 1092 ZIP_RA(3.30%), 36 bytes }</code></pre>
 <div id="ld-based-snp-pruning" class="section level2">
 <h2>LD-based SNP pruning</h2>
 <p>It is suggested to use a pruned set of SNPs which are in approximate linkage equilibrium with each other to avoid the strong influence of SNP clusters in principal component analysis and relatedness analysis.</p>
@@ -1366,16 +1421,16 @@ pca &lt;- snpgdsPCA(genofile, snp.id=snpset.id, num.thread=2)</code></pre>
 ## Working space: 1092 samples, 7447 SNPs
 ##  Using 2 (CPU) cores
 ## PCA: the sum of all working genotypes (0, 1 and 2) = 15598846
-## PCA: Tue Jun 30 14:54:47 2015    0%
-## PCA: Tue Jun 30 14:54:48 2015    100%
-## PCA: Tue Jun 30 14:54:48 2015    Begin (eigenvalues and eigenvectors)
-## PCA: Tue Jun 30 14:54:49 2015    End (eigenvalues and eigenvectors)</code></pre>
+## PCA: Tue Sep  1 22:24:36 2015    0%
+## PCA: Tue Sep  1 22:24:37 2015    100%
+## PCA: Tue Sep  1 22:24:37 2015    Begin (eigenvalues and eigenvectors)
+## PCA: Tue Sep  1 22:24:37 2015    End (eigenvalues and eigenvectors)</code></pre>
 <pre class="r"><code># variance proportion (%)
 pc.percent &lt;- pca$varprop*100
 head(round(pc.percent, 2))</code></pre>
 <pre><code>## [1] 1.22 0.84 0.29 0.28 0.27 0.26</code></pre>
 <p>Population information are available:</p>
-<pre class="r"><code>pop.code &lt;- factor(read.gdsn(index.gdsn(genofile, &quot;sample.annotation/Population&quot;)))
+<pre class="r"><code>pop.code &lt;- factor(seqGetData(genofile, &quot;sample.annotation/Population&quot;))
 head(pop.code)</code></pre>
 <pre><code>## [1] GBR GBR GBR GBR GBR GBR
 ## Levels: ASW CEU CHB CHS CLM FIN GBR IBS JPT LWK MXL PUR TSI YRI</code></pre>
@@ -1431,8 +1486,8 @@ ibs.hc &lt;- snpgdsHCluster(snpgdsIBS(genofile, num.thread=2))</code></pre>
 ## Working space: 1092 samples, 19651 SNPs
 ##  Using 2 (CPU) cores
 ## IBS: the sum of all working genotypes (0, 1 and 2) = 39869601
-## IBS: Tue Jun 30 14:54:49 2015    0%
-## IBS: Tue Jun 30 14:54:52 2015    100%</code></pre>
+## IBS: Tue Sep  1 22:24:38 2015    0%
+## IBS: Tue Sep  1 22:24:41 2015    100%</code></pre>
 <p>Here is the population information we have known:</p>
 <pre class="r"><code># Determine groups of individuals by population information
 rv &lt;- snpgdsCutTree(ibs.hc, samp.group=as.factor(colors[pop.code]))</code></pre>
@@ -1457,9 +1512,9 @@ seqClose(genofile)</code></pre>
 <div id="session-information" class="section level1">
 <h1>Session Information</h1>
 <pre class="r"><code>sessionInfo()</code></pre>
-<pre><code>## R version 3.2.1 (2015-06-18)
+<pre><code>## R version 3.2.2 (2015-08-14)
 ## Platform: x86_64-apple-darwin13.4.0 (64-bit)
-## Running under: OS X 10.10.3 (Yosemite)
+## Running under: OS X 10.10.5 (Yosemite)
 ## 
 ## locale:
 ## [1] C/en_US.UTF-8/en_US.UTF-8/C/en_US.UTF-8/en_US.UTF-8
@@ -1469,28 +1524,29 @@ seqClose(genofile)</code></pre>
 ## [8] base     
 ## 
 ## other attached packages:
-## [1] SNPRelate_1.3.5 Rcpp_0.11.6     SeqArray_1.9.6  gdsfmt_1.5.4   
+## [1] SNPRelate_1.3.9 Rcpp_0.12.0     SeqArray_1.9.13 gdsfmt_1.5.12  
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] AnnotationDbi_1.30.1     knitr_1.10.5            
 ##  [3] XVector_0.8.0            magrittr_1.5            
 ##  [5] GenomicAlignments_1.4.1  GenomicRanges_1.20.5    
 ##  [7] BiocGenerics_0.14.0      zlibbioc_1.14.0         
-##  [9] IRanges_2.2.5            BiocParallel_1.2.6      
-## [11] BSgenome_1.36.1          stringr_1.0.0           
-## [13] GenomeInfoDb_1.4.1       tools_3.2.1             
+##  [9] IRanges_2.2.5            BiocParallel_1.2.14     
+## [11] BSgenome_1.36.3          stringr_1.0.0           
+## [13] GenomeInfoDb_1.4.1       tools_3.2.2             
 ## [15] Biobase_2.28.0           DBI_0.3.1               
 ## [17] lambda.r_1.1.7           futile.logger_1.4.1     
 ## [19] htmltools_0.2.6          yaml_2.1.13             
-## [21] digest_0.6.8             rtracklayer_1.28.5      
-## [23] formatR_1.2              futile.options_1.0.0    
-## [25] S4Vectors_0.6.1          bitops_1.0-6            
-## [27] biomaRt_2.24.0           RCurl_1.95-4.6          
-## [29] evaluate_0.7             RSQLite_1.0.0           
-## [31] rmarkdown_0.7            stringi_0.5-2           
-## [33] GenomicFeatures_1.20.1   Biostrings_2.36.1       
-## [35] Rsamtools_1.20.4         XML_3.98-1.2            
-## [37] stats4_3.2.1             VariantAnnotation_1.14.4</code></pre>
+## [21] digest_0.6.8             crayon_1.3.1            
+## [23] rtracklayer_1.28.6       formatR_1.2             
+## [25] futile.options_1.0.0     S4Vectors_0.6.2         
+## [27] bitops_1.0-6             biomaRt_2.24.0          
+## [29] RCurl_1.95-4.7           memoise_0.2.1           
+## [31] evaluate_0.7             RSQLite_1.0.0           
+## [33] rmarkdown_0.7            stringi_0.5-5           
+## [35] GenomicFeatures_1.20.1   Biostrings_2.36.1       
+## [37] Rsamtools_1.20.4         XML_3.98-1.3            
+## [39] stats4_3.2.2             VariantAnnotation_1.14.6</code></pre>
 </div>
 <div id="references" class="section level1">
 <h1>References</h1>

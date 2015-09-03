@@ -1,23 +1,24 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reformat VCF files</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Reformat VCF Files</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqVCF2GDS {SeqArray}"><tr><td>seqVCF2GDS {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Reformat VCF files</h2>
+<h2>Reformat VCF Files</h2>
 
 <h3>Description</h3>
 
-<p>Reformat Variant Call Format (VCF) files.
+<p>Reformats Variant Call Format (VCF) files.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqVCF2GDS(vcf.fn, out.fn, header = NULL, genotype.var.name = "GT",
-    compress.option = seqCompress.Option(), info.import=NULL, fmt.import=NULL,
+seqVCF2GDS(vcf.fn, out.fn, header=NULL, genotype.var.name="GT",
+    genotype.storage=c("bit2", "bit4", "bit8"),
+    compress.option=seqCompress.Option(), info.import=NULL, fmt.import=NULL,
     ignore.chr.prefix="chr", raise.error=TRUE, verbose=TRUE)
 </pre>
 
@@ -42,6 +43,12 @@ seqVCF2GDS(vcf.fn, out.fn, header = NULL, genotype.var.name = "GT",
 <td>
 <p>the ID for genotypic data in the FORMAT column;
 &quot;GT&quot; by default, VCFv4.0</p>
+</td></tr>
+<tr valign="top"><td><code>genotype.storage</code></td>
+<td>
+<p>&quot;bit2&quot; by default; with respect to the compression
+size and access speed, &quot;bit2&quot; is the most efficient when most of
+variants are biallelic.</p>
 </td></tr>
 <tr valign="top"><td><code>compress.option</code></td>
 <td>
@@ -124,9 +131,8 @@ Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
 <h3>Examples</h3>
 
 <pre>
-# the file name of VCF
+# the VCF file
 vcf.fn &lt;- seqExampleFileName("vcf")
-# or vcf.fn &lt;- "C:/YourFolder/Your_VCF_File.vcf"
 
 # convert
 seqVCF2GDS(vcf.fn, "tmp.gds")
@@ -153,7 +159,11 @@ seqVCF2GDS(vcf.fn, "tmp.gds",
 # display
 (f &lt;- seqOpen("tmp.gds"))
 seqClose(f)
+
+
+# delete the temporary file
+unlink("tmp.gds")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.7 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

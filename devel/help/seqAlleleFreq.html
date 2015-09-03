@@ -1,22 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Allele frequencies</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Allele Frequencies</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqAlleleFreq {SeqArray}"><tr><td>seqAlleleFreq {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Allele frequencies</h2>
+<h2>Get Allele Frequencies</h2>
 
 <h3>Description</h3>
 
-<p>Calculate the allele frequencies.
+<p>Calculates the allele frequencies.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqAlleleFreq(gdsfile, ref.allele=0L, parallel=FALSE)
+seqAlleleFreq(gdsfile, ref.allele=0L,
+    parallel=getOption("seqarray.parallel", FALSE))
 </pre>
 
 
@@ -69,9 +70,8 @@ specifies each allele per site. If <code>ref.allele</code> is a character vector
 <h3>Examples</h3>
 
 <pre>
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
 f &lt;- seqOpen(gds.fn)
@@ -89,5 +89,5 @@ summary(seqAlleleFreq(f, AA))
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.7 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

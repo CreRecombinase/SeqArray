@@ -19,7 +19,8 @@ margins of arrays or matrices.
 <pre>
 seqApply(gdsfile, var.name, FUN, margin = c("by.variant", "by.sample"),
     as.is = c("none", "list", "integer", "double", "character",
-    "logical", "raw"), var.index = c("none", "relative", "absolute"), ...)
+    "logical", "raw"), var.index = c("none", "relative", "absolute"),
+    .useraw=FALSE, ...)
 </pre>
 
 
@@ -56,6 +57,10 @@ where <code>index</code> is an index of variant starting from 1 if
 <code>margin = "by.variant"</code>: <code>"relative"</code> for indexing in the
 selection defined by <code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code>"absolute"</code>
 for indexing with respect to all data</p>
+</td></tr>
+<tr valign="top"><td><code>.useraw</code></td>
+<td>
+<p>use RAW for genotypes</p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
@@ -98,9 +103,8 @@ the high-speed memory instead of disk.
 <h3>Examples</h3>
 
 <pre>
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
 (f &lt;- seqOpen(gds.fn))
@@ -117,6 +121,14 @@ head(variant.id &lt;- seqGetData(f, "variant.id"))
 set.seed(100)
 seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10)],
     variant.id=sample(variant.id, 10))
+
+# read
+seqApply(f, "genotype", FUN=print, margin="by.variant")
+seqApply(f, "genotype", FUN=print, margin="by.variant", .useraw=TRUE)
+
+seqApply(f, "genotype", FUN=print, margin="by.sample")
+seqApply(f, "genotype", FUN=print, margin="by.sample", .useraw=TRUE)
+
 
 # read multiple variables variant by variant
 seqApply(f, c(geno="genotype", phase="phase", qual="annotation/id",
@@ -176,5 +188,5 @@ seqApply(f, c(sample.id="sample.id", genotype="genotype"), FUN=print,
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.7 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

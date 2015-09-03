@@ -1,22 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Chromosome selection</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Chromosome Selection</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqSetFilterChrom {SeqArray}"><tr><td>seqSetFilterChrom {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Chromosome selection</h2>
+<h2>Chromosome Selection</h2>
 
 <h3>Description</h3>
 
-<p>Select the variants according to the specified chromosome(s).
+<p>Selects the variants according to the specified chromosome(s).
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqSetFilterChrom(gdsfile, include=NULL, is.num=NA)
+seqSetFilterChrom(gdsfile, include=NULL, is.num=NA, from.bp=NaN, to.bp=NaN)
 </pre>
 
 
@@ -35,6 +35,14 @@ seqSetFilterChrom(gdsfile, include=NULL, is.num=NA)
 <td>
 <p>a logical variable: <code>TRUE</code>, chromosome code is numeric;
 <code>FALSE</code>, chromosome is not numeric</p>
+</td></tr>
+<tr valign="top"><td><code>from.bp</code></td>
+<td>
+<p>numeric, the lower bound of position</p>
+</td></tr>
+<tr valign="top"><td><code>to.bp</code></td>
+<td>
+<p>numeric, the upper bound of position</p>
 </td></tr>
 </table>
 
@@ -59,9 +67,8 @@ seqSetFilterChrom(gdsfile, include=NULL, is.num=NA)
 <h3>Examples</h3>
 
 <pre>
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 f &lt;- seqOpen(gds.fn)
 seqSummary(f)
@@ -77,10 +84,14 @@ seqSetFilterChrom(f, 1:4)
 seqSummary(f, "genotype", check="none")
 table(seqGetData(f, "chromosome"))
 
+# HLA region
+seqSetFilterChrom(f, 6, from.bp=29719561, to.bp=32883508)
+seqSummary(f, "genotype", check="none")
+
 
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.7 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

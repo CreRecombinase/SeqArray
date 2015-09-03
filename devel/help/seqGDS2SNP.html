@@ -1,23 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert to a SNP GDS file</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert to a SNP GDS File</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqGDS2SNP {SeqArray}"><tr><td>seqGDS2SNP {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Convert to a SNP GDS file</h2>
+<h2>Convert to a SNP GDS File</h2>
 
 <h3>Description</h3>
 
-<p>Convert a sequencing GDS file to a SNP GDS file.
+<p>Converts a sequence GDS file to a SNP GDS file.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqGDS2SNP(gdsfile, out.gdsfn, compress.annotation="ZIP_RA.max",
-    compress.geno="ZIP_RA.max", verbose=TRUE)
+seqGDS2SNP(gdsfile, out.gdsfn, compress.geno="ZIP_RA.max",
+    compress.annotation="ZIP_RA.max", verbose=TRUE)
 </pre>
 
 
@@ -33,16 +33,16 @@ a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
 <td>
 <p>the file name, output a file of VCF format</p>
 </td></tr>
+<tr valign="top"><td><code>compress.geno</code></td>
+<td>
+<p>the compression method for &quot;genotype&quot;; optional
+values are defined in the function <code>add.gdsn</code></p>
+</td></tr>
 <tr valign="top"><td><code>compress.annotation</code></td>
 <td>
 <p>the compression method for the GDS variables,
 except &quot;genotype&quot;; optional values are defined in the function
 <code>add.gdsn</code></p>
-</td></tr>
-<tr valign="top"><td><code>compress.geno</code></td>
-<td>
-<p>the compression method for &quot;genotype&quot;; optional
-values are defined in the function <code>add.gdsn</code></p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -78,11 +78,11 @@ the conversion.
 <h3>Examples</h3>
 
 <pre>
-# the file of GDS
+# the GDS file
 gds.fn &lt;- seqExampleFileName("gds")
 
 seqGDS2SNP(gds.fn, "test.gds")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.7 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

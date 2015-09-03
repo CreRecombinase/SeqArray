@@ -63,7 +63,7 @@ in SeqArray, and most of data analyses could be done using these 6 functions:
 </tr>
 <tr>
  <td style="text-align: left;">
-    seqSummary </td><td style="text-align: left;"> Gets the summary of a sequencing GDS file (# of samples,
+    seqSummary </td><td style="text-align: left;"> Gets the summary of a sequence GDS file (# of samples,
         # of variants, INFO/FORMAT variables, etc) </td>
 </tr>
 <tr>
@@ -73,7 +73,7 @@ in SeqArray, and most of data analyses could be done using these 6 functions:
 </tr>
 <tr>
  <td style="text-align: left;">
-    seqGetData </td><td style="text-align: left;"> Gets data from a sequencing GDS file (from a subset
+    seqGetData </td><td style="text-align: left;"> Gets data from a sequence GDS file (from a subset
         of data) </td>
 </tr>
 <tr>
@@ -142,9 +142,8 @@ unlink("tmp.gds")
 
 ############################################################
 
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
 (f &lt;- seqOpen(gds.fn))
@@ -238,5 +237,5 @@ stopCluster(cl)
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.7 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

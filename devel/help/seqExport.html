@@ -1,0 +1,108 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Export to a GDS File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqExport {SeqArray}"><tr><td>seqExport {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Export to a GDS File</h2>
+
+<h3>Description</h3>
+
+<p>Exports to a GDS file with selected samples and variants, which are defined
+by <code>seqSetFilter()</code>.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqExport(gdsfile, out.fn, info.var=NULL, fmt.var=NULL, samp.var=NULL,
+    verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>out.fn</code></td>
+<td>
+<p>the file name of output GDS file</p>
+</td></tr>
+<tr valign="top"><td><code>info.var</code></td>
+<td>
+<p>characters, the variable name(s) in the INFO field
+for import; or <code>NULL</code> for all variables</p>
+</td></tr>
+<tr valign="top"><td><code>fmt.var</code></td>
+<td>
+<p>characters, the variable name(s) in the FORMAT field
+for import; or <code>NULL</code> for all variables</p>
+</td></tr>
+<tr valign="top"><td><code>samp.var</code></td>
+<td>
+<p>characters, the variable name(s) in the folder
+<code>"sample.annotation"</code></p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if TRUE, show information</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Return the file name of GDS format with an absolute path.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# open the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
+(f &lt;- seqOpen(gds.fn))
+
+# get 'sample.id'
+head(samp.id &lt;- seqGetData(f, "sample.id"))
+
+# get 'variant.id'
+head(variant.id &lt;- seqGetData(f, "variant.id"))
+
+set.seed(100)
+# set sample and variant filters
+seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10,12,14,16)])
+seqSetFilter(f, variant.id=sample(variant.id, 100))
+
+
+# export
+seqExport(f, "tmp.gds")
+
+(f1 &lt;- seqOpen("tmp.gds")); seqClose(f1)
+
+
+# close
+seqClose(f)
+
+# delete the temporary file
+unlink("tmp.gds")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+</body></html>

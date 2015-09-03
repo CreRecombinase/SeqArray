@@ -9,14 +9,14 @@
 
 <h3>Description</h3>
 
-<p>Return the numbers of alleles for each site.
+<p>Returns the numbers of alleles for each site.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqNumAllele(gdsfile, parallel=FALSE)
+seqNumAllele(gdsfile, parallel=getOption("seqarray.parallel", FALSE))
 </pre>
 
 
@@ -58,9 +58,8 @@ for more details.</p>
 <h3>Examples</h3>
 
 <pre>
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
 f &lt;- seqOpen(gds.fn)
@@ -71,5 +70,5 @@ table(seqNumAllele(f))
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.7 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
 </body></html>

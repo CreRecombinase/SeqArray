@@ -9,15 +9,16 @@
 
 <h3>Description</h3>
 
-<p>Apply a user-defined function in parallel
+<p>Applies a user-defined function in parallel.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqParallel(cl, gdsfile, FUN = function(gdsfile, ...) NULL,
-	split=c("by.variant", "by.sample", "none"), .combine=NULL, ...)
+seqParallel(cl=getOption("seqarray.parallel", FALSE), gdsfile, FUN,
+    split=c("by.variant", "by.sample", "none"), .combine="unlist",
+    .selection.flag=FALSE, ...)
 </pre>
 
 
@@ -26,8 +27,12 @@ seqParallel(cl, gdsfile, FUN = function(gdsfile, ...) NULL,
 <table summary="R argblock">
 <tr valign="top"><td><code>cl</code></td>
 <td>
-<p>NULL or a cluster object, created by the package <a href="../../parallel/html/parallel.html">parallel</a>
-or <a href="http://CRAN.R-project.org/package=snow">snow</a></p>
+<p><code>NULL</code> or <code>FALSE</code>: serial processing; <code>TRUE</code>:
+parallel processing with the maximum number of cores minor one;
+a numeric value: the number of cores to be used;
+a cluster object for parallel processing, created by the functions
+in the package <code><a href="../../lattice/html/splom.html">parallel</a></code>, like <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code>.
+See details</p>
 </td></tr>
 <tr valign="top"><td><code>gdsfile</code></td>
 <td>
@@ -35,7 +40,8 @@ or <a href="http://CRAN.R-project.org/package=snow">snow</a></p>
 </td></tr>
 <tr valign="top"><td><code>FUN</code></td>
 <td>
-<p>the function to be applied</p>
+<p>the function to be applied, should be like
+<code>FUN(gdsfile, ...)</code></p>
 </td></tr>
 <tr valign="top"><td><code>split</code></td>
 <td>
@@ -44,8 +50,16 @@ processes, or &quot;none&quot; for no split</p>
 </td></tr>
 <tr valign="top"><td><code>.combine</code></td>
 <td>
-<p>define a fucntion for combining results from different processes;
-by default, <code>'c'</code> is used; if <code>.combine==""</code>, return <code>invisible()</code></p>
+<p>define a fucntion for combining results from different
+processes; by default, <code>"unlist"</code> is used, to produce a vector
+which contains all the atomic components; <code>"list"</code>, return a list
+of results created by processes; <code>"none"</code>, no return; or a
+function, like &quot;+&quot;.</p>
+</td></tr>
+<tr valign="top"><td><code>.selection.flag</code></td>
+<td>
+<p><code>TRUE</code> &ndash; passes a logical vector of selection
+to the second argument of <code>FUN(gdsfile, selection, ...)</code></p>
 </td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
@@ -56,10 +70,15 @@ by default, <code>'c'</code> is used; if <code>.combine==""</code>, return <code
 
 <h3>Details</h3>
 
-<p>If <code>cl = NULL</code> or <code>length(cl) == 0</code>, the function simply calls
-<code>FUN(gdsfile, ...)</code>; otherwise, it splits jobs to different processes and calls
-<code>FUN(gdsfile, ...)</code> on each process, the optional arguments are passed to different
-processes.
+<p>When <code>cl</code> is <code>TRUE</code> or a numeric value, forking techniques are
+used to create a new child process as a copy of the current R process, see
+<code>?parallel::mcfork</code>. However, forking is not available on Windows, so
+serial processing is used instead. In order to use multiple processes on
+Windows, users have to create a cluster object via <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code>.
+</p>
+<p>It is strongly suggested to use <code>seqParallel</code> together with
+<code>seqParallelSetup</code>. <code>seqParallelSetup</code> could work around the problem
+of forking on Windows.
 </p>
 
 
@@ -76,9 +95,8 @@ processes.
 
 <h3>See Also</h3>
 
-<p><code><a href="seqSetFilter.html">seqSetFilter</a></code>,
-<code><a href="seqGetData.html">seqGetData</a></code>
-<code><a href="seqApply.html">seqApply</a></code>
+<p><code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code><a href="seqGetData.html">seqGetData</a></code>,
+<code><a href="seqApply.html">seqApply</a></code>, <code><a href="seqParallelSetup.html">seqParallelSetup</a></code>
 </p>
 
 
@@ -87,32 +105,31 @@ processes.
 <pre>
 library(parallel)
 
-# Use option cl.core to choose an appropriate cluster size or number of cores
-cl &lt;- makeCluster(getOption("cl.cores", 2))
+# choose an appropriate cluster size or number of cores
+seqParallelSetup(2)
 
 
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
-(f &lt;- seqOpen(gds.fn))
+(gdsfile &lt;- seqOpen(gds.fn))
 
 # the uniprocessor version
-afreq1 &lt;- seqParallel(NULL, f, FUN = function(gdsfile) {
-		seqApply(gdsfile, "genotype", as.is="double",
-			FUN=function(x) mean(x==0, na.rm=TRUE))
-	}, split = "by.variant")
+afreq1 &lt;- seqParallel(, gdsfile, FUN = function(f) {
+        seqApply(f, "genotype", as.is="double",
+            FUN=function(x) mean(x==0, na.rm=TRUE))
+    }, split = "by.variant")
 
 length(afreq1)
 summary(afreq1)
 
 
 # run in parallel
-afreq2 &lt;- seqParallel(cl, f, FUN = function(gdsfile) {
-		seqApply(gdsfile, "genotype", as.is="double",
-			FUN=function(x) mean(x==0, na.rm=TRUE))
-	}, split = "by.variant")
+afreq2 &lt;- seqParallel(, gdsfile, FUN = function(f) {
+        seqApply(f, "genotype", as.is="double",
+            FUN=function(x) mean(x==0, na.rm=TRUE))
+    }, split = "by.variant")
 
 length(afreq2)
 summary(afreq2)
@@ -125,20 +142,21 @@ all(afreq1 == afreq2)
 ################################################################
 # check -- variant splits
 
-seqParallel(cl, f, FUN = function(gdsfile) {
-		v &lt;- seqGetFilter(gdsfile)
-		sum(v$variant.sel)
-	}, split = "by.variant")
+seqParallel(, gdsfile, FUN = function(f) {
+        v &lt;- seqGetFilter(f)
+        sum(v$variant.sel)
+    }, split = "by.variant")
 # [1] 674 674
 
 
 ################################################################
 
-stopCluster(cl)
-
 # close the GDS file
-seqClose(f)
+seqClose(gdsfile)
+
+
+seqParallelSetup(FALSE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

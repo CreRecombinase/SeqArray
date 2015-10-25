@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get the summary of a GDS file</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Summarize the Sequence GDS File</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqSummary {SeqArray}"><tr><td>seqSummary {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Get the summary of a GDS file</h2>
+<h2>Summarize the Sequence GDS File</h2>
 
 <h3>Description</h3>
 
-<p>Get the summary of a sequencing GDS file
+<p>Gets the summary of sequence GDS file.
 </p>
 
 
@@ -17,7 +17,7 @@
 
 <pre>
 seqSummary(gdsfile, varname=NULL, check=c("check", "full.check", "none"),
-	verbose=TRUE)
+    verbose=TRUE)
 </pre>
 
 
@@ -63,7 +63,7 @@ are in a valid range or not, etc.
 <td>
 <p>the file name</p>
 </td></tr>
-<tr valign="top"><td><code>sequence.variant.format</code></td>
+<tr valign="top"><td><code>format.version</code></td>
 <td>
 <p>the sequencing format in GDS</p>
 </td></tr>
@@ -84,6 +84,11 @@ are in a valid range or not, etc.
 <td>
 <p>the description of the FORMAT field: <code>var.name</code>,
 <code>number</code>, <code>type</code> and <code>description</code></p>
+</td></tr>
+<tr valign="top"><td><code>sample.annot</code></td>
+<td>
+<p>the description of the sample annotation:
+<code>var.name</code></p>
 </td></tr>
 </table>
 <p>If <code>varname = "genotype" or "phase"</code>, then return a list:
@@ -116,16 +121,15 @@ seldim[2] &ndash; the number of selected variants</p>
 <h3>Examples</h3>
 
 <pre>
+# the GDS file
 (gds.fn &lt;- seqExampleFileName("gds"))
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
 
 seqSummary(gds.fn)
 
 seqSummary(gds.fn, "genotype")
 
 
-######################################################
-# display
+# open a GDS file
 f &lt;- seqOpen(gds.fn)
 
 # get 'sample.id
@@ -144,5 +148,5 @@ seqSummary(f, "genotype")
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

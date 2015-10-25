@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Convert to a SNP GDS File</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqGDS2SNP {SeqArray}"><tr><td>seqGDS2SNP {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Convert to a SNP GDS File</h2>
+
+<h3>Description</h3>
+
+<p>Converts a sequence GDS file to a SNP GDS file.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqGDS2SNP(gdsfile, out.gdsfn, compress.geno="ZIP_RA",
+    compress.annotation="ZIP_RA", optimize=TRUE, verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>character (GDS file name), or
+a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>out.gdsfn</code></td>
+<td>
+<p>the file name, output a file of VCF format</p>
+</td></tr>
+<tr valign="top"><td><code>compress.geno</code></td>
+<td>
+<p>the compression method for &quot;genotype&quot;; optional
+values are defined in the function <code>add.gdsn</code></p>
+</td></tr>
+<tr valign="top"><td><code>compress.annotation</code></td>
+<td>
+<p>the compression method for the GDS variables,
+except &quot;genotype&quot;; optional values are defined in the function
+<code>add.gdsn</code></p>
+</td></tr>
+<tr valign="top"><td><code>optimize</code></td>
+<td>
+<p>if <code>TRUE</code>, optimize the access efficiency by calling
+<code><a href="../../gdsfmt/html/cleanup.gds.html">cleanup.gds</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if <code>TRUE</code>, show information</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p><code><a href="seqSetFilter.html">seqSetFilter</a></code> can be used to define a subset of data for
+the conversion.
+</p>
+
+
+<h3>Value</h3>
+
+<p>Return the file name of VCF file with an absolute path.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqSNP2GDS.html">seqSNP2GDS</a></code>, <code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>,
+<code><a href="seqGDS2VCF.html">seqGDS2VCF</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the GDS file
+gds.fn &lt;- seqExampleFileName("gds")
+
+seqGDS2SNP(gds.fn, "tmp.gds")
+
+
+# delete the temporary file
+unlink("tmp.gds")
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

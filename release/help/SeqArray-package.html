@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Big Data Management of Genome-wide Sequencing Variants</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Big Data Management of Genome-wide Sequence Variants</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for SeqArray-package {SeqArray}"><tr><td>SeqArray-package {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Big Data Management of Genome-wide Sequencing Variants</h2>
+<h2>Big Data Management of Genome-wide Sequence Variants</h2>
 
 <h3>Description</h3>
 
-<p>Big-Data Management of Genome-Wide Sequencing Variants
+<p>Big-data management of genome-wide sequence variants.
 </p>
 
 
@@ -30,11 +30,11 @@ storing DNA polymorphism data such as SNPs, insertions, deletions and
 structural variants, together with rich annotations. However, this format is
 less efficient for large-scale analyses since numeric data have to be parsed
 from a text VCF file before further analyses. The computational burden
-associated with sequencing variants is especially evident with large sample
+associated with sequence variants is especially evident with large sample
 and variant sizes, and it requires efficient numerical implementation and
 data management.
 </p>
-<p>Here I introduce a high-performance C/C++ computing library CoreArray
+<p>Here I introduce a high-performance C++ computing library CoreArray
 (<a href="http://corearray.sourceforge.net">http://corearray.sourceforge.net</a>) for big-data management of genome-wide
 variants. CoreArray was designed for developing portable and scalable storage
 technologies for bioinformatics data, allowing parallel computing at the
@@ -45,44 +45,43 @@ to store multiple extensible data variables in the GDS format, and all datasets
 are stored in a single file with chunked storage layout. Here, I focus on the
 application of CoreArray for statisticians working in the R environment, and
 developed an R/Bioconductor package SeqArray to address or reduce the
-computational burden associated with data management of sequencing variants.
-The kernels of SeqArray are written in C/C++ and highly optimized. Genotypic
+computational burden associated with data management of sequence variants.
+The kernels of SeqArray are written in C++ and highly optimized. Genotypic
 data and annotations are stored in an array-oriented manner, offering efficient
-access of genetic variants using the R language. There are five key functions
+data access using the R language. There are five key functions
 in SeqArray, and most of data analyses could be done using these 6 functions:
 </p>
 
 <table summary="Rd table">
 <tr>
  <td style="text-align: left;">
-	<b>Function</b> </td><td style="text-align: left;"> <b>Description</b> </td>
+    <b>Function</b> </td><td style="text-align: left;"> <b>Description</b> </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-	seqVCF2GDS </td><td style="text-align: left;"> Imports VCF files </td>
+    seqVCF2GDS </td><td style="text-align: left;"> Imports VCF files </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-	seqSummary </td><td style="text-align: left;"> Gets the summary of a sequencing GDS file (# of samples,
-		# of variants, INFO/FORMAT variables, etc) </td>
+    seqSummary </td><td style="text-align: left;"> Gets the summary (# of samples, # of variants,
+        INFO/FORMAT variables, etc) </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-	seqSetFilter </td><td style="text-align: left;"> Sets a filter to sample or variant (define a subset
-		of data) </td>
+    seqSetFilter </td><td style="text-align: left;"> Sets a filter to sample or variant (define a subset
+        of data) </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-	seqGetData </td><td style="text-align: left;"> Gets data from a sequencing GDS file (from a subset
-		of data) </td>
+    seqGetData </td><td style="text-align: left;"> Gets data from a GDS file (from a subset of data) </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-	seqApply </td><td style="text-align: left;"> Applies a user-defined function over array margins </td>
+    seqApply </td><td style="text-align: left;"> Applies a user-defined function over array margins </td>
 </tr>
 <tr>
  <td style="text-align: left;">
-	seqParallel </td><td style="text-align: left;"> Applies functions in parallel </td>
+    seqParallel </td><td style="text-align: left;"> Applies functions in parallel </td>
 </tr>
 <tr>
  <td style="text-align: left;">
@@ -102,11 +101,8 @@ rare variants.
 large-scale genomic sequencing data using R environment, particularly those
 with limited experience of low-level C programming and parallel computing.
 </p>
-<p>Webpage: <a href="http://corearray.sourceforge.net/">http://corearray.sourceforge.net/</a>
-</p>
-<p>Tutorial: <a href="http://corearray.sourceforge.net/tutorials/SeqArray/">http://corearray.sourceforge.net/tutorials/SeqArray/</a>
-</p>
-<p>Forums:	<a href="http://sourceforge.net/projects/corearray/forums">http://sourceforge.net/projects/corearray/forums</a>
+<p>Webpage: <a href="http://github.com/zhengxwen/SeqArray">http://github.com/zhengxwen/SeqArray</a>,
+<a href="http://www.bioconductor.org/packages/SeqArray/">http://www.bioconductor.org/packages/SeqArray/</a>
 </p>
 
 
@@ -143,9 +139,8 @@ unlink("tmp.gds")
 
 ############################################################
 
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
 (f &lt;- seqOpen(gds.fn))
@@ -195,49 +190,29 @@ seqGetData(f, "annotation/format/DP")
 
 # read multiple variables variant by variant
 seqApply(f, c(geno="genotype", phase="phase", qual="annotation/id"),
-	FUN=function(x) print(x), as.is="none")
+    FUN=function(x) print(x), as.is="none")
 
 # get the numbers of alleles per variant
 seqApply(f, "allele",
-	FUN=function(x) length(unlist(strsplit(x,","))), as.is="integer")
+    FUN=function(x) length(unlist(strsplit(x,","))), as.is="integer")
 
 
 ################################################################
 
 # remove the sample and variant filters
-seqSetFilter(f)
+seqResetFilter(f)
 
 # calculate the frequency of reference allele,
 #   a faster version could be obtained by C coding
-af &lt;- seqApply(f, "genotype", FUN=function(x) mean(x==0, na.rm=TRUE), as.is="double")
+af &lt;- seqApply(f, "genotype", FUN=function(x) mean(x==0, na.rm=TRUE),
+    as.is="double")
 length(af)
 summary(af)
-
-
-################################################################
-# run in parallel
-
-library(parallel)
-
-# Use option cl.core to choose an appropriate cluster size or number of cores
-cl &lt;- makeCluster(getOption("cl.cores", 2))
-
-# run in parallel
-afreq &lt;- seqParallel(cl, f, FUN = function(gdsfile) {
-		seqApply(gdsfile, "genotype", as.is="double",
-			FUN=function(x) mean(x==0, na.rm=TRUE))
-	}, split = "by.variant")
-
-length(afreq)
-summary(afreq)
-
-
-stopCluster(cl)
 
 
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

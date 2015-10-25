@@ -9,18 +9,18 @@
 
 <h3>Description</h3>
 
-<p>Returns a vector or list of values obtained by applying a function to margins
-of arrays or matrices
+<p>Returns a vector or list of values obtained by applying a function to
+margins of arrays or matrices.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqApply(gdsfile, var.name, FUN,
-	margin = c("by.variant"),
-	as.is = c("list", "integer", "double", "character", "none"),
-	var.index = c("none", "relative", "absolute"), ...)
+seqApply(gdsfile, var.name, FUN, margin=c("by.variant", "by.sample"),
+    as.is=c("none", "list", "integer", "double", "character", "logical", "raw"),
+    var.index=c("none", "relative", "absolute"),
+    .useraw=FALSE, .list_dup=TRUE, ...)
 </pre>
 
 
@@ -58,6 +58,14 @@ where <code>index</code> is an index of variant starting from 1 if
 selection defined by <code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code>"absolute"</code>
 for indexing with respect to all data</p>
 </td></tr>
+<tr valign="top"><td><code>.useraw</code></td>
+<td>
+<p>use RAW for genotypes</p>
+</td></tr>
+<tr valign="top"><td><code>.list_dup</code></td>
+<td>
+<p>internal use only</p>
+</td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
 <p>optional arguments to <code>FUN</code></p>
@@ -70,10 +78,11 @@ for indexing with respect to all data</p>
 <p>The variable name should be <code>"sample.id"</code>, <code>"variant.id"</code>,
 <code>"position"</code>, <code>"chromosome"</code>, <code>"allele"</code>, <code>"annotation/id"</code>,
 <code>"annotation/qual"</code>, <code>"annotation/filter"</code>,
-<code>"annotation/info/VARIABLE_NAME"</code>, or <code>"annotation/format/VARIABLE_NAME"</code>.
+<code>"annotation/info/VARIABLE_NAME"</code>, or
+<code>"annotation/format/VARIABLE_NAME"</code>.
 </p>
-<p>The algorithm is highly optimized by blocking the computations to exploit the
-high-speed memory instead of disk.
+<p>The algorithm is highly optimized by blocking the computations to exploit
+the high-speed memory instead of disk.
 </p>
 
 
@@ -98,9 +107,8 @@ high-speed memory instead of disk.
 <h3>Examples</h3>
 
 <pre>
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
 (f &lt;- seqOpen(gds.fn))
@@ -116,23 +124,31 @@ head(variant.id &lt;- seqGetData(f, "variant.id"))
 # set sample and variant filters
 set.seed(100)
 seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10)],
-	variant.id=sample(variant.id, 10))
+    variant.id=sample(variant.id, 10))
+
+# read
+seqApply(f, "genotype", FUN=print, margin="by.variant")
+seqApply(f, "genotype", FUN=print, margin="by.variant", .useraw=TRUE)
+
+seqApply(f, "genotype", FUN=print, margin="by.sample")
+seqApply(f, "genotype", FUN=print, margin="by.sample", .useraw=TRUE)
+
 
 # read multiple variables variant by variant
-seqApply(f, c(geno="genotype", phase="phase", qual="annotation/id"),
-	FUN=function(x) print(x), as.is="none")
+seqApply(f, c(geno="genotype", phase="phase", qual="annotation/id",
+    DP="annotation/format/DP"), FUN=print, as.is="none")
 
 # get the numbers of alleles per variant
 seqApply(f, "allele",
-	FUN=function(x) length(unlist(strsplit(x,","))), as.is="integer")
+    FUN=function(x) length(unlist(strsplit(x,","))), as.is="integer")
 
 
 ################################################################
 # with an index of variant
 
 seqApply(f, c(geno="genotype", phase="phase", qual="annotation/id"),
-	FUN=function(index, x) { print(index); print(x); index },
-	as.is="integer", var.index="relative")
+    FUN=function(index, x) { print(index); print(x); index },
+    as.is="integer", var.index="relative")
 # it is as the same as
 which(seqGetFilter(f)$variant.sel)
 
@@ -140,19 +156,41 @@ which(seqGetFilter(f)$variant.sel)
 
 ################################################################
 # reset sample and variant filters
-seqSetFilter(f)
+seqResetFilter(f)
 
 # calculate the frequency of reference allele,
 #   a faster version could be obtained by C coding
 af &lt;- seqApply(f, "genotype", FUN=function(x) mean(x==0, na.rm=TRUE),
-	as.is="double")
+    as.is="double")
 length(af)
 summary(af)
+
+
+
+################################################################
+# apply the user-defined function sample by sample
+
+# reset sample and variant filters
+seqResetFilter(f)
+summary(seqApply(f, "genotype", FUN=function(x) { mean(is.na(x)) },
+    margin="by.sample", as.is="double"))
+
+# set sample and variant filters
+set.seed(100)
+seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10)],
+    variant.id=sample(variant.id, 10))
+
+seqApply(f, "genotype", FUN=print, margin="by.variant", as.is="none")
+
+seqApply(f, "genotype", FUN=print, margin="by.sample", as.is="none")
+
+seqApply(f, c(sample.id="sample.id", genotype="genotype"), FUN=print,
+    margin="by.sample", as.is="none")
 
 
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

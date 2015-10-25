@@ -1,31 +1,35 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set a filter to sample or variant</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Set a Filter to Sample or Variant</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
-<table width="100%" summary="page for seqSetFilter {SeqArray}"><tr><td>seqSetFilter {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for seqSetFilter-methods {SeqArray}"><tr><td>seqSetFilter-methods {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Set a filter to sample or variant</h2>
+<h2>Set a Filter to Sample or Variant</h2>
 
 <h3>Description</h3>
 
-<p>Set a filter to sample and/or variant
+<p>Sets a filter to sample and/or variant.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqSetFilter(gdsfile, sample.id=NULL, variant.id=NULL,
-    samp.sel=NULL, variant.sel=NULL, action=c("set", "push", "push+set", "pop"),
+## S4 method for signature 'SeqVarGDSClass'
+seqSetFilter(object,
+    sample.id=NULL, variant.id=NULL, samp.sel=NULL, variant.sel=NULL,
+    action=c("set", "intersect", "push", "push+set", "push+intersect", "pop"),
     verbose=TRUE)
+
+seqResetFilter(object, sample=TRUE, variant=TRUE, verbose=TRUE)
 </pre>
 
 
 <h3>Arguments</h3>
 
 <table summary="R argblock">
-<tr valign="top"><td><code>gdsfile</code></td>
+<tr valign="top"><td><code>object</code></td>
 <td>
 <p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
 </td></tr>
@@ -39,29 +43,49 @@ seqSetFilter(gdsfile, sample.id=NULL, variant.id=NULL,
 </td></tr>
 <tr valign="top"><td><code>samp.sel</code></td>
 <td>
-<p>a logical vector indicating the selected samples</p>
+<p>a logical/raw vector indicating the selected samples</p>
 </td></tr>
 <tr valign="top"><td><code>variant.sel</code></td>
 <td>
-<p>a logical vector indicating the selected variants</p>
+<p>a logical/raw vector indicating the selected variants</p>
 </td></tr>
 <tr valign="top"><td><code>action</code></td>
 <td>
 <p><code>"set"</code> &ndash; set the current filter via <code>sample.id</code>,
 <code>variant.id</code>, <code>samp.sel</code> or <code>variant.sel</code>;
+<code>"intersect"</code> &ndash; set the current filter to the intersection of
+selected samples and/or variants;
 <code>"push"</code> &ndash; push the current filter to the stack, and it could
 be recovered by <code>"pop"</code> later, no change on the current
 filter;
 <code>"push+set"</code> &ndash; push the current filter to the stack, and changes
 the current filter via <code>sample.id</code>, <code>variant.id</code>,
 <code>samp.sel</code> or <code>variant.sel</code>;
+<code>"push+intersect"</code> &ndash; push the current filter to the stack, and
+set the current filter to the intersection of selected samples
+and/or variants;
 <code>"pop"</code> &ndash; pop up the last filter</p>
+</td></tr>
+<tr valign="top"><td><code>sample</code></td>
+<td>
+<p>logical, if <code>TRUE</code>, include all samples</p>
+</td></tr>
+<tr valign="top"><td><code>variant</code></td>
+<td>
+<p>logical, if <code>TRUE</code>, include all variants</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
-<p>if TRUE, show information</p>
+<p>if <code>TRUE</code>, show information</p>
 </td></tr>
 </table>
+
+
+<h3>Details</h3>
+
+<p><code>seqResetFilter(file)</code> is equivalent to <code>seqSetFilter(file)</code>,
+where the selection arguments in <code>seqSetFilter</code> are <code>NULL</code>.
+</p>
 
 
 <h3>Value</h3>
@@ -77,7 +101,7 @@ the current filter via <code>sample.id</code>, <code>variant.id</code>,
 
 <h3>See Also</h3>
 
-<p><code><a href="seqGetFilter.html">seqGetFilter</a></code>,
+<p><code><a href="seqGetFilter.html">seqGetFilter</a></code>, <code><a href="seqSetFilterChrom.html">seqSetFilterChrom</a></code>,
 <code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
 </p>
 
@@ -85,9 +109,8 @@ the current filter via <code>sample.id</code>, <code>variant.id</code>,
 <h3>Examples</h3>
 
 <pre>
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
 (f &lt;- seqOpen(gds.fn))
@@ -116,9 +139,23 @@ seqSetFilter(f, variant.id=sample(variant.id, 10))
 seqGetData(f, "genotype")
 
 
+
+## set the intersection
+
+seqResetFilter(f)
+seqSetFilterChrom(f, 10L)
+seqSummary(f, "genotype", check="none")
+
+AF &lt;- seqAlleleFreq(f)
+table(AF &lt;= 0.9)
+
+seqSetFilter(f, variant.sel=(AF&lt;=0.9), action="intersect")
+seqSummary(f, "genotype", check="none")
+
+
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

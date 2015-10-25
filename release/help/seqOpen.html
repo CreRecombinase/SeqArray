@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Open a Sequencing GDS File</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Open a Sequence GDS File</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqOpen {SeqArray}"><tr><td>seqOpen {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Open a Sequencing GDS File</h2>
+<h2>Open a Sequence GDS File</h2>
 
 <h3>Description</h3>
 
-<p>Open a Sequencing GDS file
+<p>Opens a sequence GDS file.
 </p>
 
 
@@ -55,15 +55,16 @@ for data integrality.
 
 <h3>See Also</h3>
 
-<p><code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+<p><code><a href="seqClose.html">seqClose</a></code>, <code><a href="seqGetData.html">seqGetData</a></code>,
+<code><a href="seqApply.html">seqApply</a></code>
 </p>
 
 
 <h3>Examples</h3>
 
 <pre>
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # open the GDS file
 gdsfile &lt;- seqOpen(gds.fn)
@@ -75,5 +76,5 @@ gdsfile
 seqClose(gdsfile)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

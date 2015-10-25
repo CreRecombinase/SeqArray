@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Allele Frequencies</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqAlleleFreq {SeqArray}"><tr><td>seqAlleleFreq {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Get Allele Frequencies</h2>
+
+<h3>Description</h3>
+
+<p>Calculates the allele frequencies.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqAlleleFreq(gdsfile, ref.allele=0L,
+    parallel=getOption("seqarray.parallel", FALSE))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>ref.allele</code></td>
+<td>
+<p><code>NULL</code>, a single numeric value, a numeric vector
+or a character vector; see Value</p>
+</td></tr>
+<tr valign="top"><td><code>parallel</code></td>
+<td>
+<p><code>FALSE</code> (serial processing), <code>TRUE</code> (parallel
+processing) or other value; <code>parallel</code> is passed to the argument
+<code>cl</code> in <code><a href="seqParallel.html">seqParallel</a></code>, see <code><a href="seqParallel.html">seqParallel</a></code>
+for more details.</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>If <code>ref.allele=NULL</code>, the function returns a list of allele
+frequencies according to all allele per site. If <code>ref.allele</code> is a single
+numeric value (like <code>0L</code>), it returns a numeric vector for the specified
+alleles (<code>0L</code> for the reference allele, <code>1L</code> for the first alternative
+allele, etc). If <code>ref.allele</code> is a numeric vector, <code>ref.allele</code>
+specifies each allele per site. If <code>ref.allele</code> is a character vector,
+<code>ref.allele</code> specifies the desired allele for each site (e.g.,
+ancestral allele for the derived allele frequency).
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqNumAllele.html">seqNumAllele</a></code>, <code><a href="seqMissing.html">seqMissing</a></code>,
+<code><a href="seqParallel.html">seqParallel</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
+
+# display
+f &lt;- seqOpen(gds.fn)
+
+# return a list
+head(seqAlleleFreq(f, NULL))
+
+# return a numeric vector
+summary(seqAlleleFreq(f, 0L))
+
+# return a numeric vector, AA is ancestral allele
+AA &lt;- toupper(seqGetData(f, "annotation/info/AA")$data)
+summary(seqAlleleFreq(f, AA))
+
+
+# close the GDS file
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

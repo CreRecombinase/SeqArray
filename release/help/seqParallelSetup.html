@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Setup a Parallel Environment</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqParallelSetup {SeqArray}"><tr><td>seqParallelSetup {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Setup a Parallel Environment</h2>
+
+<h3>Description</h3>
+
+<p>Setups a parallel environment in R for the current session.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqParallelSetup(cluster=TRUE, verbose=TRUE)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>cluster</code></td>
+<td>
+<p><code>NULL</code> or <code>FALSE</code>: serial processing; <code>TRUE</code>:
+parallel processing with the maximum number of cores minor one;
+a numeric value: the number of cores to be used;
+a cluster object for parallel processing, created by the functions
+in the package <code><a href="../../lattice/html/splom.html">parallel</a></code>, like <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code>.
+See details</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if <code>TRUE</code>, show information</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>When <code>cl</code> is <code>TRUE</code> or a numeric value, forking techniques are
+used to create a new child process as a copy of the current R process, see
+<code>?parallel::mcfork</code>. However, forking is not available on Windows, so
+multiple processes created by <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code> are used instead.
+The R environment option <code>seqarray.parallel</code> will be set according
+to the value of <code>cluster</code>.
+Using <code>seqParallelSetup(FALSE)</code> removes the registered cluster, as
+does stopping the registered cluster.
+</p>
+
+
+<h3>Value</h3>
+
+<p>None.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqParallel.html">seqParallel</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(parallel)
+
+seqParallelSetup(2L)
+
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
+
+# display
+(f &lt;- seqOpen(gds.fn))
+
+# run in parallel
+summary(seqMissing(f))
+
+# close the GDS file
+seqClose(f)
+
+seqParallelSetup(FALSE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

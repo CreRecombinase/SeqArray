@@ -1,15 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Data from a Sequencing GDS file</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Data</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqGetData {SeqArray}"><tr><td>seqGetData {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Get Data from a Sequencing GDS file</h2>
+<h2>Get Data</h2>
 
 <h3>Description</h3>
 
-<p>Get data from a sequencing GDS file
+<p>Gets data from a sequence GDS file.
 </p>
 
 
@@ -37,9 +37,14 @@ seqGetData(gdsfile, var.name)
 <h3>Details</h3>
 
 <p>The variable name should be <code>"sample.id"</code>, <code>"variant.id"</code>,
-<code>"position"</code>, <code>"chromosome"</code>, <code>"allele"</code>, <code>"annotation/id"</code>,
-<code>"annotation/qual"</code>, <code>"annotation/filter"</code>,
-<code>"annotation/info/VARIABLE_NAME"</code>, or <code>"annotation/format/VARIABLE_NAME"</code>.
+<code>"position"</code>, <code>"chromosome"</code>, <code>"allele"</code>, <code>"genotype"</code>,
+<code>"annotation/id"</code>, <code>"annotation/qual"</code>, <code>"annotation/filter"</code>,
+<code>"annotation/info/VARIABLE_NAME"</code>, or
+<code>"annotation/format/VARIABLE_NAME"</code>.
+</p>
+<p><code>"@genotype"</code>, <code>"annotation/info/@VARIABLE_NAME"</code> or
+<code>"annotation/format/@VARIABLE_NAME"</code> are used to obtain the index
+associated with these variables.
 </p>
 
 
@@ -63,9 +68,8 @@ seqGetData(gdsfile, var.name)
 <h3>Examples</h3>
 
 <pre>
-# the file of GDS
-gds.fn &lt;- seqExampleFileName("gds")
-# or gds.fn &lt;- "C:/YourFolder/Your_GDS_File.gds"
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
 (f &lt;- seqOpen(gds.fn))
@@ -116,5 +120,5 @@ seqGetData(f, "annotation/format/DP")
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.8.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

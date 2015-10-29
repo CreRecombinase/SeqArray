@@ -43,11 +43,13 @@ seqResetFilter(object, sample=TRUE, variant=TRUE, verbose=TRUE)
 </td></tr>
 <tr valign="top"><td><code>samp.sel</code></td>
 <td>
-<p>a logical/raw vector indicating the selected samples</p>
+<p>a logical/raw/index vector indicating the selected
+samples</p>
 </td></tr>
 <tr valign="top"><td><code>variant.sel</code></td>
 <td>
-<p>a logical/raw vector indicating the selected variants</p>
+<p>a logical/raw/index vector indicating the selected
+variants</p>
 </td></tr>
 <tr valign="top"><td><code>action</code></td>
 <td>
@@ -131,9 +133,19 @@ head(seqGetData(f, "allele"))
 
 
 # set sample and variant filters
-seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10)])
+seqSetFilter(f, sample.id=samp.id[c(2,4,6,8)])
 set.seed(100)
-seqSetFilter(f, variant.id=sample(variant.id, 10))
+seqSetFilter(f, variant.id=sample(variant.id, 5))
+
+# get genotypic data
+seqGetData(f, "genotype")
+
+
+## OR
+# set sample and variant filters
+seqSetFilter(f, samp.sel=c(2,4,6,8))
+set.seed(100)
+seqSetFilter(f, variant.sel=sample.int(length(variant.id), 5))
 
 # get genotypic data
 seqGetData(f, "genotype")
@@ -157,5 +169,5 @@ seqSummary(f, "genotype", check="none")
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
 </body></html>

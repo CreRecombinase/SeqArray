@@ -20,7 +20,7 @@ seqVCF2GDS(vcf.fn, out.fn, header=NULL, genotype.var.name="GT",
     genotype.storage=c("bit2", "bit4", "bit8"),
     storage.option=seqStorage.Option(),
     info.import=NULL, fmt.import=NULL, ignore.chr.prefix="chr",
-    optimize=TRUE, raise.error=TRUE, verbose=TRUE)
+    reference=NULL, optimize=TRUE, raise.error=TRUE, verbose=TRUE)
 </pre>
 
 
@@ -72,6 +72,10 @@ for import; or <code>NULL</code> for all variables</p>
 chromosome which should be ignored, like &quot;chr&quot;; it is not
 case-sensitive</p>
 </td></tr>
+<tr valign="top"><td><code>reference</code></td>
+<td>
+<p>genome reference, like &quot;hg19&quot;, &quot;GRCh37&quot;</p>
+</td></tr>
 <tr valign="top"><td><code>optimize</code></td>
 <td>
 <p>if <code>TRUE</code>, optimize the access efficiency by calling
@@ -92,7 +96,7 @@ case-sensitive</p>
 <h3>Details</h3>
 
 <p>GDS &ndash; Genomic Data Structures used for storing genetic array-oriented
-data, and the file format used in the <a href="../../gdsfmt/html/gdsfmt-package.html">gdsfmt</a> package.
+data, and the file format defined in the <a href="../../gdsfmt/html/gdsfmt-package.html">gdsfmt</a> package.
 </p>
 <p>VCF &ndash; The Variant Call Format (VCF), which is a generic format for
 storing DNA polymorphism data such as SNPs, insertions, deletions and
@@ -111,6 +115,8 @@ adopted by setting
 <p>By default, the compression method is &quot;ZIP_RA&quot; (zlib algorithm with default
 compression level + multiple independent data blocks). Users can maximize the
 compression ratio by <code>storage.option=seqStorage.Option("ZIP_RA.max")</code>.
+LZ4 (an extremely fast compression algorithm) is an option via
+<code>storage.option=seqStorage.Option("LZ4_RA")</code>.
 </p>
 
 
@@ -132,6 +138,8 @@ Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA,
 Handsaker RE, Lunter G, Marth GT, Sherry ST, McVean G, Durbin R;
 1000 Genomes Project Analysis Group.
 Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
+</p>
+<p><a href="http://cyan4973.github.io/lz4/">http://cyan4973.github.io/lz4/</a>
 </p>
 
 
@@ -179,5 +187,5 @@ seqClose(f)
 unlink("tmp.gds")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
 </body></html>

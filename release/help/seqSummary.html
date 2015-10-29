@@ -56,7 +56,7 @@ are in a valid range or not, etc.
 
 <h3>Value</h3>
 
-<p>If <code>varname = NULL</code>, then return a list:
+<p>If <code>varname = NULL</code>, the function returns a list:
 </p>
 <table summary="R valueblock">
 <tr valign="top"><td><code>filename</code></td>
@@ -66,6 +66,15 @@ are in a valid range or not, etc.
 <tr valign="top"><td><code>format.version</code></td>
 <td>
 <p>the sequencing format in GDS</p>
+</td></tr>
+<tr valign="top"><td><code>reference</code></td>
+<td>
+<p>genome reference, a character vector (0-length for
+undefined)</p>
+</td></tr>
+<tr valign="top"><td><code>ploidy</code></td>
+<td>
+<p>the number of sets of chromosomes</p>
 </td></tr>
 <tr valign="top"><td><code>num.of.sample</code></td>
 <td>
@@ -91,20 +100,22 @@ are in a valid range or not, etc.
 <code>var.name</code></p>
 </td></tr>
 </table>
-<p>If <code>varname = "genotype" or "phase"</code>, then return a list:
+<p>If <code>seqSummary(gdsfile, "genotype", check="none", verbose=FALSE)</code>,
+it returns a list with two components:
 </p>
 <table summary="R valueblock">
 <tr valign="top"><td><code>dim</code></td>
 <td>
-<p>dim[1] &ndash; ploidy, dim[2] &ndash; the number of samples,
-dim[3] &ndash; the number of variants</p>
+<p>ploidy, # of samples, # of variants</p>
 </td></tr>
 <tr valign="top"><td><code>seldim</code></td>
 <td>
-<p>seldim[1] &ndash; the number of selected samples,
-seldim[2] &ndash; the number of selected variants</p>
+<p># of selected samples, # of selected variants</p>
 </td></tr>
 </table>
+<p><code>seqSummary(gdsfile, check="none", verbose=FALSE)$reference</code> refers
+to the genome reference if it is defined.
+</p>
 
 
 <h3>Author(s)</h3>
@@ -148,5 +159,5 @@ seqSummary(f, "genotype")
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.1 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
 </body></html>

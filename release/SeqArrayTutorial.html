@@ -160,18 +160,20 @@ library(SeqArray)</code></pre>
 <pre class="r"><code>gds.fn &lt;- seqExampleFileName(&quot;gds&quot;)
 # or gds.fn &lt;- &quot;C:/YourFolder/Your_GDS_File.gds&quot;
 gds.fn</code></pre>
-<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpinrWy6/Rinstb9c55be474b/SeqArray/extdata/CEU_Exon.gds&quot;</code></pre>
+<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEbwzzS/Rinst8d74350e438a/SeqArray/extdata/CEU_Exon.gds&quot;</code></pre>
 <pre class="r"><code>seqSummary(gds.fn)</code></pre>
-<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpinrWy6/Rinstb9c55be474b/SeqArray/extdata/CEU_Exon.gds
+<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEbwzzS/Rinst8d74350e438a/SeqArray/extdata/CEU_Exon.gds
 ## Format Version: v1.0
-## The number of samples: 90
-## The number of variants: 1348
-## The chromosomes:
+## Reference: human_b36_both.fasta
+## Ploidy: 2
+## Number of samples: 90
+## Number of variants: 1348
+## Chromosomes:
 ##    1   10   11   12   13   14   15   16   17   18   19    2   20   21   22 
 ##  142   70   16   62   11   61   46   84  100   54  111   59   59   23   23 
 ##    3    4    5    6    7    8    9 &lt;NA&gt; 
 ##   81   48   61   99   58   51   29    0 
-## The number of alleles per site:
+## Number of alleles per site:
 ##    2    3 
 ## 1346    2 
 ## Annotation, INFO variable(s):
@@ -195,7 +197,7 @@ genofile &lt;- seqOpen(gds.fn)
 # display the contents of the GDS file in a hierarchical structure
 genofile</code></pre>
 <pre><code>## Object of class &quot;SeqVarGDSClass&quot;
-## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpinrWy6/Rinstb9c55be474b/SeqArray/extdata/CEU_Exon.gds (396.7 KB)
+## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEbwzzS/Rinst8d74350e438a/SeqArray/extdata/CEU_Exon.gds (396.3 KB)
 ## +    [  ] *
 ## |--+ description   [  ] *
 ## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%), 222 bytes }
@@ -232,16 +234,14 @@ genofile</code></pre>
 ## |  |  |  |--+ data   { Int32 90x1348 ZIP_RA(33.83%), 164.2 KB }
 ## |  |  |  |--+ ~data   { Int32 1348x90 ZIP_RA(32.23%), 156.4 KB }
 ## |--+ sample.annotation   [  ]
-## |  |--+ family   { VStr8 90 ZIP_RA(35.47%), 144 bytes }</code></pre>
+## |  |--+ family   { VStr8 90 ZIP_RA(34.70%), 135 bytes }</code></pre>
 <p>For those who would like to know how variable-length genotypic data and annotations are stored in an array-oriented manner, <code>print(, all=TRUE)</code> displays all contents including hidden structures:</p>
 <pre class="r"><code># display all contents of the GDS file
 print(genofile, all=TRUE, attribute=TRUE, attribute.trim=FALSE)</code></pre>
-<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpinrWy6/Rinstb9c55be474b/SeqArray/extdata/CEU_Exon.gds (396.7 KB)
+<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEbwzzS/Rinst8d74350e438a/SeqArray/extdata/CEU_Exon.gds (396.3 KB)
 ## +    [  ] *&lt; FileFormat: SEQ_ARRAY; FileVersion: v1.0
 ## |--+ description   [  ] *&lt; vcf.fileformat: VCFv4.0
-## |  |--+ vcf.header   [ data.frame ] *&lt; R.class: data.frame; R.invisible: NULL
-## |  |  |--+ id   { VStr8 1 ZIP_RA(360.00%), 36 bytes }
-## |  |  |--+ value   { VStr8 1 ZIP_RA(223.81%), 47 bytes }
+## |  |--+ reference   { VStr8 1 ZIP_RA(223.81%), 47 bytes } *&lt; R.invisible: NULL
 ## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%), 222 bytes }
 ## |--+ variant.id   { Int32 1348 ZIP_RA(35.72%), 1.9 KB }
 ## |--+ position   { Int32 1348 ZIP_RA(86.44%), 4.7 KB }
@@ -279,7 +279,7 @@ print(genofile, all=TRUE, attribute=TRUE, attribute.trim=FALSE)</code></pre>
 ## |  |  |  |--+ ~data   { Int32 1348x90 ZIP_RA(32.23%), 156.4 KB }
 ## |  |  |  |--+ @data   { Int32 1348 ZIP_RA(0.89%), 48 bytes } *&lt; R.invisible: NULL
 ## |--+ sample.annotation   [  ]
-## |  |--+ family   { VStr8 90 ZIP_RA(35.47%), 144 bytes }</code></pre>
+## |  |--+ family   { VStr8 90 ZIP_RA(34.70%), 135 bytes }</code></pre>
 <pre class="r"><code># close the GDS file
 seqClose(genofile)</code></pre>
 <p>The output lists all variables stored in the GDS file. At the first level, it stores variables <code>sample.id</code>, <code>variant.id</code>, etc. The additional information are displayed in the square brackets indicating data type, size, compressed or not + compression ratio, where <code>Bit2</code> indicates that each byte encodes up to four alleles since one byte consists of eight bits, and <code>VStr8</code> indicates variable-length character. The annotations are stored in the directory <code>annotation</code>, which includes the fields of ID, QUAL, FILTER, INFO and FORMAT corresponding to the original VCF file(s). All of the functions in <a href="http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html">SeqArray</a> require a minimum set of variables in the annotation data:</p>
@@ -343,7 +343,7 @@ seqClose(genofile)</code></pre>
 vcf.fn &lt;- seqExampleFileName(&quot;vcf&quot;)
 # or vcf.fn &lt;- &quot;C:/YourFolder/Your_VCF_File.vcf&quot;
 vcf.fn</code></pre>
-<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpinrWy6/Rinstb9c55be474b/SeqArray/extdata/CEU_Exon.vcf.gz&quot;</code></pre>
+<pre><code>## [1] &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEbwzzS/Rinst8d74350e438a/SeqArray/extdata/CEU_Exon.vcf.gz&quot;</code></pre>
 <pre class="r"><code># parse the header
 seqVCF.Header(vcf.fn)</code></pre>
 <pre><code>## $fileformat
@@ -390,11 +390,14 @@ seqVCF.Header(vcf.fn)</code></pre>
 ## $assembly
 ## NULL
 ## 
-## $header
-##           id                value
-## 15 reference human_b36_both.fasta
+## $reference
+## [1] &quot;human_b36_both.fasta&quot;
 ## 
-## $num.ploidy
+## $header
+## [1] id    value
+## &lt;0 rows&gt; (or 0-length row.names)
+## 
+## $ploidy
 ## [1] 2
 ## 
 ## attr(,&quot;class&quot;)
@@ -402,35 +405,37 @@ seqVCF.Header(vcf.fn)</code></pre>
 <p>The columns <code>Number</code>, <code>Type</code> and <code>Description</code> are defined by the 1000 Genomes Project: <a href="http://www.1000genomes.org/wiki/Analysis/Variant%20Call%20Format/vcf-variant-call-format-version-41">VCF format</a>. Briefly, the Number entry is an Integer that describes the number of values that can be included with the INFO field. For example, if the INFO field contains a single number, then this value should be 1; if the INFO field describes a pair of numbers, then this value should be 2 and so on. If the field has one value per alternate allele then this value should be <code>A</code>; if the field has one value for each possible genotype then this value should be <code>G</code>. If the number of possible values varies, is unknown, or is unbounded, then this value should be <code>.</code>. The <code>Flag</code> type indicates that the INFO field does not contain an entry, and hence the Number should be 0 in this case. Possible Types for FORMAT fields are: Integer, Float, Character, and String (this field is otherwise defined precisely as the INFO field).</p>
 <pre class="r"><code># convert, save in &quot;tmp.gds&quot;
 seqVCF2GDS(vcf.fn, &quot;tmp.gds&quot;)</code></pre>
-<pre><code>## Thu Oct 22 16:30:12 2015</code></pre>
+<pre><code>## Thu Oct 29 02:38:58 2015</code></pre>
 <pre><code>## The Variant Call Format (VCF) header:
 ##  file format: VCFv4.0
 ##  the number of sets of chromosomes (ploidy): 2
 ##  the number of samples: 90
 ##  GDS genotype storage: bit2
-## Parsing &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpinrWy6/Rinstb9c55be474b/SeqArray/extdata/CEU_Exon.vcf.gz&quot; ...
+## Parsing &quot;/private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEbwzzS/Rinst8d74350e438a/SeqArray/extdata/CEU_Exon.vcf.gz&quot; ...
 ## + genotype/data   { Bit2 2x90x1348 ZIP_RA, 17 bytes }
 ## Done.</code></pre>
-<pre><code>## Thu Oct 22 16:30:12 2015</code></pre>
+<pre><code>## Thu Oct 29 02:38:58 2015</code></pre>
 <pre><code>## Optimize the access efficiency ...
 ## Clean up the fragments of GDS file:
-##  open the file &quot;tmp.gds&quot; (size: 233617)
-##  # of fragments in total: 163
+##  open the file &quot;tmp.gds&quot; (size: 233233)
+##  # of fragments in total: 157
 ##  save it to &quot;tmp.gds.tmp&quot;
-##  rename &quot;tmp.gds.tmp&quot; (size: 232477)
-##  # of fragments in total: 68</code></pre>
-<pre><code>## Thu Oct 22 16:30:12 2015</code></pre>
+##  rename &quot;tmp.gds.tmp&quot; (size: 232129)
+##  # of fragments in total: 65</code></pre>
+<pre><code>## Thu Oct 29 02:38:58 2015</code></pre>
 <pre class="r"><code>seqSummary(&quot;tmp.gds&quot;)</code></pre>
-<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpinrWy6/Rbuildb9c3724df45/SeqArray/vignettes/tmp.gds
+<pre><code>## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEbwzzS/Rbuild8d741863a1b8/SeqArray/vignettes/tmp.gds
 ## Format Version: v1.0
-## The number of samples: 90
-## The number of variants: 1348
-## The chromosomes:
+## Reference: human_b36_both.fasta
+## Ploidy: 2
+## Number of samples: 90
+## Number of variants: 1348
+## Chromosomes:
 ##    1   10   11   12   13   14   15   16   17   18   19    2   20   21   22 
 ##  142   70   16   62   11   61   46   84  100   54  111   59   59   23   23 
 ##    3    4    5    6    7    8    9 &lt;NA&gt; 
 ##   81   48   61   99   58   51   29    0 
-## The number of alleles per site:
+## Number of alleles per site:
 ##    2    3 
 ## 1346    2 
 ## Annotation, INFO variable(s):
@@ -460,17 +465,17 @@ genofile &lt;- seqOpen(gds.fn)
 
 # convert
 seqGDS2VCF(genofile, &quot;tmp.vcf.gz&quot;)</code></pre>
-<pre><code>## Thu Oct 22 16:30:12 2015</code></pre>
+<pre><code>## Thu Oct 29 02:38:58 2015</code></pre>
 <pre><code>## Output: tmp.vcf.gz
 ## The INFO field: AA, AC, AN, DP, HM2, HM3, OR, GP, BN
 ## The FORMAT field: DP
 ## Done.</code></pre>
-<pre><code>## Thu Oct 22 16:30:12 2015</code></pre>
+<pre><code>## Thu Oct 29 02:38:59 2015</code></pre>
 <pre class="r"><code># read
 z &lt;- readLines(&quot;tmp.vcf.gz&quot;, n=20)
 for (i in z) cat(substr(i, 1, 76), &quot; ...\n&quot;, sep=&quot;&quot;)</code></pre>
 <pre><code>## ##fileformat=VCFv4.0 ...
-## ##fileDate=20151022 ...
+## ##fileDate=20151029 ...
 ## ##source=SeqArray_Format_v1.0 ...
 ## ##INFO=&lt;ID=AA,Number=.,Type=String,Description=&quot;Ancestral Allele&quot;&gt; ...
 ## ##INFO=&lt;ID=AC,Number=1,Type=Integer,Description=&quot;Total number of alternate a ...
@@ -485,24 +490,24 @@ for (i in z) cat(substr(i, 1, 76), &quot; ...\n&quot;, sep=&quot;&quot;)</code><
 ## ##FILTER=&lt;ID=q10,Description=&quot;Quality below 10&quot;&gt; ...
 ## ##FORMAT=&lt;ID=GT,Number=1,Type=String,Description=&quot;Genotype&quot;&gt; ...
 ## ##FORMAT=&lt;ID=DP,Number=.,Type=Integer,Description=&quot;Read Depth from MOSAIK BA ...
-## ##reference=human_b36_both.fasta ...
 ## #CHROM   POS ID  REF ALT QUAL    FILTER  INFO    FORMAT  NA06984 NA06985 NA06986 NA0698 ...
 ## 1    1105366 rs111751804 T   C   .   PASS    AA=T;AC=4;AN=114;DP=3251;GP=1:1115503;BN=13 ...
-## 1    1105411 rs114390380 G   A   .   PASS    AA=G;AC=1;AN=106;DP=2676;GP=1:1115548;BN=13 ...</code></pre>
+## 1    1105411 rs114390380 G   A   .   PASS    AA=G;AC=1;AN=106;DP=2676;GP=1:1115548;BN=13 ...
+## 1    1110294 rs1320571   G   A   .   PASS    AA=A;AC=6;AN=154;DP=7610;HM2;HM3;GP=1:1120431 ...</code></pre>
 <pre class="r"><code># output BN,GP,AA,HM2 in INFO (the variables are in this order), no FORMAT
 seqGDS2VCF(genofile, &quot;tmp2.vcf.gz&quot;, info.var=c(&quot;BN&quot;,&quot;GP&quot;,&quot;AA&quot;,&quot;HM2&quot;),
     fmt.var=character())</code></pre>
-<pre><code>## Thu Oct 22 16:30:12 2015</code></pre>
+<pre><code>## Thu Oct 29 02:38:59 2015</code></pre>
 <pre><code>## Output: tmp2.vcf.gz
 ## The INFO field: BN, GP, AA, HM2
 ## The FORMAT field: 
 ## Done.</code></pre>
-<pre><code>## Thu Oct 22 16:30:13 2015</code></pre>
+<pre><code>## Thu Oct 29 02:38:59 2015</code></pre>
 <pre class="r"><code># read
 z &lt;- readLines(&quot;tmp2.vcf.gz&quot;, n=15)
 for (i in z) cat(substr(i, 1, 56), &quot; ...\n&quot;, sep=&quot;&quot;)</code></pre>
 <pre><code>## ##fileformat=VCFv4.0 ...
-## ##fileDate=20151022 ...
+## ##fileDate=20151029 ...
 ## ##source=SeqArray_Format_v1.0 ...
 ## ##INFO=&lt;ID=BN,Number=1,Type=Integer,Description=&quot;First d ...
 ## ##INFO=&lt;ID=GP,Number=1,Type=String,Description=&quot;GRCh37 p ...
@@ -511,11 +516,11 @@ for (i in z) cat(substr(i, 1, 56), &quot; ...\n&quot;, sep=&quot;&quot;)</code><
 ## ##FILTER=&lt;ID=PASS,Description=&quot;All filters passed&quot;&gt; ...
 ## ##FILTER=&lt;ID=q10,Description=&quot;Quality below 10&quot;&gt; ...
 ## ##FORMAT=&lt;ID=GT,Number=1,Type=String,Description=&quot;Genoty ...
-## ##reference=human_b36_both.fasta ...
 ## #CHROM   POS ID  REF ALT QUAL    FILTER  INFO    FORMAT  NA06984 NA ...
 ## 1    1105366 rs111751804 T   C   .   PASS    BN=132;GP=1:1115503;AA= ...
 ## 1    1105411 rs114390380 G   A   .   PASS    BN=132;GP=1:1115548;AA= ...
-## 1    1110294 rs1320571   G   A   .   PASS    BN=88;GP=1:1120431;AA=A;H ...</code></pre>
+## 1    1110294 rs1320571   G   A   .   PASS    BN=88;GP=1:1120431;AA=A;H ...
+## 1    3537996 rs2760321   T   C   .   PASS    BN=100;GP=1:3548136;AA=C; ...</code></pre>
 <pre class="r"><code># close the GDS file
 seqClose(genofile)</code></pre>
 <p>Users can use <code>diff</code>, a command line tool in Unix-like systems, to compare files line by line, in order to confirm data consistency.</p>
@@ -548,7 +553,7 @@ genofile &lt;- seqOpen(&quot;tmp.gds&quot;, readonly=FALSE)
 # display the original structure
 genofile</code></pre>
 <pre><code>## Object of class &quot;SeqVarGDSClass&quot;
-## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpinrWy6/Rbuildb9c3724df45/SeqArray/vignettes/tmp.gds (232.5 KB)
+## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEbwzzS/Rbuild8d741863a1b8/SeqArray/vignettes/tmp.gds (232.1 KB)
 ## +    [  ] *
 ## |--+ description   [  ] *
 ## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%), 222 bytes }
@@ -590,7 +595,7 @@ seqDelete(genofile, info.varname=c(&quot;HM2&quot;, &quot;HM3&quot;, &quot;AA&qu
 <pre class="r"><code># display
 genofile</code></pre>
 <pre><code>## Object of class &quot;SeqVarGDSClass&quot;
-## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpinrWy6/Rbuildb9c3724df45/SeqArray/vignettes/tmp.gds (232.5 KB)
+## File: /private/var/folders/72/lxb63fw16ks35bzsk8gfb7b40000gn/T/RtmpEbwzzS/Rbuild8d741863a1b8/SeqArray/vignettes/tmp.gds (232.1 KB)
 ## +    [  ] *
 ## |--+ description   [  ] *
 ## |--+ sample.id   { VStr8 90 ZIP_RA(30.83%), 222 bytes }
@@ -624,11 +629,11 @@ seqClose(genofile)
 # clean up the fragments to reduce the file size
 cleanup.gds(&quot;tmp.gds&quot;)</code></pre>
 <pre><code>## Clean up the fragments of GDS file:
-##  open the file &quot;tmp.gds&quot; (size: 232477)
-##  # of fragments in total: 68
+##  open the file &quot;tmp.gds&quot; (size: 232129)
+##  # of fragments in total: 65
 ##  save it to &quot;tmp.gds.tmp&quot;
-##  rename &quot;tmp.gds.tmp&quot; (size: 51197)
-##  # of fragments in total: 53</code></pre>
+##  rename &quot;tmp.gds.tmp&quot; (size: 50849)
+##  # of fragments in total: 50</code></pre>
 </div>
 </div>
 <div id="data-processing" class="section level1">
@@ -703,7 +708,7 @@ head(seqGetData(genofile, &quot;annotation/info/GP&quot;))</code></pre>
 <pre><code>## [1] &quot;1:1115503&quot; &quot;1:1115548&quot; &quot;1:1120431&quot; &quot;1:3548136&quot; &quot;1:3548832&quot; &quot;1:3551737&quot;</code></pre>
 <pre class="r"><code># get &quot;sample.annotation/family&quot;
 head(seqGetData(genofile, &quot;sample.annotation/family&quot;))</code></pre>
-<pre><code>## [1] &quot;1328&quot;  &quot;0&quot;     &quot;13291&quot; &quot;1328&quot;  &quot;1340&quot;  &quot;1340&quot;</code></pre>
+<pre><code>## [1] &quot;1328&quot;  &quot;&quot;      &quot;13291&quot; &quot;1328&quot;  &quot;1340&quot;  &quot;1340&quot;</code></pre>
 <p>Users can set a filter to samples and/or variants by <code>seqSetFilter()</code>. For example, a subset consisting of three samples and four variants:</p>
 <pre class="r"><code># set sample and variant filters
 seqSetFilter(genofile, sample.id=samp.id[c(2,4,6)])</code></pre>
@@ -1322,7 +1327,7 @@ seqParallelSetup(FALSE)</code></pre>
 <p>Now, <code>RefAlleleFreq</code> is a function in R.</p>
 <pre class="r"><code>RefAlleleFreq</code></pre>
 <pre><code>## function (x) 
-## .Primitive(&quot;.Call&quot;)(&lt;pointer: 0x105ab0a30&gt;, x)</code></pre>
+## .Primitive(&quot;.Call&quot;)(&lt;pointer: 0x10c0b0a30&gt;, x)</code></pre>
 <pre class="r"><code>afreq &lt;- seqApply(genofile, &quot;genotype&quot;, RefAlleleFreq,
     as.is=&quot;double&quot;, margin=&quot;by.variant&quot;)
 
@@ -1356,7 +1361,7 @@ seqClose(genofile)</code></pre>
 ## [8] base     
 ## 
 ## other attached packages:
-## [1] Rcpp_0.12.1      SNPRelate_1.3.11 SeqArray_1.10.1  gdsfmt_1.7.1    
+## [1] Rcpp_0.12.1      SNPRelate_1.3.11 SeqArray_1.10.2  gdsfmt_1.7.1    
 ## 
 ## loaded via a namespace (and not attached):
 ##  [1] AnnotationDbi_1.30.1      knitr_1.11               

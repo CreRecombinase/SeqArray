@@ -9,14 +9,14 @@
 
 <h3>Description</h3>
 
-<p>Gets data from a sequence GDS file.
+<p>Gets data from a SeqArray GDS file.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqGetData(gdsfile, var.name)
+seqGetData(gdsfile, var.name, .useraw=FALSE)
 </pre>
 
 
@@ -30,6 +30,10 @@ seqGetData(gdsfile, var.name)
 <tr valign="top"><td><code>var.name</code></td>
 <td>
 <p>the variable name, see details</p>
+</td></tr>
+<tr valign="top"><td><code>.useraw</code></td>
+<td>
+<p>use RAW instead of INTEGER for genotypes and dosages</p>
 </td></tr>
 </table>
 
@@ -45,6 +49,12 @@ seqGetData(gdsfile, var.name)
 <p><code>"@genotype"</code>, <code>"annotation/info/@VARIABLE_NAME"</code> or
 <code>"annotation/format/@VARIABLE_NAME"</code> are used to obtain the index
 associated with these variables.
+</p>
+<p><code>"$chrom_pos"</code> returns characters with the combination of chromosome and
+position, e.g., &quot;1_1272721&quot;.
+</p>
+<p><code>"$dosage"</code> returns a RAW/INTEGER matrix for the dosages of reference
+allele.
 </p>
 
 
@@ -88,6 +98,13 @@ table(seqGetData(f, "chromosome"))
 head(seqGetData(f, "allele"))
 # "T,C" "G,A" "G,A" ...
 
+# get '$chrom_pos'
+head(seqGetData(f, "$chrom_pos"))
+
+# get '$dosage'
+seqGetData(f, "$dosage")[1:6, 1:10]
+
+
 
 # set sample and variant filters
 seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10)])
@@ -120,5 +137,5 @@ seqGetData(f, "annotation/format/DP")
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -9,14 +9,14 @@
 
 <h3>Description</h3>
 
-<p>Setups a parallel environment in R.
+<p>Setups a parallel environment in R for the current session.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqParallelSetup(cluster=TRUE)
+seqParallelSetup(cluster=TRUE, verbose=TRUE)
 </pre>
 
 
@@ -32,6 +32,10 @@ a cluster object for parallel processing, created by the functions
 in the package <code><a href="../../lattice/html/splom.html">parallel</a></code>, like <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code>.
 See details</p>
 </td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if <code>TRUE</code>, show information</p>
+</td></tr>
 </table>
 
 
@@ -43,6 +47,8 @@ used to create a new child process as a copy of the current R process, see
 multiple processes created by <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code> are used instead.
 The R environment option <code>seqarray.parallel</code> will be set according
 to the value of <code>cluster</code>.
+Using <code>seqParallelSetup(FALSE)</code> removes the registered cluster, as
+does stopping the registered cluster.
 </p>
 
 
@@ -85,5 +91,5 @@ seqClose(f)
 seqParallelSetup(FALSE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

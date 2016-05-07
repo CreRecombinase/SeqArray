@@ -9,7 +9,7 @@
 
 <h3>Description</h3>
 
-<p>Deletes variables in the sequence GDS file.
+<p>Deletes variables in the SeqArray GDS file.
 </p>
 
 
@@ -17,7 +17,7 @@
 
 <pre>
 seqDelete(gdsfile, info.varname=character(), format.varname=character(),
-    verbose=TRUE)
+    samp.varname=character(), verbose=TRUE)
 </pre>
 
 
@@ -37,6 +37,11 @@ seqDelete(gdsfile, info.varname=character(), format.varname=character(),
 <td>
 <p>the variables in the FORMAT field, i.e.,
 &quot;annotation/format/VARIABLE_NAME&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>samp.varname</code></td>
+<td>
+<p>the variables in the sample annotation field, i.e.,
+&quot;sample.annotation/VARIABLE_NAME&quot;</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -58,7 +63,7 @@ seqDelete(gdsfile, info.varname=character(), format.varname=character(),
 
 <h3>See Also</h3>
 
-<p><code><a href="seqOpen.html">seqOpen</a></code>, <code><a href="seqClose-methods.html">seqClose</a></code>
+<p><code><a href="seqOpen.html">seqOpen</a></code>, <code><a href="seqClose.html">seqClose</a></code>
 </p>
 
 
@@ -86,8 +91,8 @@ cleanup.gds("tmp.gds")
 
 
 # remove the temporary file
-unlink("tmp", force=TRUE)
+unlink("tmp.gds", force=TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

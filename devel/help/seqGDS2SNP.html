@@ -9,15 +9,15 @@
 
 <h3>Description</h3>
 
-<p>Converts a sequence GDS file to a SNP GDS file.
+<p>Converts a SeqArray GDS file to a SNP GDS file.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqGDS2SNP(gdsfile, out.gdsfn, compress.geno="ZIP_RA.max",
-    compress.annotation="ZIP_RA.max", verbose=TRUE)
+seqGDS2SNP(gdsfile, out.gdsfn, compress.geno="ZIP_RA",
+    compress.annotation="ZIP_RA", optimize=TRUE, verbose=TRUE)
 </pre>
 
 
@@ -44,9 +44,14 @@ values are defined in the function <code>add.gdsn</code></p>
 except &quot;genotype&quot;; optional values are defined in the function
 <code>add.gdsn</code></p>
 </td></tr>
+<tr valign="top"><td><code>optimize</code></td>
+<td>
+<p>if <code>TRUE</code>, optimize the access efficiency by calling
+<code><a href="../../gdsfmt/html/cleanup.gds.html">cleanup.gds</a></code></p>
+</td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
-<p>if TRUE, show information</p>
+<p>if <code>TRUE</code>, show information</p>
 </td></tr>
 </table>
 
@@ -71,7 +76,8 @@ the conversion.
 
 <h3>See Also</h3>
 
-<p><code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>, <code><a href="seqGDS2VCF.html">seqGDS2VCF</a></code>
+<p><code><a href="seqSNP2GDS.html">seqSNP2GDS</a></code>, <code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>,
+<code><a href="seqGDS2VCF.html">seqGDS2VCF</a></code>
 </p>
 
 
@@ -81,8 +87,12 @@ the conversion.
 # the GDS file
 gds.fn &lt;- seqExampleFileName("gds")
 
-seqGDS2SNP(gds.fn, "test.gds")
+seqGDS2SNP(gds.fn, "tmp.gds")
+
+
+# delete the temporary file
+unlink("tmp.gds")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

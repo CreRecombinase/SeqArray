@@ -9,7 +9,7 @@
 
 <h3>Description</h3>
 
-<p>Converts a sequence GDS file to a VCF file.
+<p>Converts a SeqArray GDS file to a VCF file.
 </p>
 
 
@@ -29,7 +29,8 @@ seqGDS2VCF(gdsfile, vcf.fn, info.var=NULL, fmt.var=NULL, verbose=TRUE)
 </td></tr>
 <tr valign="top"><td><code>vcf.fn</code></td>
 <td>
-<p>the file name, output a file of VCF format</p>
+<p>the file name, output a file of VCF format; it can be a
+<code>connection</code> object, returned from <code><a href="../../base/html/connections.html">file</a>()</code></p>
 </td></tr>
 <tr valign="top"><td><code>info.var</code></td>
 <td>
@@ -45,7 +46,7 @@ in the FORMAT field</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
-<p>if TRUE, show information</p>
+<p>if <code>TRUE</code>, show information</p>
 </td></tr>
 </table>
 
@@ -56,7 +57,7 @@ in the FORMAT field</p>
 the export.
 </p>
 <p>GDS &ndash; Genomic Data Structures used for storing genetic array-oriented
-data, and the file format used in the <a href="../../gdsfmt/html/gdsfmt-package.html">gdsfmt</a> package.
+data, and the file format defined in the <a href="../../gdsfmt/html/gdsfmt-package.html">gdsfmt</a> package.
 </p>
 <p>VCF &ndash; The Variant Call Format (VCF), which is a generic format for
 storing DNA polymorphism data such as SNPs, insertions, deletions and
@@ -79,10 +80,9 @@ structural variants, together with rich annotations.
 
 <p>The variant call format and VCFtools.
 Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA, Handsaker RE,
-Lunter G, Marth GT, Sherry ST, McVean G, Durbin R; 1000 Genomes Project Analysis Group.
+Lunter G, Marth GT, Sherry ST, McVean G, Durbin R;
+1000 Genomes Project Analysis Group.
 Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
-</p>
-<p><a href="http://corearray.sourceforge.net/">http://corearray.sourceforge.net/</a>
 </p>
 
 
@@ -130,7 +130,7 @@ seqGDS2VCF(f, "tmp2.vcf.gz", info.var=c("BN","GP","AA","DP","HM2"), fmt.var=char
 # call "diff" in Unix (a command line tool comparing files line by line)
 
 # using all samples and variants
-seqSetFilter(f)
+seqResetFilter(f)
 
 # convert
 seqGDS2VCF(f, "tmp.vcf.gz")
@@ -153,5 +153,5 @@ unlink(c("tmp.vcf.gz", "tmp1.vcf.gz", "tmp2.vcf.gz"))
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

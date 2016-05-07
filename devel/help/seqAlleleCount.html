@@ -1,22 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Number of alleles</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Allele Counts</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
-<table width="100%" summary="page for seqNumAllele {SeqArray}"><tr><td>seqNumAllele {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for seqAlleleCount {SeqArray}"><tr><td>seqAlleleCount {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Number of alleles</h2>
+<h2>Get Allele Counts</h2>
 
 <h3>Description</h3>
 
-<p>Returns the numbers of alleles for each site.
+<p>Calculates the allele counts.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqNumAllele(gdsfile, parallel=getOption("seqarray.parallel", FALSE))
+seqAlleleCount(gdsfile, parallel=getOption("seqarray.parallel", FALSE))
 </pre>
 
 
@@ -39,7 +39,7 @@ for more details.</p>
 
 <h3>Value</h3>
 
-<p>The numbers of alleles for each site.
+<p>A list.
 </p>
 
 
@@ -50,8 +50,7 @@ for more details.</p>
 
 <h3>See Also</h3>
 
-<p><code><a href="seqAlleleFreq.html">seqAlleleFreq</a></code>, <code><a href="seqMissing.html">seqMissing</a></code>,
-<code><a href="seqParallel.html">seqParallel</a></code>
+<p><code><a href="seqAlleleCount.html">seqAlleleCount</a></code>, <code><a href="seqNumAllele.html">seqNumAllele</a></code>
 </p>
 
 
@@ -64,7 +63,8 @@ for more details.</p>
 # display
 f &lt;- seqOpen(gds.fn)
 
-table(seqNumAllele(f))
+head(seqAlleleCount(f))
+
 
 # close the GDS file
 seqClose(f)

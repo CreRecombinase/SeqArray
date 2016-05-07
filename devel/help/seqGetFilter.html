@@ -16,7 +16,7 @@
 <h3>Usage</h3>
 
 <pre>
-seqGetFilter(gdsfile)
+seqGetFilter(gdsfile, .useraw=FALSE)
 </pre>
 
 
@@ -27,15 +27,12 @@ seqGetFilter(gdsfile)
 <td>
 <p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
 </td></tr>
+<tr valign="top"><td><code>.useraw</code></td>
+<td>
+<p>returns logical vectors if <code>FALSE</code>, and returns
+raw vectors if <code>TRUE</code></p>
+</td></tr>
 </table>
-
-
-<h3>Details</h3>
-
-<p>It is strongly suggested to call <code>seqOpen</code> instead of
-<code><a href="../../gdsfmt/html/openfn.gds.html">openfn.gds</a></code>, since <code>seqOpen</code> will initialize the
-internal data for <code>seqGetData</code>, <code>seqApply</code>, etc.
-</p>
 
 
 <h3>Value</h3>
@@ -45,11 +42,11 @@ internal data for <code>seqGetData</code>, <code>seqApply</code>, etc.
 <table summary="R valueblock">
 <tr valign="top"><td><code>sample.sel</code></td>
 <td>
-<p>a logical vector for selected samples</p>
+<p>a logical/raw vector indicating selected samples</p>
 </td></tr>
 <tr valign="top"><td><code>variant.sel</code></td>
 <td>
-<p>a logical vector for selected variants</p>
+<p>a logical/raw vector indicating selected variants</p>
 </td></tr>
 </table>
 
@@ -61,7 +58,7 @@ internal data for <code>seqGetData</code>, <code>seqApply</code>, etc.
 
 <h3>See Also</h3>
 
-<p><code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+<p><code><a href="seqSetFilter.html">seqSetFilter</a></code>
 </p>
 
 
@@ -96,9 +93,14 @@ sum(z$sample.sel)
 sum(z$variant.sel)
 
 
+z &lt;- seqGetFilter(f, .useraw=TRUE)
+head(z$sample.sel)
+head(z$variant.sel)
+
+
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -16,7 +16,8 @@
 <h3>Usage</h3>
 
 <pre>
-seqSetFilterChrom(gdsfile, include=NULL, is.num=NA, from.bp=NaN, to.bp=NaN)
+seqSetFilterChrom(gdsfile, include=NULL, is.num=NA, from.bp=NULL, to.bp=NULL,
+    verbose=TRUE)
 </pre>
 
 
@@ -34,17 +35,32 @@ seqSetFilterChrom(gdsfile, include=NULL, is.num=NA, from.bp=NaN, to.bp=NaN)
 <tr valign="top"><td><code>is.num</code></td>
 <td>
 <p>a logical variable: <code>TRUE</code>, chromosome code is numeric;
-<code>FALSE</code>, chromosome is not numeric</p>
+<code>FALSE</code>, chromosome is not numeric; <code>is.num=TRUE</code> is usually
+used to exclude non-autosomes</p>
 </td></tr>
 <tr valign="top"><td><code>from.bp</code></td>
 <td>
-<p>numeric, the lower bound of position</p>
+<p>NULL, no limit; numeric, the lower bound of position</p>
 </td></tr>
 <tr valign="top"><td><code>to.bp</code></td>
 <td>
-<p>numeric, the upper bound of position</p>
+<p>NULL, no limit; numeric, the upper bound of position</p>
+</td></tr>
+<tr valign="top"><td><code>verbose</code></td>
+<td>
+<p>if <code>TRUE</code>, show information</p>
 </td></tr>
 </table>
+
+
+<h3>Details</h3>
+
+<p>If <code>from.bp</code> and <code>to.bp</code> has values, they should be equal-size
+as <code>include</code>. A trio of <code>include</code>, <code>from.bp</code> and <code>to.bp</code>
+indicates a region on human genomes. <code>NA</code> in <code>from.bp</code> is treated
+as 0, and <code>NA</code> in <code>to.bp</code> is treated as the maximum of integer
+(2^31 - 1).
+</p>
 
 
 <h3>Value</h3>
@@ -88,10 +104,15 @@ table(seqGetData(f, "chromosome"))
 seqSetFilterChrom(f, 6, from.bp=29719561, to.bp=32883508)
 seqSummary(f, "genotype", check="none")
 
+# two regions
+seqSetFilterChrom(f, c(1, 6), from.bp=c(1000000, 29719561),
+    to.bp=c(90000000, 32883508))
+seqSummary(f, "genotype", check="none")
+seqGetData(f, "chromosome")
 
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

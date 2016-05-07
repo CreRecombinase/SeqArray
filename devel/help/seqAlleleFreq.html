@@ -50,8 +50,9 @@ frequencies according to all allele per site. If <code>ref.allele</code> is a si
 numeric value (like <code>0L</code>), it returns a numeric vector for the specified
 alleles (<code>0L</code> for the reference allele, <code>1L</code> for the first alternative
 allele, etc). If <code>ref.allele</code> is a numeric vector, <code>ref.allele</code>
-specifies each allele per site. If <code>ref.allele</code> is a character vector,\
-<code>ref.allele</code> specifies the desired allele for each site.
+specifies each allele per site. If <code>ref.allele</code> is a character vector,
+<code>ref.allele</code> specifies the desired allele for each site (e.g,
+ancestral allele for the derived allele frequency).
 </p>
 
 
@@ -76,11 +77,13 @@ specifies each allele per site. If <code>ref.allele</code> is a character vector
 # display
 f &lt;- seqOpen(gds.fn)
 
+# return a list
 head(seqAlleleFreq(f, NULL))
 
+# return a numeric vector
 summary(seqAlleleFreq(f, 0L))
 
-
+# return a numeric vector, AA is ancestral allele
 AA &lt;- toupper(seqGetData(f, "annotation/info/AA")$data)
 summary(seqAlleleFreq(f, AA))
 
@@ -89,5 +92,5 @@ summary(seqAlleleFreq(f, AA))
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

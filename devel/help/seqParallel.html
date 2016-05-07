@@ -16,8 +16,11 @@
 <h3>Usage</h3>
 
 <pre>
-seqParallel(cl, gdsfile, FUN, split=c("by.variant", "by.sample", "none"),
-    .combine="unlist", .selection.flag=FALSE, ...)
+seqParallel(cl=getOption("seqarray.parallel", FALSE), gdsfile, FUN,
+    split=c("by.variant", "by.sample", "none"), .combine="unlist",
+    .selection.flag=FALSE, ...)
+seqParApply(cl=getOption("seqarray.parallel", FALSE), x, FUN,
+    load.balancing=TRUE, ...)
 </pre>
 
 
@@ -35,12 +38,12 @@ See details</p>
 </td></tr>
 <tr valign="top"><td><code>gdsfile</code></td>
 <td>
-<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object, or <code>NULL</code></p>
 </td></tr>
 <tr valign="top"><td><code>FUN</code></td>
 <td>
 <p>the function to be applied, should be like
-<code>FUN(gdsfile, ...)</code></p>
+<code>FUN(gdsfile, ...)</code> or <code>FUN(...)</code></p>
 </td></tr>
 <tr valign="top"><td><code>split</code></td>
 <td>
@@ -60,6 +63,15 @@ function, like &quot;+&quot;.</p>
 <p><code>TRUE</code> &ndash; passes a logical vector of selection
 to the second argument of <code>FUN(gdsfile, selection, ...)</code></p>
 </td></tr>
+<tr valign="top"><td><code>x</code></td>
+<td>
+<p>a vector (atomic or list), passed to <code>FUN</code></p>
+</td></tr>
+<tr valign="top"><td><code>load.balancing</code></td>
+<td>
+<p>if <code>TRUE</code>, call <code><a href="../../parallel/html/clusterApply.html">clusterApplyLB</a></code>
+instead of <code><a href="../../parallel/html/clusterApply.html">clusterApply</a></code></p>
+</td></tr>
 <tr valign="top"><td><code>...</code></td>
 <td>
 <p>optional arguments to <code>FUN</code></p>
@@ -71,9 +83,22 @@ to the second argument of <code>FUN(gdsfile, selection, ...)</code></p>
 
 <p>When <code>cl</code> is <code>TRUE</code> or a numeric value, forking techniques are
 used to create a new child process as a copy of the current R process, see
-<code>?parallel::mcfork</code>. However, forking is not available on Windows, so
-serial processing is used instead. In order to use multiple processes on
-Windows, users have to create a cluster object via <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code>.
+<code>?parallel::mcfork</code>. However, forking is not available on Windows, and
+<code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code> is called to make a cluster which will be
+deallocated after calling <code>FUN</code>.
+</p>
+<p>It is strongly suggested to use <code>seqParallel</code> together with
+<code>seqParallelSetup</code>. <code>seqParallelSetup</code> could work around the problem
+of forking on Windows, without allocating clusters frequently.
+</p>
+<p>The user-defined function could use two predefined variables
+<code>.seq_process_count</code> and <code>.seq_process_index</code> to tell the total
+number of cluster nodes and which cluster node being used.
+</p>
+<p><code>seqParallel(, gdsfile=NULL, FUN=..., split="none")</code> might be used to
+setup multiple streams of pseudo-random numbers, and see
+<code><a href="../../parallel/html/RngStream.html">nextRNGStream</a></code> or <code><a href="../../parallel/html/RngStream.html">nextRNGSubStream</a></code> in the package
+<code>parallel</code>.
 </p>
 
 
@@ -91,7 +116,7 @@ Windows, users have to create a cluster object via <code><a href="../../parallel
 <h3>See Also</h3>
 
 <p><code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code><a href="seqGetData.html">seqGetData</a></code>,
-<code><a href="seqApply.html">seqApply</a></code>
+<code><a href="seqApply.html">seqApply</a></code>, <code><a href="seqParallelSetup.html">seqParallelSetup</a></code>
 </p>
 
 
@@ -100,19 +125,19 @@ Windows, users have to create a cluster object via <code><a href="../../parallel
 <pre>
 library(parallel)
 
-# Use option cl.core to choose an appropriate cluster size or number of cores
-cl &lt;- makeCluster(getOption("cl.cores", 2))
+# choose an appropriate cluster size or number of cores
+seqParallelSetup(2)
 
 
 # the GDS file
 (gds.fn &lt;- seqExampleFileName("gds"))
 
 # display
-(f &lt;- seqOpen(gds.fn))
+(gdsfile &lt;- seqOpen(gds.fn))
 
 # the uniprocessor version
-afreq1 &lt;- seqParallel(NULL, f, FUN = function(gdsfile) {
-        seqApply(gdsfile, "genotype", as.is="double",
+afreq1 &lt;- seqParallel(, gdsfile, FUN = function(f) {
+        seqApply(f, "genotype", as.is="double",
             FUN=function(x) mean(x==0, na.rm=TRUE))
     }, split = "by.variant")
 
@@ -121,8 +146,8 @@ summary(afreq1)
 
 
 # run in parallel
-afreq2 &lt;- seqParallel(cl, f, FUN = function(gdsfile) {
-        seqApply(gdsfile, "genotype", as.is="double",
+afreq2 &lt;- seqParallel(, gdsfile, FUN = function(f) {
+        seqApply(f, "genotype", as.is="double",
             FUN=function(x) mean(x==0, na.rm=TRUE))
     }, split = "by.variant")
 
@@ -131,14 +156,14 @@ summary(afreq2)
 
 
 # check
+length(afreq1)  # 1348
 all(afreq1 == afreq2)
-
 
 ################################################################
 # check -- variant splits
 
-seqParallel(cl, f, FUN = function(gdsfile) {
-        v &lt;- seqGetFilter(gdsfile)
+seqParallel(, gdsfile, FUN = function(f) {
+        v &lt;- seqGetFilter(f)
         sum(v$variant.sel)
     }, split = "by.variant")
 # [1] 674 674
@@ -146,11 +171,20 @@ seqParallel(cl, f, FUN = function(gdsfile) {
 
 ################################################################
 
-stopCluster(cl)
+seqParallel(, NULL, FUN = function() {
+        paste(.seq_process_index, .seq_process_count, sep="/")
+    }, split = "none")
+
+
+################################################################
+
 
 # close the GDS file
-seqClose(f)
+seqClose(gdsfile)
+
+
+seqParallelSetup(FALSE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.9.13 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

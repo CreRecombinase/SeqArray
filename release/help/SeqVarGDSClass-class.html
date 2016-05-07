@@ -45,13 +45,43 @@ Returns the alternate alleles as a <code><a href="../../Biostrings/html/XStringS
 </p>
 </dd>
 <dt></dt><dd>
+<p><code>qual(x)</code>:
+Returns the quality scores.
+</p>
+</dd>
+<dt></dt><dd>
 <p><code>filt(x)</code>:
 Returns the filter data.
 </p>
 </dd>
 <dt></dt><dd>
-<p><code>qual(x)</code>:
-Returns the quality scores.
+<p><code>fixed(x)</code>:
+Returns the fixed fields (ref, alt, qual, filt).
+</p>
+</dd>
+<dt></dt><dd>
+<p><code>header(x)</code>:
+Returns the header.
+</p>
+</dd>
+<dt></dt><dd>
+<p><code>rowRanges(x)</code>:
+Returns a <code>GRanges</code> object with metadata.
+</p>
+</dd>
+<dt></dt><dd>
+<p><code>colData(x)</code>:
+Returns a <code>DataFrame</code> with sample identifiers and any information in the 'sample.annotation' node.
+</p>
+</dd>
+<dt></dt><dd>
+<p><code>info(x, info=NULL)</code>:
+Returns the info fields as a <code>DataFrame</code>. <code>info</code> is a character vector with the names of fields to return (default is to return all).
+</p>
+</dd>
+<dt></dt><dd>
+<p><code>geno(x, geno=NULL)</code>:
+Returns the geno (format) fields as a <code>SimpleList</code>. <code>geno</code> is a character vector with the names of fields to return (default is to return all).
 </p>
 </dd>
 </dl>
@@ -84,7 +114,7 @@ returned.  Use <code><a href="seqSetFilter.html">seqSetFilter</a></code> prior t
 
 <h3>Author(s)</h3>
 
-<p>Xiuwen Zheng, Stephanie Gogarten</p>
+<p>Stephanie Gogarten, Xiuwen Zheng</p>
 
 
 <h3>See Also</h3>
@@ -108,14 +138,14 @@ gds
 head(seqGetData(gds, "sample.id"))
 
 ## variants
-granges(gds)
+# granges(gds)
 
 ## alleles as comma-separated character strings
 head(seqGetData(gds, "allele"))
 
 ## alleles as DNAStringSet or DNAStringSetList
 ref(gds)
-alt(gds)
+v &lt;- alt(gds)
 
 ## genotype
 geno &lt;- seqGetData(gds, "genotype")
@@ -141,5 +171,5 @@ depth$data[1:10,1:5]
 seqClose(gds)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

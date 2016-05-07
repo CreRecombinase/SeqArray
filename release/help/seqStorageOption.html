@@ -1,0 +1,125 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Storage and Compression Options</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqStorageOption {SeqArray}"><tr><td>seqStorageOption {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Storage and Compression Options</h2>
+
+<h3>Description</h3>
+
+<p>Storage and compression options for GDS import and merging.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqStorageOption(compression=c("ZIP_RA", "ZIP_RA.fast", "ZIP_RA.max",
+    "LZ4_RA", "LZ4_RA.fast", "LZ4_RA.max", "LZMA_RA", "LZMA_RA.fast",
+    "LZMA_RA.max", "none"), mode=NULL, float.mode="float32",
+    geno.compress=NULL, info.compress=NULL, format.compress=NULL,
+    index.compress=NULL, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>compression</code></td>
+<td>
+<p>the default compression level (&quot;ZIP_RA&quot;), see
+<a href="../../gdsfmt/html/add.gdsn.html">add.gdsn</a> for the description of compression methods</p>
+</td></tr>
+<tr valign="top"><td><code>mode</code></td>
+<td>
+<p>specify storage type for corresponding variable,
+e.g., 'annotation/info/HM'=&quot;int16&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>float.mode</code></td>
+<td>
+<p>specify the storage mode for read numbers, e.g.,
+&quot;float32&quot;, &quot;float64&quot;, &quot;packedreal16&quot;; the additional parameters can
+follow by colon, like &quot;packedreal16:scale=0.0001&quot;</p>
+</td></tr>
+<tr valign="top"><td><code>geno.compress</code></td>
+<td>
+<p>NULL for the default value, or the compression method
+for genotypic data</p>
+</td></tr>
+<tr valign="top"><td><code>info.compress</code></td>
+<td>
+<p>NULL for the default value, or the compression method
+for data sets stored in the INFO field (i.e., &quot;annotation/info&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>format.compress</code></td>
+<td>
+<p>NULL for the default value, or the compression method
+for data sets stored in the FORMAT field (i.e., &quot;annotation/format&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>index.compress</code></td>
+<td>
+<p>NULL for the default value, or the compression method
+for data index variables (e.g., &quot;annotation/info/@HM&quot;)</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>other specified storage compression for corresponding variable,
+e.g., 'annotation/info/HM'=&quot;ZIP_MAX&quot;</p>
+</td></tr>
+</table>
+
+
+<h3>Value</h3>
+
+<p>Return a list with a class name &quot;SeqGDSStorageClass&quot;.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>, <code><a href="seqMerge.html">seqMerge</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+# the file of VCF
+(vcf.fn &lt;- seqExampleFileName("vcf"))
+
+# convert
+seqVCF2GDS(vcf.fn, "tmp1.gds", storage.option=seqStorageOption())
+(f1 &lt;- seqOpen("tmp1.gds"))
+
+# convert (maximize the compression ratio)
+seqVCF2GDS(vcf.fn, "tmp2.gds", storage.option=seqStorageOption("ZIP_RA.max"))
+(f2 &lt;- seqOpen("tmp2.gds"))
+
+# does not compress the genotypic data
+seqVCF2GDS(vcf.fn, "tmp3.gds", storage.option=
+    seqStorageOption("ZIP_RA", geno.compress=""))
+(f3 &lt;- seqOpen("tmp3.gds"))
+
+# compress with LZ4
+seqVCF2GDS(vcf.fn, "tmp4.gds", storage.option=seqStorageOption("LZ4_RA"))
+(f4 &lt;- seqOpen("tmp4.gds"))
+
+
+# close and remove the files
+seqClose(f1)
+seqClose(f2)
+seqClose(f3)
+seqClose(f4)
+
+unlink(c("tmp1.gds", "tmp2.gds", "tmp3.gds", "tmp4.gds"))
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

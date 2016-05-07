@@ -16,11 +16,11 @@
 <h3>Usage</h3>
 
 <pre>
-seqVCF2GDS(vcf.fn, out.fn, header=NULL, genotype.var.name="GT",
-    genotype.storage=c("bit2", "bit4", "bit8"),
-    storage.option=seqStorage.Option(),
-    info.import=NULL, fmt.import=NULL, ignore.chr.prefix="chr",
-    reference=NULL, optimize=TRUE, raise.error=TRUE, verbose=TRUE)
+seqVCF2GDS(vcf.fn, out.fn, header=NULL, storage.option="ZIP_RA",
+    info.import=NULL, fmt.import=NULL, genotype.var.name="GT",
+    ignore.chr.prefix="chr", reference=NULL, start=1L, count=-1L,
+    optimize=TRUE, raise.error=TRUE, digest=TRUE, parallel=FALSE,
+    verbose=TRUE)
 </pre>
 
 
@@ -38,23 +38,14 @@ seqVCF2GDS(vcf.fn, out.fn, header=NULL, genotype.var.name="GT",
 <tr valign="top"><td><code>header</code></td>
 <td>
 <p>if NULL, <code>header</code> is set to be
-<code><a href="seqVCF.Header.html">seqVCF.Header</a>(vcf.fn)</code></p>
-</td></tr>
-<tr valign="top"><td><code>genotype.var.name</code></td>
-<td>
-<p>the ID for genotypic data in the FORMAT column;
-&quot;GT&quot; by default, VCFv4.0</p>
-</td></tr>
-<tr valign="top"><td><code>genotype.storage</code></td>
-<td>
-<p>&quot;bit2&quot; by default; with respect to the compression
-size and access speed, &quot;bit2&quot; is the most efficient when most of
-variants are biallelic.</p>
+<code><a href="seqVCF_Header.html">seqVCF_Header</a>(vcf.fn)</code></p>
 </td></tr>
 <tr valign="top"><td><code>storage.option</code></td>
 <td>
 <p>specify the storage and compression options,
-by default <code><a href="seqStorage.Option.html">seqStorage.Option</a></code>, see details</p>
+by default <code><a href="seqStorageOption.html">seqStorageOption</a>("ZIP_RA")</code>; or
+<code>"LZMA_RA"</code> to use LZMZ compression algorithm with higher
+compression ratio</p>
 </td></tr>
 <tr valign="top"><td><code>info.import</code></td>
 <td>
@@ -66,6 +57,11 @@ for import; or <code>NULL</code> for all variables</p>
 <p>characters, the variable name(s) in the FORMAT field
 for import; or <code>NULL</code> for all variables</p>
 </td></tr>
+<tr valign="top"><td><code>genotype.var.name</code></td>
+<td>
+<p>the ID for genotypic data in the FORMAT column;
+&quot;GT&quot; by default, VCFv4.0</p>
+</td></tr>
 <tr valign="top"><td><code>ignore.chr.prefix</code></td>
 <td>
 <p>a vector of character, indicating the prefix of
@@ -74,7 +70,18 @@ case-sensitive</p>
 </td></tr>
 <tr valign="top"><td><code>reference</code></td>
 <td>
-<p>genome reference, like &quot;hg19&quot;, &quot;GRCh37&quot;</p>
+<p>genome reference, like &quot;hg19&quot;, &quot;GRCh37&quot;; if the genome
+reference is not available in VCF files, users could specify the
+reference here</p>
+</td></tr>
+<tr valign="top"><td><code>start</code></td>
+<td>
+<p>the starting variant if importing part of VCF files</p>
+</td></tr>
+<tr valign="top"><td><code>count</code></td>
+<td>
+<p>the maximum count of variant if importing part of VCF files,
+-1 indicates importing to the end</p>
 </td></tr>
 <tr valign="top"><td><code>optimize</code></td>
 <td>
@@ -85,6 +92,20 @@ case-sensitive</p>
 <td>
 <p><code>TRUE</code>: throw an error if numeric conversion fails;
 <code>FALSE</code>: get missing value if numeric conversion fails</p>
+</td></tr>
+<tr valign="top"><td><code>digest</code></td>
+<td>
+<p>a logical value (TRUE/FALSE) or a character (&quot;md5&quot;, &quot;sha1&quot;,
+&quot;sha256&quot;, &quot;sha384&quot; or &quot;sha512&quot;); add hash codes to the GDS file if TRUE
+or a digest algorithm is specified</p>
+</td></tr>
+<tr valign="top"><td><code>parallel</code></td>
+<td>
+<p><code>FALSE</code> (serial processing), <code>TRUE</code> (parallel
+processing), a numeric value indicating the number of cores, or a
+cluster object for parallel processing; <code>parallel</code> is passed to
+the argument <code>cl</code> in <code><a href="seqParallel.html">seqParallel</a></code>, see
+<code><a href="seqParallel.html">seqParallel</a></code> for more details</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -104,19 +125,26 @@ structural variants, together with rich annotations.
 </p>
 <p>If there are more than one files in <code>vcf.fn</code>, <code>seqVCF2GDS</code> will
 merge all VCF files together if they contain the same samples. It is useful
-to merge genomic variants if VCF data are divided by chromosomes.
+to merge multiple VCF files if data are divided by chromosomes.
 </p>
 <p>The real numbers in the VCF file(s) are stored in 32-bit floating-point
-format by default. Users can set <code>seqStorage.Option(float.mode="float64")</code>
+format by default. Users can set
+<code>storage.option=seqStorageOption(float.mode="float64")</code>
 to switch to 64-bit floating point format. Or packed real numbers can be
 adopted by setting
-<code>seqStorage.Option(float.mode="packedreal16:scale=0.0001")</code>.
+<code>storage.option=seqStorageOption(float.mode="packedreal16:scale=0.0001")</code>.
 </p>
 <p>By default, the compression method is &quot;ZIP_RA&quot; (zlib algorithm with default
-compression level + multiple independent data blocks). Users can maximize the
-compression ratio by <code>storage.option=seqStorage.Option("ZIP_RA.max")</code>.
-LZ4 (an extremely fast compression algorithm) is an option via
-<code>storage.option=seqStorage.Option("LZ4_RA")</code>.
+compression level + independent data blocks). Users can maximize the
+compression ratio by <code>storage.option="ZIP_RA.max"</code> or
+<code>storage.option=seqStorageOption("ZIP_RA.max")</code>.
+LZ4 (<a href="http://cyan4973.github.io/lz4/">http://cyan4973.github.io/lz4/</a>) is an option via
+<code>storage.option="LZ4_RA"</code> or
+<code>storage.option=seqStorageOption("LZ4_RA")</code>.
+LZMA (xz, <a href="http://tukaani.org/xz/">http://tukaani.org/xz/</a>) is another option via
+<code>storage.option="LZMA_RA"</code> or
+<code>storage.option=seqStorageOption("LZMA_RA")</code>, and it is known to have
+higher compression ratio than zlib.
 </p>
 
 
@@ -139,14 +167,12 @@ Handsaker RE, Lunter G, Marth GT, Sherry ST, McVean G, Durbin R;
 1000 Genomes Project Analysis Group.
 Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
 </p>
-<p><a href="http://cyan4973.github.io/lz4/">http://cyan4973.github.io/lz4/</a>
-</p>
 
 
 <h3>See Also</h3>
 
-<p><code><a href="seqVCF.Header.html">seqVCF.Header</a></code>, <code><a href="seqStorage.Option.html">seqStorage.Option</a></code>,
-<code><a href="seqGDS2VCF.html">seqGDS2VCF</a></code>
+<p><code><a href="seqVCF_Header.html">seqVCF_Header</a></code>, <code><a href="seqStorageOption.html">seqStorageOption</a></code>,
+<code><a href="seqMerge.html">seqMerge</a></code>, <code><a href="seqGDS2VCF.html">seqGDS2VCF</a></code>
 </p>
 
 
@@ -156,8 +182,12 @@ Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
 # the VCF file
 vcf.fn &lt;- seqExampleFileName("vcf")
 
-# convert
+# conversion
 seqVCF2GDS(vcf.fn, "tmp.gds")
+
+# conversion in parallel
+seqVCF2GDS(vcf.fn, "tmp_p2.gds", parallel=2L)
+
 
 # display
 (f &lt;- seqOpen("tmp.gds"))
@@ -175,8 +205,7 @@ seqClose(f)
 
 
 # convert without the INFO and FORMAT fields
-seqVCF2GDS(vcf.fn, "tmp.gds",
-    info.import=character(0), fmt.import=character(0))
+seqVCF2GDS(vcf.fn, "tmp.gds", info.import=character(0), fmt.import=character(0))
 
 # display
 (f &lt;- seqOpen("tmp.gds"))
@@ -184,8 +213,8 @@ seqClose(f)
 
 
 # delete the temporary file
-unlink("tmp.gds")
+unlink(c("tmp.gds", "tmp_p2.gds"), force=TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -1,22 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Summarize the Sequence GDS File</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Summarize a SeqArray GDS File</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqSummary {SeqArray}"><tr><td>seqSummary {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Summarize the Sequence GDS File</h2>
+<h2>Summarize a SeqArray GDS File</h2>
 
 <h3>Description</h3>
 
-<p>Gets the summary of sequence GDS file.
+<p>Gets the summary of SeqArray GDS file.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqSummary(gdsfile, varname=NULL, check=c("check", "full.check", "none"),
+seqSummary(gdsfile, varname=NULL, check=c("default", "none", "full"),
     verbose=TRUE)
 </pre>
 
@@ -32,11 +32,11 @@ seqSummary(gdsfile, varname=NULL, check=c("check", "full.check", "none"),
 <td>
 <p>if <code>NULL</code>, check the whole GDS file; or a character
 specifying variable name, and return a description of that variable.
-See details.</p>
+See details</p>
 </td></tr>
 <tr valign="top"><td><code>check</code></td>
 <td>
-<p>should be one of &quot;check&quot;, &quot;full.check&quot;, &quot;none&quot;</p>
+<p>should be one of &quot;default&quot;, &quot;none&quot;, &quot;full&quot;</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -47,25 +47,25 @@ See details.</p>
 
 <h3>Details</h3>
 
-<p>If <code>check = "check"</code>, this function performs regular checking:
-dimensions of variables, etc. If <code>check = "full.check"</code>, it performs
-more checking: unique sample id, unique variant id, whether genotypic data
-are in a valid range or not, etc.
+<p>If <code>check="default"</code>, the function performs regular checking, like
+variable dimensions. If <code>check="full"</code>, it performs more checking, e.g.,
+unique sample id, unique variant id, whether genotypic data are in a valid
+range or not.
 </p>
 
 
 <h3>Value</h3>
 
-<p>If <code>varname = NULL</code>, the function returns a list:
+<p>If <code>varname=NULL</code>, the function returns a list:
 </p>
 <table summary="R valueblock">
 <tr valign="top"><td><code>filename</code></td>
 <td>
 <p>the file name</p>
 </td></tr>
-<tr valign="top"><td><code>format.version</code></td>
+<tr valign="top"><td><code>version</code></td>
 <td>
-<p>the sequencing format in GDS</p>
+<p>the version of SeqArray format</p>
 </td></tr>
 <tr valign="top"><td><code>reference</code></td>
 <td>
@@ -76,45 +76,124 @@ undefined)</p>
 <td>
 <p>the number of sets of chromosomes</p>
 </td></tr>
-<tr valign="top"><td><code>num.of.sample</code></td>
+<tr valign="top"><td><code>num.sample</code></td>
 <td>
-<p>the number of samples</p>
+<p>the total number of samples</p>
 </td></tr>
-<tr valign="top"><td><code>num.of.variant</code></td>
+<tr valign="top"><td><code>num.variant</code></td>
 <td>
-<p>the number of variants</p>
+<p>the total number of variants</p>
+</td></tr>
+<tr valign="top"><td><code>allele</code></td>
+<td>
+<p>allele information, see <code>seqSummary(gdsfile, "allele")</code></p>
+</td></tr>
+<tr valign="top"><td><code>annot_qual</code></td>
+<td>
+<p>the total number of &quot;annotation/qual&quot; if
+<code>check="none"</code>, or a summary object including min, max, median,
+mean</p>
+</td></tr>
+<tr valign="top"><td><code>filter</code></td>
+<td>
+<p>filter information, see
+<code>seqSummary(gdsfile, "annotation/filter")</code></p>
 </td></tr>
 <tr valign="top"><td><code>info</code></td>
 <td>
-<p>the description of the INFO field: <code>var.name</code>,
-<code>number</code>, <code>type</code> and <code>description</code></p>
+<p>a <code>data.frame</code> of INFO field: ID, Number, Type,
+Description, Source and Version</p>
 </td></tr>
 <tr valign="top"><td><code>format</code></td>
 <td>
-<p>the description of the FORMAT field: <code>var.name</code>,
-<code>number</code>, <code>type</code> and <code>description</code></p>
+<p>a <code>data.frame</code> of FORMAT field: ID, Number, Type and
+Description</p>
 </td></tr>
 <tr valign="top"><td><code>sample.annot</code></td>
 <td>
-<p>the description of the sample annotation:
-<code>var.name</code></p>
+<p>a <code>data.frame</code> of sample annotation with ID,
+Type and Description</p>
 </td></tr>
 </table>
-<p>If <code>seqSummary(gdsfile, "genotype", check="none", verbose=FALSE)</code>,
-it returns a list with two components:
+<p>&mdash;
+<code>seqSummary(gdsfile, "genotype", check="none", verbose=FALSE)</code> returns
+a list with components:
 </p>
 <table summary="R valueblock">
 <tr valign="top"><td><code>dim</code></td>
 <td>
-<p>ploidy, # of samples, # of variants</p>
+<p>an integer vector: ploidy, # of samples, # of variants</p>
 </td></tr>
 <tr valign="top"><td><code>seldim</code></td>
 <td>
-<p># of selected samples, # of selected variants</p>
+<p>an integer vector: ploidy, # of selected samples, # of
+selected variants</p>
 </td></tr>
 </table>
-<p><code>seqSummary(gdsfile, check="none", verbose=FALSE)$reference</code> refers
-to the genome reference if it is defined.
+<p>&mdash;
+<code>seqSummary(gdsfile, "allele")</code> returns a data.frame with ID and
+descriptions (<code>check="none"</code>), or a list with components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>a data.frame with ID and Description</p>
+</td></tr>
+<tr valign="top"><td><code>table</code></td>
+<td>
+<p>cross tabulation for the number of alleles per site</p>
+</td></tr>
+</table>
+<p>&mdash;
+<code>seqSummary(gdsfile, "$alt")</code> returns a data.frame with ID and
+Description for describing the alternative alleles.
+</p>
+<p>&mdash;
+<code>seqSummary(gdsfile, "annotation/filter")</code> or
+<code>seqSummary(gdsfile, "$filter")</code> returns a data.frame with ID and
+description (<code>check="none"</code>), or a list with components:
+</p>
+<table summary="R valueblock">
+<tr valign="top"><td><code>value</code></td>
+<td>
+<p>a data.frame with ID and Description</p>
+</td></tr>
+<tr valign="top"><td><code>table</code></td>
+<td>
+<p>cross tabulation for the variable 'filter'</p>
+</td></tr>
+</table>
+<p>&mdash;
+<code>seqSummary(gdsfile, "annotation/info")</code> or
+<code>seqSummary(gdsfile, "$info")</code> returns a <code>data.frame</code> describing
+the variables in the folder &quot;annotation/info&quot; with ID, Number, Type,
+Description, Source and Version.
+</p>
+<p>&mdash;
+<code>seqSummary(gdsfile, "annotation/format")</code> returns a <code>data.frame</code>
+describing the variables in the folder &quot;annotation/format&quot; with ID, Number,
+Type and Description.
+</p>
+<p>&mdash;
+<code>seqSummary(gdsfile, "sample.annotation")</code> returns a <code>data.frame</code>
+describing sample annotation with ID, Type and Description.
+</p>
+<p>&mdash;
+<code>seqSummary(gdsfile, "$reference")</code> returns the genome reference
+if it is defined (a 0-length character vector if undefined).
+</p>
+<p>&mdash;
+<code>seqSummary(gdsfile, "$contig")</code> returns the contig information,
+a <code>data.frame</code> including ID.
+</p>
+<p>&mdash;
+<code>seqSummary(gdsfile, "$format")</code> returns a <code>data.frame</code>
+describing VCF FORMAT header with ID, Number, Type and Description. The first
+row is used for genotypes.
+</p>
+<p>&mdash;
+<code>seqSummary(gdsfile, "$digest")</code> returns a <code>data.frame</code> with
+the full names of GDS variables, digest codes and validation (FALSE/TRUE).
 </p>
 
 
@@ -137,7 +216,23 @@ to the genome reference if it is defined.
 
 seqSummary(gds.fn)
 
+ans &lt;- seqSummary(gds.fn, check="full")
+ans
+
 seqSummary(gds.fn, "genotype")
+seqSummary(gds.fn, "allele")
+seqSummary(gds.fn, "annotation/filter")
+seqSummary(gds.fn, "annotation/info")
+seqSummary(gds.fn, "annotation/format")
+seqSummary(gds.fn, "sample.annotation")
+
+seqSummary(gds.fn, "$reference")
+seqSummary(gds.fn, "$contig")
+seqSummary(gds.fn, "$filter")
+seqSummary(gds.fn, "$alt")
+seqSummary(gds.fn, "$info")
+seqSummary(gds.fn, "$format")
+seqSummary(gds.fn, "$digest")
 
 
 # open a GDS file
@@ -159,5 +254,5 @@ seqSummary(f, "genotype")
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

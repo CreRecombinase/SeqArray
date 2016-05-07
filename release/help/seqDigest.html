@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Hash function digests</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqDigest {SeqArray}"><tr><td>seqDigest {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>Hash function digests</h2>
+
+<h3>Description</h3>
+
+<p>Create hash function digests for all or a subset of data
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqDigest(gdsfile, varname, algo=c("md5"))
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>varname</code></td>
+<td>
+<p>the variable name(s), see details</p>
+</td></tr>
+<tr valign="top"><td><code>algo</code></td>
+<td>
+<p>the digest hash algorithm: &quot;md5&quot;</p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The variable name should be <code>"sample.id"</code>, <code>"variant.id"</code>,
+<code>"position"</code>, <code>"chromosome"</code>, <code>"allele"</code>, <code>"annotation/id"</code>,
+<code>"annotation/qual"</code>, <code>"annotation/filter"</code>,
+<code>"annotation/info/VARIABLE_NAME"</code>, or
+<code>"annotation/format/VARIABLE_NAME"</code>.
+</p>
+<p>Users can define a subset of data via <code><a href="seqSetFilter.html">seqSetFilter</a></code> and
+create a hash digest for the subset only.
+</p>
+
+
+<h3>Value</h3>
+
+<p>A hash character.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+library(SeqArray)
+
+# the GDS file
+(gds.fn &lt;- seqExampleFileName("gds"))
+
+# display
+f &lt;- seqOpen(gds.fn)
+
+seqDigest(f, "genotype")
+seqDigest(f, "annotation/format/DP")
+
+# close the GDS file
+seqClose(f)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
+</body></html>

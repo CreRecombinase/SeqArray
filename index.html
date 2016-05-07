@@ -17,7 +17,7 @@
     <div class="wrapper">
       <header>
         <h1 class="header">SeqArray</h1>
-        <p class="header">Big Data Management of Genome-wide Sequencing Variants</p>
+        <p class="header">Big Data Management of Whole-genome Sequence Variant Calls</p>
 
         <ul>
           <li class="download"><a class="buttons" href="https://github.com/zhengxwen/SeqArray/zipball/master">Download ZIP</a></li>
@@ -31,22 +31,25 @@
       </header>
       <section>
         <h1>
-<a id="seqarray-big-data-management-of-genome-wide-sequencing-variants" class="anchor" href="#seqarray-big-data-management-of-genome-wide-sequencing-variants" aria-hidden="true"><span class="octicon octicon-link"></span></a>SeqArray: Big Data Management of Genome-Wide Sequencing Variants</h1>
+<a id="seqarray-variant" class="anchor" href="#seqarray-variant" aria-hidden="true"><span class="octicon octicon-link"></span></a>SeqArray: Big Data Management of Whole-genome Sequence Variant Calls</h1>
 
-<p><a href="https://travis-ci.org/zhengxwen/SeqArray"><img src="https://travis-ci.org/zhengxwen/SeqArray.png" alt="Build Status"></a></p>
+<p><a href="http://www.gnu.org/copyleft/gpl.html"><img src="http://www.gnu.org/graphics/gplv3-88x31.png"></a>&nbsp;<a href="http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html"><img src="http://www.bioconductor.org/shields/availability/release/SeqArray.svg"></a>&nbsp;<a href="http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html"><img src="http://www.bioconductor.org/shields/years-in-bioc/SeqArray.svg"></a>&nbsp;<a href="https://travis-ci.org/zhengxwen/SeqArray"><img src="https://travis-ci.org/zhengxwen/SeqArray.png" alt="Build Status"></a></p>
+
 
 <h2>
 <a id="features" class="anchor" href="#features" aria-hidden="true"><span class="octicon octicon-link"></span></a>Features</h2>
 
-<p>Big data management of genome-wide sequence variants with thousands of individuals: genotypic data (e.g., SNPs, indels and structural variation calls) and annotations in GDS files are stored in an array-oriented and compressed manner, with efficient data access using the R programming language.</p>
+<p>Big data management of whole-genome sequence variant calls with thousands of individuals: genotypic data (e.g., SNVs, indels and structural variation calls) and annotations in GDS files are stored in an array-oriented and compressed manner, with efficient data access using the R programming language.</p>
+
+<p>The SeqArray package is built on top of Genomic Data Structure (GDS) data format, and defines required data structure for a SeqArray file. GDS is a flexible and portable data container with hierarchical structure to store multiple scalable array-oriented data sets. It is suited for large-scale datasets, especially for data which are much larger than the available random-access memory. It also offers the efficient operations specifically designed for integers of less than 8 bits, since a single genetic/genomic variant, like SNP, usually occupies fewer bits than a byte. Data compression and decompression are available with relatively efficient random access. A high-level R interface to GDS files is available in the package gdsfmt <a href="http://bioconductor.org/packages/gdsfmt">http://bioconductor.org/packages/gdsfmt</a>.</p>
 
 <h2>
 <a id="bioconductor" class="anchor" href="#bioconductor" aria-hidden="true"><span class="octicon octicon-link"></span></a>Bioconductor:</h2>
 
-<p>Release Version: v1.10 <a href="http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html">(http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html)</a></p>
+<p>Release Version: v1.12 <a href="http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html">(http://www.bioconductor.org/packages/release/bioc/html/SeqArray.html)</a></p>
 <p>Release Branch: <a href="release/SeqArrayTutorial.html">Tutorial</a>, <a href="release/help/00Index.html">Help Documents</a></p>
 
-<p>Development Version: v1.11 <a href="http://www.bioconductor.org/packages/devel/bioc/html/SeqArray.html">(http://www.bioconductor.org/packages/devel/bioc/html/SeqArray.html)</a></p>
+<p>Development Version: v1.13 <a href="http://www.bioconductor.org/packages/devel/bioc/html/SeqArray.html">(http://www.bioconductor.org/packages/devel/bioc/html/SeqArray.html)</a></p>
 <p>Develop Branch: <a href="devel/SeqArrayTutorial.html">Tutorial</a>, <a href="devel/help/00Index.html">Help Documents</a></p>
 
 <h2>

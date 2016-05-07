@@ -1,22 +1,22 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Open a Sequence GDS File</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Open a SeqArray GDS File</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqOpen {SeqArray}"><tr><td>seqOpen {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Open a Sequence GDS File</h2>
+<h2>Open a SeqArray GDS File</h2>
 
 <h3>Description</h3>
 
-<p>Opens a sequence GDS file.
+<p>Opens a SeqArray GDS file.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqOpen(gds.fn, readonly=TRUE)
+seqOpen(gds.fn, readonly=TRUE, allow.duplicate=FALSE)
 </pre>
 
 
@@ -30,6 +30,11 @@ seqOpen(gds.fn, readonly=TRUE)
 <tr valign="top"><td><code>readonly</code></td>
 <td>
 <p>whether read-only or not</p>
+</td></tr>
+<tr valign="top"><td><code>allow.duplicate</code></td>
+<td>
+<p>if <code>TRUE</code>, it is allowed to open a GDS file
+with read-only mode when it has been opened in the same R session</p>
 </td></tr>
 </table>
 
@@ -76,5 +81,5 @@ gdsfile
 seqClose(gdsfile)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

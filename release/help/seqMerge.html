@@ -1,22 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Merge Multiple Sequence GDS Files</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Merge Multiple SeqArray GDS Files</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqMerge {SeqArray}"><tr><td>seqMerge {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Merge Multiple Sequence GDS Files</h2>
+<h2>Merge Multiple SeqArray GDS Files</h2>
 
 <h3>Description</h3>
 
-<p>Merges multiple sequence GDS files.
+<p>Merges multiple SeqArray GDS files.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqMerge(gds.fn, out.fn, storage.option=seqStorage.Option(), verbose=TRUE)
+seqMerge(gds.fn, out.fn, storage.option="ZIP_RA", info.var=NULL, fmt.var=NULL,
+    samp.var=NULL, optimize=TRUE, digest=TRUE, verbose=TRUE)
 </pre>
 
 
@@ -34,7 +35,37 @@ seqMerge(gds.fn, out.fn, storage.option=seqStorage.Option(), verbose=TRUE)
 <tr valign="top"><td><code>storage.option</code></td>
 <td>
 <p>specify the storage and compression options,
-by default <code><a href="seqStorage.Option.html">seqStorage.Option</a></code></p>
+by default <code><a href="seqStorageOption.html">seqStorageOption</a>("ZIP_RA")</code>; or
+<code>"LZMA_RA"</code> to use LZMZ compression algorithm with higher
+compression ratio</p>
+</td></tr>
+<tr valign="top"><td><code>info.var</code></td>
+<td>
+<p>characters, the variable name(s) in the INFO field;
+<code>NULL</code> for all variables, or <code>character()</code> excludes all
+INFO variables</p>
+</td></tr>
+<tr valign="top"><td><code>fmt.var</code></td>
+<td>
+<p>characters, the variable name(s) in the FORMAT field;
+<code>NULL</code> for all variables, or <code>character()</code> excludes all
+FORMAT variables</p>
+</td></tr>
+<tr valign="top"><td><code>samp.var</code></td>
+<td>
+<p>characters, the variable name(s) in 'sample.annotation';
+or <code>NULL</code> for all variables</p>
+</td></tr>
+<tr valign="top"><td><code>optimize</code></td>
+<td>
+<p>if <code>TRUE</code>, optimize the access efficiency by calling
+<code><a href="../../gdsfmt/html/cleanup.gds.html">cleanup.gds</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>digest</code></td>
+<td>
+<p>a logical value (TRUE/FALSE) or a character (&quot;md5&quot;, &quot;sha1&quot;,
+&quot;sha256&quot;, &quot;sha384&quot; or &quot;sha512&quot;); add hash codes to the GDS file if TRUE
+or a digest algorithm is specified</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -45,15 +76,15 @@ by default <code><a href="seqStorage.Option.html">seqStorage.Option</a></code></
 
 <h3>Details</h3>
 
-<p>The current implementation of <code>seqMerge</code> extracts and merges the
-genotypic data only without any annotation. Users can specify multiple VCF
-files in <code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code> to export a single GDS file.
+<p>The function merges multiple SeqArray GDS files. Users can specify the
+compression method and level for the new GDS file. If <code>gds.fn</code> contains
+one file, users can change the storage type to create a new file.
 </p>
 
 
 <h3>Value</h3>
 
-<p>None.
+<p>Return the file name of GDS format with an absolute path.
 </p>
 
 
@@ -64,8 +95,64 @@ files in <code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code> to export a singl
 
 <h3>See Also</h3>
 
-<p><code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>
+<p><code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>, <code><a href="seqExport.html">seqExport</a></code>
 </p>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
+
+<h3>Examples</h3>
+
+<pre>
+# the VCF file
+vcf.fn &lt;- seqExampleFileName("vcf")
+
+# the number of variants
+total.count &lt;- seqVCF_Header(vcf.fn, getnum=TRUE)$num.variant
+
+split.cnt &lt;- 5
+start &lt;- integer(split.cnt)
+count &lt;- integer(split.cnt)
+
+s &lt;- (total.count+1) / split.cnt
+st &lt;- 1L
+for (i in 1:split.cnt)
+{
+    z &lt;- round(s * i)
+    start[i] &lt;- st
+    count[i] &lt;- z - st
+    st &lt;- z
+}
+
+fn &lt;- paste0("tmp", 1:split.cnt, ".gds")
+
+# convert to 5 gds files
+for (i in 1:split.cnt)
+    seqVCF2GDS(vcf.fn, fn[i], start=start[i], count=count[i])
+
+# merge
+seqMerge(fn, "tmp.gds")
+seqSummary("tmp.gds")
+
+
+####
+
+vcf.fn &lt;- seqExampleFileName("gds")
+file.copy(vcf.fn, "test.gds", overwrite=TRUE)
+
+# modify 'sample.id'
+f &lt;- openfn.gds("test.gds", FALSE)
+sid &lt;- read.gdsn(index.gdsn(f, "sample.id"))
+add.gdsn(f, "sample.id", paste("S", 1:length(sid)), replace=TRUE)
+closefn.gds(f)
+
+# merging
+seqMerge(c(vcf.fn, "test.gds"), "output.gds")
+
+
+
+# delete the temporary files
+unlink(c("tmp.gds", "test.gds", "output.gds"), force=TRUE)
+unlink(fn, force=TRUE)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

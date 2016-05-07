@@ -16,12 +16,20 @@
 <h3>Usage</h3>
 
 <pre>
-## S4 method for signature 'SeqVarGDSClass'
-seqSetFilter(object,
-    sample.id=NULL, variant.id=NULL, samp.sel=NULL, variant.sel=NULL,
+## S4 method for signature 'SeqVarGDSClass,ANY'
+seqSetFilter(object, variant.sel,
+    sample.sel=NULL, variant.id=NULL, sample.id=NULL, samp.sel=NULL,
     action=c("set", "intersect", "push", "push+set", "push+intersect", "pop"),
     verbose=TRUE)
-
+## S4 method for signature 'SeqVarGDSClass,GRanges'
+seqSetFilter(object, variant.sel,
+    rm.txt="chr", verbose=TRUE)
+## S4 method for signature 'SeqVarGDSClass,GRangesList'
+seqSetFilter(object, variant.sel,
+    rm.txt="chr", verbose=TRUE)
+## S4 method for signature 'SeqVarGDSClass,IRanges'
+seqSetFilter(object, variant.sel,
+    chr, verbose=TRUE)
 seqResetFilter(object, sample=TRUE, variant=TRUE, verbose=TRUE)
 </pre>
 
@@ -33,23 +41,31 @@ seqResetFilter(object, sample=TRUE, variant=TRUE, verbose=TRUE)
 <td>
 <p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
 </td></tr>
-<tr valign="top"><td><code>sample.id</code></td>
+<tr valign="top"><td><code>variant.sel</code></td>
 <td>
-<p>IDs of selected samples</p>
+<p>a logical/raw/index vector indicating the selected
+variants; <code><a href="../../GenomicRanges/html/GRanges-class.html">GRanges</a></code>, a GRanges object for the genomic
+locations; <code><a href="../../GenomicRanges/html/GRangesList-class.html">GRangesList</a></code>, a GRangesList object for storing
+a collection of GRanges objects; <code><a href="../../IRanges/html/IRanges-constructor.html">IRanges</a></code>, a IRanges
+object for storing a collection of range objects</p>
 </td></tr>
-<tr valign="top"><td><code>variant.id</code></td>
-<td>
-<p>IDs of selected variants</p>
-</td></tr>
-<tr valign="top"><td><code>samp.sel</code></td>
+<tr valign="top"><td><code>sample.sel</code></td>
 <td>
 <p>a logical/raw/index vector indicating the selected
 samples</p>
 </td></tr>
-<tr valign="top"><td><code>variant.sel</code></td>
+<tr valign="top"><td><code>variant.id</code></td>
 <td>
-<p>a logical/raw/index vector indicating the selected
-variants</p>
+<p>ID of selected variants</p>
+</td></tr>
+<tr valign="top"><td><code>sample.id</code></td>
+<td>
+<p>ID of selected samples</p>
+</td></tr>
+<tr valign="top"><td><code>samp.sel</code></td>
+<td>
+<p>it is deprecated since v1.11.12, please use
+<code>sample.sel</code> instead</p>
 </td></tr>
 <tr valign="top"><td><code>action</code></td>
 <td>
@@ -67,6 +83,15 @@ the current filter via <code>sample.id</code>, <code>variant.id</code>,
 set the current filter to the intersection of selected samples
 and/or variants;
 <code>"pop"</code> &ndash; pop up the last filter</p>
+</td></tr>
+<tr valign="top"><td><code>rm.txt</code></td>
+<td>
+<p>a character, the characters will be removed from
+<code>seqnames(variant.sel)</code></p>
+</td></tr>
+<tr valign="top"><td><code>chr</code></td>
+<td>
+<p>a vector of character for chromsome coding</p>
 </td></tr>
 <tr valign="top"><td><code>sample</code></td>
 <td>
@@ -103,7 +128,7 @@ where the selection arguments in <code>seqSetFilter</code> are <code>NULL</code>
 
 <h3>See Also</h3>
 
-<p><code><a href="seqGetFilter.html">seqGetFilter</a></code>, <code><a href="seqSetFilterChrom.html">seqSetFilterChrom</a></code>,
+<p><code><a href="seqSetFilterChrom.html">seqSetFilterChrom</a></code>, <code><a href="seqGetFilter.html">seqGetFilter</a></code>,
 <code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
 </p>
 
@@ -143,7 +168,7 @@ seqGetData(f, "genotype")
 
 ## OR
 # set sample and variant filters
-seqSetFilter(f, samp.sel=c(2,4,6,8))
+seqSetFilter(f, sample.sel=c(2,4,6,8))
 set.seed(100)
 seqSetFilter(f, variant.sel=sample.int(length(variant.id), 5))
 
@@ -169,5 +194,5 @@ seqSummary(f, "genotype", check="none")
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

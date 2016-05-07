@@ -3,7 +3,7 @@
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
-<table width="100%" summary="page for seqVCF.Header {SeqArray}"><tr><td>seqVCF.Header {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for seqVCF_Header {SeqArray}"><tr><td>seqVCF_Header {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
 <h2>Parse the Header of a VCF File</h2>
 
@@ -16,7 +16,7 @@
 <h3>Usage</h3>
 
 <pre>
-seqVCF.Header(vcf.fn)
+seqVCF_Header(vcf.fn, getnum=FALSE)
 </pre>
 
 
@@ -26,6 +26,10 @@ seqVCF.Header(vcf.fn)
 <tr valign="top"><td><code>vcf.fn</code></td>
 <td>
 <p>the file name of VCF</p>
+</td></tr>
+<tr valign="top"><td><code>getnum</code></td>
+<td>
+<p>if <code>TRUE</code>, return the number of samples and variants</p>
 </td></tr>
 </table>
 
@@ -75,7 +79,7 @@ Description &ndash; a variable description.
 </td></tr>
 <tr valign="top"><td><code>reference</code></td>
 <td>
-<p>genome reference</p>
+<p>genome reference, or <code>NULL</code> if unknown</p>
 </td></tr>
 <tr valign="top"><td><code>header</code></td>
 <td>
@@ -84,6 +88,14 @@ Description &ndash; a variable description.
 <tr valign="top"><td><code>ploidy</code></td>
 <td>
 <p>ploidy, two for humans</p>
+</td></tr>
+<tr valign="top"><td><code>num.sample</code></td>
+<td>
+<p>the number of samples</p>
+</td></tr>
+<tr valign="top"><td><code>num.variant</code></td>
+<td>
+<p>the number of variants</p>
 </td></tr>
 </table>
 
@@ -105,7 +117,7 @@ Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
 
 <h3>See Also</h3>
 
-<p><code><a href="seqVCF.SampID.html">seqVCF.SampID</a></code>, <code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>
+<p><code><a href="seqVCF_SampID.html">seqVCF_SampID</a></code>, <code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>
 </p>
 
 
@@ -117,8 +129,8 @@ Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
 # or vcf.fn &lt;- "C:/YourFolder/Your_VCF_File.vcf"
 
 # get sample id
-seqVCF.Header(vcf.fn)
+seqVCF_Header(vcf.fn, getnum=TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

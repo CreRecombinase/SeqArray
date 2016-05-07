@@ -18,7 +18,7 @@ by <code>seqSetFilter()</code>.
 
 <pre>
 seqExport(gdsfile, out.fn, info.var=NULL, fmt.var=NULL, samp.var=NULL,
-    verbose=TRUE)
+    optimize=TRUE, digest=TRUE, verbose=TRUE)
 </pre>
 
 
@@ -47,6 +47,17 @@ for import; or <code>NULL</code> for all variables</p>
 <td>
 <p>characters, the variable name(s) in the folder
 <code>"sample.annotation"</code></p>
+</td></tr>
+<tr valign="top"><td><code>optimize</code></td>
+<td>
+<p>if <code>TRUE</code>, optimize the access efficiency by calling
+<code><a href="../../gdsfmt/html/cleanup.gds.html">cleanup.gds</a></code></p>
+</td></tr>
+<tr valign="top"><td><code>digest</code></td>
+<td>
+<p>a logical value (TRUE/FALSE) or a character (&quot;md5&quot;, &quot;sha1&quot;,
+&quot;sha256&quot;, &quot;sha384&quot; or &quot;sha512&quot;); add hash codes to the GDS file if TRUE
+or a digest algorithm is specified</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -93,7 +104,12 @@ seqSetFilter(f, variant.id=sample(variant.id, 100))
 
 # export
 seqExport(f, "tmp.gds")
+seqExport(f, "tmp.gds", info.var=character())
+seqExport(f, "tmp.gds", fmt.var=character())
+seqExport(f, "tmp.gds", samp.var=character())
 
+
+# show file
 (f1 &lt;- seqOpen("tmp.gds")); seqClose(f1)
 
 
@@ -104,5 +120,5 @@ seqClose(f)
 unlink("tmp.gds")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

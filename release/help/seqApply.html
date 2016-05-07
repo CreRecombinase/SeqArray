@@ -20,7 +20,7 @@ margins of arrays or matrices.
 seqApply(gdsfile, var.name, FUN, margin=c("by.variant", "by.sample"),
     as.is=c("none", "list", "integer", "double", "character", "logical", "raw"),
     var.index=c("none", "relative", "absolute"),
-    .useraw=FALSE, .list_dup=TRUE, ...)
+    .useraw=FALSE, .progress=FALSE, .list_dup=TRUE, ...)
 </pre>
 
 
@@ -46,7 +46,8 @@ over. E.g., for a matrix 1 indicates rows, 2 indicates columns</p>
 </td></tr>
 <tr valign="top"><td><code>as.is</code></td>
 <td>
-<p>returned value: a list, an integer vector, etc</p>
+<p>returned value: a list, an integer vector, etc;
+<code>as.is</code> can be a <code><a href="../../base/html/connections.html">connection</a></code> object</p>
 </td></tr>
 <tr valign="top"><td><code>var.index</code></td>
 <td>
@@ -60,7 +61,11 @@ for indexing with respect to all data</p>
 </td></tr>
 <tr valign="top"><td><code>.useraw</code></td>
 <td>
-<p>use RAW for genotypes</p>
+<p>use RAW instead of INTEGER for genotypes and dosages</p>
+</td></tr>
+<tr valign="top"><td><code>.progress</code></td>
+<td>
+<p>if TRUE, show progress information</p>
 </td></tr>
 <tr valign="top"><td><code>.list_dup</code></td>
 <td>
@@ -76,10 +81,12 @@ for indexing with respect to all data</p>
 <h3>Details</h3>
 
 <p>The variable name should be <code>"sample.id"</code>, <code>"variant.id"</code>,
-<code>"position"</code>, <code>"chromosome"</code>, <code>"allele"</code>, <code>"annotation/id"</code>,
-<code>"annotation/qual"</code>, <code>"annotation/filter"</code>,
+<code>"position"</code>, <code>"chromosome"</code>, <code>"allele"</code>, <code>"genotype"</code>,
+<code>"annotation/id"</code>, <code>"annotation/qual"</code>, <code>"annotation/filter"</code>,
 <code>"annotation/info/VARIABLE_NAME"</code>, or
 <code>"annotation/format/VARIABLE_NAME"</code>.
+</p>
+<p><code>"$dosage"</code> is also allowed for the dosages of reference allele.
 </p>
 <p>The algorithm is highly optimized by blocking the computations to exploit
 the high-speed memory instead of disk.
@@ -142,6 +149,17 @@ seqApply(f, c(geno="genotype", phase="phase", qual="annotation/id",
 seqApply(f, "allele",
     FUN=function(x) length(unlist(strsplit(x,","))), as.is="integer")
 
+# output to a file
+fl &lt;- file("tmp.txt", "wt")
+seqApply(f, "genotype", FUN=sum, na.rm=TRUE, as.is=fl)
+close(fl)
+readLines("tmp.txt")
+
+seqApply(f, "genotype", FUN=sum, na.rm=TRUE, as.is=stdout())
+seqApply(f, "genotype", FUN=sum, na.rm=TRUE, as.is="integer")
+# should be identical
+
+
 
 ################################################################
 # with an index of variant
@@ -160,7 +178,7 @@ seqResetFilter(f)
 
 # calculate the frequency of reference allele,
 #   a faster version could be obtained by C coding
-af &lt;- seqApply(f, "genotype", FUN=function(x) mean(x==0, na.rm=TRUE),
+af &lt;- seqApply(f, "genotype", FUN=function(x) mean(x==0L, na.rm=TRUE),
     as.is="double")
 length(af)
 summary(af)
@@ -190,7 +208,11 @@ seqApply(f, c(sample.id="sample.id", genotype="genotype"), FUN=print,
 
 # close the GDS file
 seqClose(f)
+
+
+# delete the temporary file
+unlink("tmp.txt")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.10.2 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -29,7 +29,8 @@ seqVCF2GDS(vcf.fn, out.fn, header=NULL, storage.option="ZIP_RA",
 <table summary="R argblock">
 <tr valign="top"><td><code>vcf.fn</code></td>
 <td>
-<p>the file name(s) of VCF format</p>
+<p>the file name(s) of VCF format; or a <code><a href="../../base/html/connections.html">connection</a></code>
+object</p>
 </td></tr>
 <tr valign="top"><td><code>out.fn</code></td>
 <td>
@@ -42,10 +43,10 @@ seqVCF2GDS(vcf.fn, out.fn, header=NULL, storage.option="ZIP_RA",
 </td></tr>
 <tr valign="top"><td><code>storage.option</code></td>
 <td>
-<p>specify the storage and compression options,
-by default <code><a href="seqStorageOption.html">seqStorageOption</a>("ZIP_RA")</code>; or
-<code>"LZMA_RA"</code> to use LZMZ compression algorithm with higher
-compression ratio</p>
+<p>specify the storage and compression option,
+&quot;ZIP_RA&quot; (<code><a href="seqStorageOption.html">seqStorageOption</a>("ZIP_RA")</code>) by default; or
+&quot;LZMA_RA&quot; to use LZMA compression algorithm with higher compression
+ratio</p>
 </td></tr>
 <tr valign="top"><td><code>info.import</code></td>
 <td>
@@ -96,8 +97,8 @@ reference here</p>
 <tr valign="top"><td><code>digest</code></td>
 <td>
 <p>a logical value (TRUE/FALSE) or a character (&quot;md5&quot;, &quot;sha1&quot;,
-&quot;sha256&quot;, &quot;sha384&quot; or &quot;sha512&quot;); add hash codes to the GDS file if TRUE
-or a digest algorithm is specified</p>
+&quot;sha256&quot;, &quot;sha384&quot; or &quot;sha512&quot;); add md5 hash codes to the GDS file
+if TRUE or a digest algorithm is specified</p>
 </td></tr>
 <tr valign="top"><td><code>parallel</code></td>
 <td>
@@ -116,16 +117,9 @@ the argument <code>cl</code> in <code><a href="seqParallel.html">seqParallel</a>
 
 <h3>Details</h3>
 
-<p>GDS &ndash; Genomic Data Structures used for storing genetic array-oriented
-data, and the file format defined in the <a href="../../gdsfmt/html/gdsfmt-package.html">gdsfmt</a> package.
-</p>
-<p>VCF &ndash; The Variant Call Format (VCF), which is a generic format for
-storing DNA polymorphism data such as SNPs, insertions, deletions and
-structural variants, together with rich annotations.
-</p>
 <p>If there are more than one files in <code>vcf.fn</code>, <code>seqVCF2GDS</code> will
 merge all VCF files together if they contain the same samples. It is useful
-to merge multiple VCF files if data are divided by chromosomes.
+to merge multiple VCF files if variant data are split by chromosomes.
 </p>
 <p>The real numbers in the VCF file(s) are stored in 32-bit floating-point
 format by default. Users can set
@@ -146,6 +140,9 @@ LZMA (xz, <a href="http://tukaani.org/xz/">http://tukaani.org/xz/</a>) is anothe
 <code>storage.option=seqStorageOption("LZMA_RA")</code>, and it is known to have
 higher compression ratio than zlib.
 </p>
+<p>If multiple cores/processes are specified in <code>parallel</code>, all VCF files
+are scanned to calculate the total number of variants before format conversion.
+</p>
 
 
 <h3>Value</h3>
@@ -161,11 +158,9 @@ higher compression ratio than zlib.
 
 <h3>References</h3>
 
-<p>The variant call format and VCFtools.
-Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA,
-Handsaker RE, Lunter G, Marth GT, Sherry ST, McVean G, Durbin R;
-1000 Genomes Project Analysis Group.
-Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
+<p>Danecek, P., Auton, A., Abecasis, G., Albers, C.A., Banks, E., DePristo,
+M.A., Handsaker, R.E., Lunter, G., Marth, G.T., Sherry, S.T., et al. (2011).
+The variant call format and VCFtools. Bioinformatics 27, 2156-2158.
 </p>
 
 
@@ -216,5 +211,5 @@ seqClose(f)
 unlink(c("tmp.gds", "tmp_p2.gds"), force=TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
 </body></html>

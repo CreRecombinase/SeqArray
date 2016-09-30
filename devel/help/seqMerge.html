@@ -34,10 +34,10 @@ seqMerge(gds.fn, out.fn, storage.option="ZIP_RA", info.var=NULL, fmt.var=NULL,
 </td></tr>
 <tr valign="top"><td><code>storage.option</code></td>
 <td>
-<p>specify the storage and compression options,
-by default <code><a href="seqStorageOption.html">seqStorageOption</a>("ZIP_RA")</code>; or
-<code>"LZMA_RA"</code> to use LZMZ compression algorithm with higher
-compression ratio</p>
+<p>specify the storage and compression option,
+&quot;ZIP_RA&quot; (<code><a href="seqStorageOption.html">seqStorageOption</a>("ZIP_RA")</code>) by default; or
+&quot;LZMA_RA&quot; to use LZMA compression algorithm with higher compression
+ratio</p>
 </td></tr>
 <tr valign="top"><td><code>info.var</code></td>
 <td>
@@ -64,8 +64,8 @@ or <code>NULL</code> for all variables</p>
 <tr valign="top"><td><code>digest</code></td>
 <td>
 <p>a logical value (TRUE/FALSE) or a character (&quot;md5&quot;, &quot;sha1&quot;,
-&quot;sha256&quot;, &quot;sha384&quot; or &quot;sha512&quot;); add hash codes to the GDS file if TRUE
-or a digest algorithm is specified</p>
+&quot;sha256&quot;, &quot;sha384&quot; or &quot;sha512&quot;); add md5 hash codes to the GDS file
+if TRUE or a digest algorithm is specified</p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -154,5 +154,5 @@ unlink(c("tmp.gds", "test.gds", "output.gds"), force=TRUE)
 unlink(fn, force=TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.6 <a href="00Index.html">Index</a>]</div>
 </body></html>

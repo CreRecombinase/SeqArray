@@ -18,7 +18,7 @@
 <pre>
 ## S4 method for signature 'SeqVarGDSClass,ANY'
 seqSetFilter(object, variant.sel,
-    sample.sel=NULL, variant.id=NULL, sample.id=NULL, samp.sel=NULL,
+    sample.sel=NULL, variant.id=NULL, sample.id=NULL,
     action=c("set", "intersect", "push", "push+set", "push+intersect", "pop"),
     verbose=TRUE)
 ## S4 method for signature 'SeqVarGDSClass,GRanges'
@@ -31,6 +31,8 @@ seqSetFilter(object, variant.sel,
 seqSetFilter(object, variant.sel,
     chr, verbose=TRUE)
 seqResetFilter(object, sample=TRUE, variant=TRUE, verbose=TRUE)
+seqSetFilterChrom(object, include=NULL, is.num=NA, from.bp=NULL, to.bp=NULL,
+    verbose=TRUE)
 </pre>
 
 
@@ -61,11 +63,6 @@ samples</p>
 <tr valign="top"><td><code>sample.id</code></td>
 <td>
 <p>ID of selected samples</p>
-</td></tr>
-<tr valign="top"><td><code>samp.sel</code></td>
-<td>
-<p>it is deprecated since v1.11.12, please use
-<code>sample.sel</code> instead</p>
 </td></tr>
 <tr valign="top"><td><code>action</code></td>
 <td>
@@ -101,6 +98,24 @@ and/or variants;
 <td>
 <p>logical, if <code>TRUE</code>, include all variants</p>
 </td></tr>
+<tr valign="top"><td><code>include</code></td>
+<td>
+<p>NULL, or character for specified chromosome(s)</p>
+</td></tr>
+<tr valign="top"><td><code>is.num</code></td>
+<td>
+<p>a logical variable: <code>TRUE</code>, chromosome code is numeric;
+<code>FALSE</code>, chromosome is not numeric; <code>is.num=TRUE</code> is usually
+used to exclude non-autosomes</p>
+</td></tr>
+<tr valign="top"><td><code>from.bp</code></td>
+<td>
+<p>NULL, no limit; numeric, the lower bound of position</p>
+</td></tr>
+<tr valign="top"><td><code>to.bp</code></td>
+<td>
+<p>NULL, no limit; numeric, the upper bound of position</p>
+</td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
 <p>if <code>TRUE</code>, show information</p>
@@ -112,6 +127,12 @@ and/or variants;
 
 <p><code>seqResetFilter(file)</code> is equivalent to <code>seqSetFilter(file)</code>,
 where the selection arguments in <code>seqSetFilter</code> are <code>NULL</code>.
+</p>
+<p>If <code>from.bp</code> and <code>to.bp</code> has values, they should be equal-size
+as <code>include</code>. A trio of <code>include</code>, <code>from.bp</code> and <code>to.bp</code>
+indicates a region on human genomes. <code>NA</code> in <code>from.bp</code> is treated
+as 0, and <code>NA</code> in <code>to.bp</code> is treated as the maximum of integer
+(2^31 - 1).
 </p>
 
 
@@ -128,7 +149,7 @@ where the selection arguments in <code>seqSetFilter</code> are <code>NULL</code>
 
 <h3>See Also</h3>
 
-<p><code><a href="seqSetFilterChrom.html">seqSetFilterChrom</a></code>, <code><a href="seqGetFilter.html">seqGetFilter</a></code>,
+<p><code><a href="seqSetFilter.html">seqSetFilterChrom</a></code>, <code><a href="seqGetFilter.html">seqGetFilter</a></code>,
 <code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
 </p>
 
@@ -190,9 +211,36 @@ seqSetFilter(f, variant.sel=(AF&lt;=0.9), action="intersect")
 seqSummary(f, "genotype", check="none")
 
 
+
+## chromosome
+
+seqResetFilter(f)
+
+seqSetFilterChrom(f, is.num=TRUE)
+seqSummary(f, "genotype", check="none")
+
+seqSetFilterChrom(f, is.num=FALSE)
+seqSummary(f, "genotype", check="none")
+
+seqSetFilterChrom(f, 1:4)
+seqSummary(f, "genotype", check="none")
+table(seqGetData(f, "chromosome"))
+
+# HLA region
+seqSetFilterChrom(f, 6, from.bp=29719561, to.bp=32883508)
+seqSummary(f, "genotype", check="none")
+
+# two regions
+seqSetFilterChrom(f, c(1, 6), from.bp=c(1000000, 29719561),
+    to.bp=c(90000000, 32883508))
+seqSummary(f, "genotype", check="none")
+seqGetData(f, "chromosome")
+
+
+
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
 </body></html>

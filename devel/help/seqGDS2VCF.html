@@ -29,8 +29,8 @@ seqGDS2VCF(gdsfile, vcf.fn, info.var=NULL, fmt.var=NULL, verbose=TRUE)
 </td></tr>
 <tr valign="top"><td><code>vcf.fn</code></td>
 <td>
-<p>the file name, output a file of VCF format; it can be a
-<code>connection</code> object, returned from <code><a href="../../base/html/connections.html">file</a>()</code></p>
+<p>the file name, output a file of VCF format; or a
+<code><a href="../../base/html/connections.html">connection</a></code> object</p>
 </td></tr>
 <tr valign="top"><td><code>info.var</code></td>
 <td>
@@ -78,11 +78,9 @@ structural variants, together with rich annotations.
 
 <h3>References</h3>
 
-<p>The variant call format and VCFtools.
-Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA, Handsaker RE,
-Lunter G, Marth GT, Sherry ST, McVean G, Durbin R;
-1000 Genomes Project Analysis Group.
-Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
+<p>Danecek, P., Auton, A., Abecasis, G., Albers, C.A., Banks, E., DePristo,
+M.A., Handsaker, R.E., Lunter, G., Marth, G.T., Sherry, S.T., et al. (2011).
+The variant call format and VCFtools. Bioinformatics 27, 2156-2158.
 </p>
 
 
@@ -110,10 +108,11 @@ seqSetFilter(f, sample.id=samp.id[1:5])
 seqGDS2VCF(f, "tmp.vcf.gz")
 
 # no INFO and FORMAT
-seqGDS2VCF(f, "tmp1.vcf.gz", info.var=character(0), fmt.var=character(0))
+seqGDS2VCF(f, "tmp1.vcf.gz", info.var=character(), fmt.var=character())
 
 # output BN,GP,AA,DP,HM2 in INFO (the variables are in this order), no FORMAT
-seqGDS2VCF(f, "tmp2.vcf.gz", info.var=c("BN","GP","AA","DP","HM2"), fmt.var=character(0))
+seqGDS2VCF(f, "tmp2.vcf.gz", info.var=c("BN","GP","AA","DP","HM2"),
+    fmt.var=character())
 
 
 # read
@@ -153,5 +152,5 @@ unlink(c("tmp.vcf.gz", "tmp1.vcf.gz", "tmp2.vcf.gz"))
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.6 <a href="00Index.html">Index</a>]</div>
 </body></html>

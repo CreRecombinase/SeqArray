@@ -16,11 +16,10 @@
 <h3>Usage</h3>
 
 <pre>
-seqParallel(cl=getOption("seqarray.parallel", FALSE), gdsfile, FUN,
+seqParallel(cl=seqGetParallel(), gdsfile, FUN,
     split=c("by.variant", "by.sample", "none"), .combine="unlist",
     .selection.flag=FALSE, ...)
-seqParApply(cl=getOption("seqarray.parallel", FALSE), x, FUN,
-    load.balancing=TRUE, ...)
+seqParApply(cl=seqGetParallel(), x, FUN, load.balancing=TRUE, ...)
 </pre>
 
 
@@ -30,10 +29,11 @@ seqParApply(cl=getOption("seqarray.parallel", FALSE), x, FUN,
 <tr valign="top"><td><code>cl</code></td>
 <td>
 <p><code>NULL</code> or <code>FALSE</code>: serial processing; <code>TRUE</code>:
-parallel processing with the maximum number of cores minor one;
-a numeric value: the number of cores to be used;
-a cluster object for parallel processing, created by the functions
-in the package <code><a href="../../lattice/html/splom.html">parallel</a></code>, like <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code>.
+multicore processing (the maximum number of cores minor one);
+a numeric value: the number of cores to be used; a <code>cluster</code>
+object for parallel processing, created by the functions in the package
+<code><a href="../../lattice/html/splom.html">parallel</a></code>, like <code><a href="../../parallel/html/makeCluster.html">makeCluster</a></code>;
+a <code>BiocParallelParam</code> object from the BiocParallel package.
 See details</p>
 </td></tr>
 <tr valign="top"><td><code>gdsfile</code></td>
@@ -54,8 +54,9 @@ processes, or &quot;none&quot; for no split</p>
 <td>
 <p>define a fucntion for combining results from different
 processes; by default, <code>"unlist"</code> is used, to produce a vector
-which contains all the atomic components; <code>"list"</code>, return a list
-of results created by processes; <code>"none"</code>, no return; or a
+which contains all the atomic components, via
+<code>unlist(..., recursive=FALSE)</code>; <code>"list"</code>, return a list
+of results created by child processes; <code>"none"</code>, no return; or a
 function, like &quot;+&quot;.</p>
 </td></tr>
 <tr valign="top"><td><code>.selection.flag</code></td>
@@ -92,8 +93,8 @@ deallocated after calling <code>FUN</code>.
 of forking on Windows, without allocating clusters frequently.
 </p>
 <p>The user-defined function could use two predefined variables
-<code>.seq_process_count</code> and <code>.seq_process_index</code> to tell the total
-number of cluster nodes and which cluster node being used.
+<code>SeqArray:::process_count</code> and <code>SeqArray:::process_index</code> to
+tell the total number of cluster nodes and which cluster node being used.
 </p>
 <p><code>seqParallel(, gdsfile=NULL, FUN=..., split="none")</code> might be used to
 setup multiple streams of pseudo-random numbers, and see
@@ -116,7 +117,8 @@ setup multiple streams of pseudo-random numbers, and see
 <h3>See Also</h3>
 
 <p><code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code><a href="seqGetData.html">seqGetData</a></code>,
-<code><a href="seqApply.html">seqApply</a></code>, <code><a href="seqParallelSetup.html">seqParallelSetup</a></code>
+<code><a href="seqApply.html">seqApply</a></code>, <code><a href="seqParallelSetup.html">seqParallelSetup</a></code>,
+<code><a href="seqParallelSetup.html">seqGetParallel</a></code>
 </p>
 
 
@@ -172,7 +174,7 @@ seqParallel(, gdsfile, FUN = function(f) {
 ################################################################
 
 seqParallel(, NULL, FUN = function() {
-        paste(.seq_process_index, .seq_process_count, sep="/")
+        paste(SeqArray:::process_index, SeqArray:::process_count, sep=" / ")
     }, split = "none")
 
 
@@ -186,5 +188,5 @@ seqClose(gdsfile)
 seqParallelSetup(FALSE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
 </body></html>

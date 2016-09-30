@@ -10,7 +10,7 @@
 <h3>Description</h3>
 
 <p>Returns a vector or list of values obtained by applying a function to
-margins of arrays or matrices.
+margins of genotypes and annotations.
 </p>
 
 
@@ -19,7 +19,7 @@ margins of arrays or matrices.
 <pre>
 seqApply(gdsfile, var.name, FUN, margin=c("by.variant", "by.sample"),
     as.is=c("none", "list", "integer", "double", "character", "logical", "raw"),
-    var.index=c("none", "relative", "absolute"),
+    var.index=c("none", "relative", "absolute"), parallel=FALSE,
     .useraw=FALSE, .progress=FALSE, .list_dup=TRUE, ...)
 </pre>
 
@@ -41,13 +41,15 @@ seqApply(gdsfile, var.name, FUN, margin=c("by.variant", "by.sample"),
 </td></tr>
 <tr valign="top"><td><code>margin</code></td>
 <td>
-<p>giving the dimension which the function will be applied
-over. E.g., for a matrix 1 indicates rows, 2 indicates columns</p>
+<p>giving the dimension which the function will be applied over</p>
 </td></tr>
 <tr valign="top"><td><code>as.is</code></td>
 <td>
 <p>returned value: a list, an integer vector, etc;
-<code>as.is</code> can be a <code><a href="../../base/html/connections.html">connection</a></code> object</p>
+<code>as.is</code> can be a <code><a href="../../base/html/connections.html">connection</a></code> object, or a GDS node
+<code><a href="../../gdsfmt/html/gdsn.class.html">gdsn.class</a></code> object; if &quot;unlist&quot; is used, produces a vector
+which contains all the atomic components, via
+<code>unlist(..., recursive=FALSE)</code></p>
 </td></tr>
 <tr valign="top"><td><code>var.index</code></td>
 <td>
@@ -59,13 +61,22 @@ where <code>index</code> is an index of variant starting from 1 if
 selection defined by <code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code>"absolute"</code>
 for indexing with respect to all data</p>
 </td></tr>
+<tr valign="top"><td><code>parallel</code></td>
+<td>
+<p><code>FALSE</code> (serial processing), <code>TRUE</code> (multicore
+processing), numeric value or other value; <code>parallel</code> is passed
+to the argument <code>cl</code> in <code><a href="seqParallel.html">seqParallel</a></code>, see
+<code><a href="seqParallel.html">seqParallel</a></code> for more details.</p>
+</td></tr>
 <tr valign="top"><td><code>.useraw</code></td>
 <td>
-<p>use RAW instead of INTEGER for genotypes and dosages</p>
+<p><code>TRUE</code>, force to use RAW instead of INTEGER for
+genotypes and dosages; <code>FALSE</code>, use INTEGER; <code>NA</code>, use RAW
+instead of INTEGER if possible</p>
 </td></tr>
 <tr valign="top"><td><code>.progress</code></td>
 <td>
-<p>if TRUE, show progress information</p>
+<p>if <code>TRUE</code>, show progress information</p>
 </td></tr>
 <tr valign="top"><td><code>.list_dup</code></td>
 <td>
@@ -86,7 +97,11 @@ for indexing with respect to all data</p>
 <code>"annotation/info/VARIABLE_NAME"</code>, or
 <code>"annotation/format/VARIABLE_NAME"</code>.
 </p>
-<p><code>"$dosage"</code> is also allowed for the dosages of reference allele.
+<p><code>"$dosage"</code> is also allowed for the dosages of reference allele (integer:
+0, 1, 2 and NA for diploid genotypes).
+</p>
+<p><code>"$num_allele"</code> returns an integer vector with the numbers of distinct
+alleles.
 </p>
 <p>The algorithm is highly optimized by blocking the computations to exploit
 the high-speed memory instead of disk.
@@ -95,7 +110,7 @@ the high-speed memory instead of disk.
 
 <h3>Value</h3>
 
-<p>A vector or list of values.
+<p>A vector, a list of values or none.
 </p>
 
 
@@ -106,8 +121,9 @@ the high-speed memory instead of disk.
 
 <h3>See Also</h3>
 
-<p><code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code><a href="seqGetData.html">seqGetData</a></code>,
-<code><a href="seqParallel.html">seqParallel</a></code>
+<p><code><a href="seqBlockApply.html">seqBlockApply</a></code>, <code><a href="seqSetFilter.html">seqSetFilter</a></code>,
+<code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqParallel.html">seqParallel</a></code>,
+<code><a href="seqParallelSetup.html">seqGetParallel</a></code>
 </p>
 
 
@@ -214,5 +230,5 @@ seqClose(f)
 unlink("tmp.txt")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.6 <a href="00Index.html">Index</a>]</div>
 </body></html>

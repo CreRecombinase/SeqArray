@@ -16,7 +16,7 @@
 <h3>Usage</h3>
 
 <pre>
-seqNumAllele(gdsfile, parallel=getOption("seqarray.parallel", FALSE))
+seqNumAllele(gdsfile)
 </pre>
 
 
@@ -26,13 +26,6 @@ seqNumAllele(gdsfile, parallel=getOption("seqarray.parallel", FALSE))
 <tr valign="top"><td><code>gdsfile</code></td>
 <td>
 <p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
-</td></tr>
-<tr valign="top"><td><code>parallel</code></td>
-<td>
-<p><code>FALSE</code> (serial processing), <code>TRUE</code> (parallel
-processing) or other value; <code>parallel</code> is passed to the argument
-<code>cl</code> in <code><a href="seqParallel.html">seqParallel</a></code>, see <code><a href="seqParallel.html">seqParallel</a></code>
-for more details.</p>
 </td></tr>
 </table>
 
@@ -50,8 +43,7 @@ for more details.</p>
 
 <h3>See Also</h3>
 
-<p><code><a href="seqAlleleFreq.html">seqAlleleFreq</a></code>, <code><a href="seqMissing.html">seqMissing</a></code>,
-<code><a href="seqParallel.html">seqParallel</a></code>
+<p><code><a href="seqAlleleFreq.html">seqAlleleFreq</a></code>, <code><a href="seqMissing.html">seqMissing</a></code>
 </p>
 
 
@@ -70,5 +62,5 @@ table(seqNumAllele(f))
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -25,7 +25,7 @@ seqVCF_Header(vcf.fn, getnum=FALSE)
 <table summary="R argblock">
 <tr valign="top"><td><code>vcf.fn</code></td>
 <td>
-<p>the file name of VCF</p>
+<p>the file name; or a <code><a href="../../base/html/connections.html">connection</a></code> object</p>
 </td></tr>
 <tr valign="top"><td><code>getnum</code></td>
 <td>
@@ -36,11 +36,10 @@ seqVCF_Header(vcf.fn, getnum=FALSE)
 
 <h3>Details</h3>
 
-<p>The ID description contains four columns:
-ID &ndash; variable name;
-Number &ndash; the number of elements, see the webpage of the 1000 Genomes Project;
-Type &ndash; data type;
-Description &ndash; a variable description.
+<p>The ID description contains four columns: <code>ID</code> &ndash; variable name;
+<code>Number</code> &ndash; the number of elements, see the webpage of the 1000 Genomes
+Project; <code>Type</code> &ndash; data type; <code>Description</code> &ndash; a variable
+description.
 </p>
 
 
@@ -107,11 +106,9 @@ Description &ndash; a variable description.
 
 <h3>References</h3>
 
-<p>The variant call format and VCFtools.
-Danecek P, Auton A, Abecasis G, Albers CA, Banks E, DePristo MA,
-Handsaker RE, Lunter G, Marth GT, Sherry ST, McVean G, Durbin R;
-1000 Genomes Project Analysis Group.
-Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
+<p>Danecek, P., Auton, A., Abecasis, G., Albers, C.A., Banks, E., DePristo,
+M.A., Handsaker, R.E., Lunter, G., Marth, G.T., Sherry, S.T., et al. (2011).
+The variant call format and VCFtools. Bioinformatics 27, 2156-2158.
 </p>
 
 
@@ -130,7 +127,12 @@ Bioinformatics. 2011 Aug 1;27(15):2156-8. Epub 2011 Jun 7.
 
 # get sample id
 seqVCF_Header(vcf.fn, getnum=TRUE)
+
+# use a connection object
+f &lt;- file(vcf.fn, "r")
+seqVCF_Header(f, getnum=TRUE)
+close(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.6 <a href="00Index.html">Index</a>]</div>
 </body></html>

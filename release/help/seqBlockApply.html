@@ -1,26 +1,26 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Apply Functions Over Array Margins</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Apply Functions Over Array Margins via Blocking</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
-<table width="100%" summary="page for seqApply {SeqArray}"><tr><td>seqApply {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+<table width="100%" summary="page for seqBlockApply {SeqArray}"><tr><td>seqBlockApply {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Apply Functions Over Array Margins</h2>
+<h2>Apply Functions Over Array Margins via Blocking</h2>
 
 <h3>Description</h3>
 
 <p>Returns a vector or list of values obtained by applying a function to
-margins of genotypes and annotations.
+margins of genotypes and annotations via blocking.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqApply(gdsfile, var.name, FUN, margin=c("by.variant", "by.sample"),
-    as.is=c("none", "list", "integer", "double", "character", "logical", "raw"),
-    var.index=c("none", "relative", "absolute"), parallel=FALSE,
-    .useraw=FALSE, .progress=FALSE, .list_dup=TRUE, ...)
+seqBlockApply(gdsfile, var.name, FUN, margin=c("by.variant"),
+    as.is=c("none", "list", "unlist"), var.index=c("none", "relative", "absolute"),
+    bsize=1024L, parallel=FALSE, .useraw=FALSE, .progress=FALSE,
+    .list_dup=TRUE, ...)
 </pre>
 
 
@@ -45,7 +45,7 @@ seqApply(gdsfile, var.name, FUN, margin=c("by.variant", "by.sample"),
 </td></tr>
 <tr valign="top"><td><code>as.is</code></td>
 <td>
-<p>returned value: a list, an integer vector, etc;
+<p>returned value: a list, a vector or none;
 <code>as.is</code> can be a <code><a href="../../base/html/connections.html">connection</a></code> object, or a GDS node
 <code><a href="../../gdsfmt/html/gdsn.class.html">gdsn.class</a></code> object; if &quot;unlist&quot; is used, produces a vector
 which contains all the atomic components, via
@@ -60,6 +60,10 @@ where <code>index</code> is an index of variant starting from 1 if
 <code>margin = "by.variant"</code>: <code>"relative"</code> for indexing in the
 selection defined by <code><a href="seqSetFilter.html">seqSetFilter</a></code>, <code>"absolute"</code>
 for indexing with respect to all data</p>
+</td></tr>
+<tr valign="top"><td><code>bsize</code></td>
+<td>
+<p>block size</p>
 </td></tr>
 <tr valign="top"><td><code>parallel</code></td>
 <td>
@@ -121,7 +125,7 @@ the high-speed memory instead of disk.
 
 <h3>See Also</h3>
 
-<p><code><a href="seqBlockApply.html">seqBlockApply</a></code>, <code><a href="seqSetFilter.html">seqSetFilter</a></code>,
+<p><code><a href="seqApply.html">seqApply</a></code>, <code><a href="seqSetFilter.html">seqSetFilter</a></code>,
 <code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqParallel.html">seqParallel</a></code>,
 <code><a href="seqParallelSetup.html">seqGetParallel</a></code>
 </p>
@@ -156,78 +160,15 @@ seqApply(f, "genotype", FUN=print, margin="by.variant", .useraw=TRUE)
 seqApply(f, "genotype", FUN=print, margin="by.sample")
 seqApply(f, "genotype", FUN=print, margin="by.sample", .useraw=TRUE)
 
-
-# read multiple variables variant by variant
-seqApply(f, c(geno="genotype", phase="phase", qual="annotation/id",
-    DP="annotation/format/DP"), FUN=print, as.is="none")
-
-# get the numbers of alleles per variant
-seqApply(f, "allele",
-    FUN=function(x) length(unlist(strsplit(x,","))), as.is="integer")
-
-# output to a file
-fl &lt;- file("tmp.txt", "wt")
-seqApply(f, "genotype", FUN=sum, na.rm=TRUE, as.is=fl)
-close(fl)
-readLines("tmp.txt")
-
-seqApply(f, "genotype", FUN=sum, na.rm=TRUE, as.is=stdout())
-seqApply(f, "genotype", FUN=sum, na.rm=TRUE, as.is="integer")
-# should be identical
-
-
-
-################################################################
-# with an index of variant
-
-seqApply(f, c(geno="genotype", phase="phase", qual="annotation/id"),
-    FUN=function(index, x) { print(index); print(x); index },
-    as.is="integer", var.index="relative")
-# it is as the same as
-which(seqGetFilter(f)$variant.sel)
-
-
-
-################################################################
-# reset sample and variant filters
-seqResetFilter(f)
-
-# calculate the frequency of reference allele,
-#   a faster version could be obtained by C coding
-af &lt;- seqApply(f, "genotype", FUN=function(x) mean(x==0L, na.rm=TRUE),
-    as.is="double")
-length(af)
-summary(af)
-
-
-
-################################################################
-# apply the user-defined function sample by sample
-
-# reset sample and variant filters
-seqResetFilter(f)
-summary(seqApply(f, "genotype", FUN=function(x) { mean(is.na(x)) },
-    margin="by.sample", as.is="double"))
-
-# set sample and variant filters
-set.seed(100)
-seqSetFilter(f, sample.id=samp.id[c(2,4,6,8,10)],
-    variant.id=sample(variant.id, 10))
-
-seqApply(f, "genotype", FUN=print, margin="by.variant", as.is="none")
-
-seqApply(f, "genotype", FUN=print, margin="by.sample", as.is="none")
-
-seqApply(f, c(sample.id="sample.id", genotype="genotype"), FUN=print,
-    margin="by.sample", as.is="none")
+# read in block
+seqGetData(f, "$dosage")
+seqBlockApply(f, "$dosage", print, bsize=3)
+seqBlockApply(f, "$dosage", function(x) x, as.is="list", bsize=3)
+seqBlockApply(f, c(dos="$dosage", pos="position"), print, bsize=3)
 
 
 # close the GDS file
 seqClose(f)
-
-
-# delete the temporary file
-unlink("tmp.txt")
 </pre>
 
 <hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>

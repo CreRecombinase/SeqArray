@@ -16,8 +16,7 @@
 <h3>Usage</h3>
 
 <pre>
-seqMissing(gdsfile, per.variant=TRUE,
-    parallel=getOption("seqarray.parallel", FALSE))
+seqMissing(gdsfile, per.variant=TRUE, .progress=FALSE, parallel=seqGetParallel())
 </pre>
 
 
@@ -33,12 +32,16 @@ seqMissing(gdsfile, per.variant=TRUE,
 <p>missing rate per variant if <code>TRUE</code>, or
 missing rate per sample if <code>FALSE</code></p>
 </td></tr>
+<tr valign="top"><td><code>.progress</code></td>
+<td>
+<p>if TRUE, show progress information</p>
+</td></tr>
 <tr valign="top"><td><code>parallel</code></td>
 <td>
-<p><code>FALSE</code> (serial processing), <code>TRUE</code> (parallel
-processing) or other value; <code>parallel</code> is passed to the argument
-<code>cl</code> in <code><a href="seqParallel.html">seqParallel</a></code>, see <code><a href="seqParallel.html">seqParallel</a></code>
-for more details.</p>
+<p><code>FALSE</code> (serial processing), <code>TRUE</code> (multicore
+processing), numeric value or other value; <code>parallel</code> is passed
+to the argument <code>cl</code> in <code><a href="seqParallel.html">seqParallel</a></code>, see
+<code><a href="seqParallel.html">seqParallel</a></code> for more details.</p>
 </td></tr>
 </table>
 
@@ -57,7 +60,7 @@ for more details.</p>
 <h3>See Also</h3>
 
 <p><code><a href="seqAlleleFreq.html">seqAlleleFreq</a></code>, <code><a href="seqNumAllele.html">seqNumAllele</a></code>,
-<code><a href="seqParallel.html">seqParallel</a></code>
+<code><a href="seqParallel.html">seqParallel</a></code>, <code><a href="seqParallelSetup.html">seqGetParallel</a></code>
 </p>
 
 
@@ -70,13 +73,13 @@ for more details.</p>
 # display
 (f &lt;- seqOpen(gds.fn))
 
-summary(seqMissing(f, TRUE))
+summary(seqMissing(f, TRUE, .progress=TRUE))
 
-summary(seqMissing(f, FALSE))
+summary(seqMissing(f, FALSE, .progress=TRUE))
 
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
 </body></html>

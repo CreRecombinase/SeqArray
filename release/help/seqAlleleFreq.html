@@ -1,23 +1,23 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Allele Frequencies</title>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: Get Allele Frequencies or Counts</title>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <link rel="stylesheet" type="text/css" href="R.css" />
 </head><body>
 
 <table width="100%" summary="page for seqAlleleFreq {SeqArray}"><tr><td>seqAlleleFreq {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
 
-<h2>Get Allele Frequencies</h2>
+<h2>Get Allele Frequencies or Counts</h2>
 
 <h3>Description</h3>
 
-<p>Calculates the allele frequencies.
+<p>Calculates the allele frequencies or counts.
 </p>
 
 
 <h3>Usage</h3>
 
 <pre>
-seqAlleleFreq(gdsfile, ref.allele=0L,
-    parallel=getOption("seqarray.parallel", FALSE))
+seqAlleleFreq(gdsfile, ref.allele=0L, .progress=FALSE, parallel=seqGetParallel())
+seqAlleleCount(gdsfile, .progress=FALSE, parallel=seqGetParallel())
 </pre>
 
 
@@ -33,12 +33,16 @@ seqAlleleFreq(gdsfile, ref.allele=0L,
 <p><code>NULL</code>, a single numeric value, a numeric vector
 or a character vector; see Value</p>
 </td></tr>
+<tr valign="top"><td><code>.progress</code></td>
+<td>
+<p>if <code>TRUE</code>, show progress information</p>
+</td></tr>
 <tr valign="top"><td><code>parallel</code></td>
 <td>
-<p><code>FALSE</code> (serial processing), <code>TRUE</code> (parallel
-processing) or other value; <code>parallel</code> is passed to the argument
-<code>cl</code> in <code><a href="seqParallel.html">seqParallel</a></code>, see <code><a href="seqParallel.html">seqParallel</a></code>
-for more details.</p>
+<p><code>FALSE</code> (serial processing), <code>TRUE</code> (multicore
+processing), numeric value or other value; <code>parallel</code> is passed
+to the argument <code>cl</code> in <code><a href="seqParallel.html">seqParallel</a></code>, see
+<code><a href="seqParallel.html">seqParallel</a></code> for more details.</p>
 </td></tr>
 </table>
 
@@ -64,7 +68,7 @@ ancestral allele for the derived allele frequency).
 <h3>See Also</h3>
 
 <p><code><a href="seqNumAllele.html">seqNumAllele</a></code>, <code><a href="seqMissing.html">seqMissing</a></code>,
-<code><a href="seqParallel.html">seqParallel</a></code>
+<code><a href="seqParallel.html">seqParallel</a></code>, <code><a href="seqParallelSetup.html">seqGetParallel</a></code>
 </p>
 
 
@@ -78,19 +82,21 @@ ancestral allele for the derived allele frequency).
 f &lt;- seqOpen(gds.fn)
 
 # return a list
-head(seqAlleleFreq(f, NULL))
+head(seqAlleleFreq(f, NULL, .progress=TRUE))
 
 # return a numeric vector
-summary(seqAlleleFreq(f, 0L))
+summary(seqAlleleFreq(f, 0L, .progress=TRUE))
 
 # return a numeric vector, AA is ancestral allele
 AA &lt;- toupper(seqGetData(f, "annotation/info/AA")$data)
 summary(seqAlleleFreq(f, AA))
 
+# allele counts
+head(seqAlleleCount(f, .progress=TRUE))
 
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
 </body></html>

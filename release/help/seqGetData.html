@@ -56,6 +56,9 @@ position, e.g., &quot;1_1272721&quot;.
 <p><code>"$dosage"</code> returns a RAW/INTEGER matrix for the dosages of reference
 allele.
 </p>
+<p><code>"$num_allele"</code> returns an integer vector with the numbers of distinct
+alleles.
+</p>
 
 
 <h3>Value</h3>
@@ -104,6 +107,8 @@ head(seqGetData(f, "$chrom_pos"))
 # get '$dosage'
 seqGetData(f, "$dosage")[1:6, 1:10]
 
+# get '$num_allele'
+head(seqGetData(f, "$num_allele"))
 
 
 # set sample and variant filters
@@ -137,5 +142,5 @@ seqGetData(f, "annotation/format/DP")
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.0 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
 </body></html>

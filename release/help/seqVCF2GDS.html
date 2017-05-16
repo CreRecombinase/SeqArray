@@ -16,7 +16,7 @@
 <h3>Usage</h3>
 
 <pre>
-seqVCF2GDS(vcf.fn, out.fn, header=NULL, storage.option="ZIP_RA",
+seqVCF2GDS(vcf.fn, out.fn, header=NULL, storage.option="LZMA_RA",
     info.import=NULL, fmt.import=NULL, genotype.var.name="GT",
     ignore.chr.prefix="chr", reference=NULL, start=1L, count=-1L,
     optimize=TRUE, raise.error=TRUE, digest=TRUE, parallel=FALSE,
@@ -211,5 +211,5 @@ seqClose(f)
 unlink(c("tmp.gds", "tmp_p2.gds"), force=TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.16.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

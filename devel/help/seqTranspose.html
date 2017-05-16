@@ -75,7 +75,7 @@ provided in the future version.
 (vcf.fn &lt;- seqExampleFileName("vcf"))
 
 # convert
-seqVCF2GDS(vcf.fn, "tmp.gds")
+seqVCF2GDS(vcf.fn, "tmp.gds", storage.option="ZIP_RA")
 
 # list the structure of GDS variables
 f &lt;- seqOpen("tmp.gds", FALSE)
@@ -96,5 +96,5 @@ seqClose(f)
 unlink("tmp.gds")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.17.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

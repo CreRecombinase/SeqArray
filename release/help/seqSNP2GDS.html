@@ -16,7 +16,7 @@
 <h3>Usage</h3>
 
 <pre>
-seqSNP2GDS(gds.fn, out.fn, storage.option="ZIP_RA", optimize=TRUE,
+seqSNP2GDS(gds.fn, out.fn, storage.option="LZMA_RA", optimize=TRUE,
     digest=TRUE, verbose=TRUE)
 </pre>
 
@@ -35,9 +35,8 @@ seqSNP2GDS(gds.fn, out.fn, storage.option="ZIP_RA", optimize=TRUE,
 <tr valign="top"><td><code>storage.option</code></td>
 <td>
 <p>specify the storage and compression options,
-by default <code><a href="seqStorageOption.html">seqStorageOption</a>("ZIP_RA")</code>; or
-<code>"LZMA_RA"</code> to use LZMZ compression algorithm with higher
-compression ratio</p>
+<code>"LZMA_RA"</code> to use LZMA compression algorithm with higher
+compression ratio compared to <code>"ZIP_RA"</code></p>
 </td></tr>
 <tr valign="top"><td><code>optimize</code></td>
 <td>
@@ -92,5 +91,5 @@ seqSummary("tmp.gds")
 unlink("tmp.gds", force=TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.16.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

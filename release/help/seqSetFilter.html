@@ -23,16 +23,16 @@ seqSetFilter(object, variant.sel,
     verbose=TRUE)
 ## S4 method for signature 'SeqVarGDSClass,GRanges'
 seqSetFilter(object, variant.sel,
-    rm.txt="chr", verbose=TRUE)
+    rm.txt="chr", intersect=FALSE, verbose=TRUE)
 ## S4 method for signature 'SeqVarGDSClass,GRangesList'
 seqSetFilter(object, variant.sel,
-    rm.txt="chr", verbose=TRUE)
+    rm.txt="chr", intersect=FALSE, verbose=TRUE)
 ## S4 method for signature 'SeqVarGDSClass,IRanges'
 seqSetFilter(object, variant.sel,
-    chr, verbose=TRUE)
+    chr, intersect=FALSE, verbose=TRUE)
 seqResetFilter(object, sample=TRUE, variant=TRUE, verbose=TRUE)
 seqSetFilterChrom(object, include=NULL, is.num=NA, from.bp=NULL, to.bp=NULL,
-    verbose=TRUE)
+    intersect=FALSE, verbose=TRUE)
 </pre>
 
 
@@ -100,7 +100,7 @@ and/or variants;
 </td></tr>
 <tr valign="top"><td><code>include</code></td>
 <td>
-<p>NULL, or character for specified chromosome(s)</p>
+<p>NULL, or a vector of characters for specified chromosome(s)</p>
 </td></tr>
 <tr valign="top"><td><code>is.num</code></td>
 <td>
@@ -110,11 +110,20 @@ used to exclude non-autosomes</p>
 </td></tr>
 <tr valign="top"><td><code>from.bp</code></td>
 <td>
-<p>NULL, no limit; numeric, the lower bound of position</p>
+<p>NULL, no limit; a numeric vector, the lower bound of
+position</p>
 </td></tr>
 <tr valign="top"><td><code>to.bp</code></td>
 <td>
-<p>NULL, no limit; numeric, the upper bound of position</p>
+<p>NULL, no limit; a numeric vector, the upper bound of
+position</p>
+</td></tr>
+<tr valign="top"><td><code>intersect</code></td>
+<td>
+<p>if <code>FALSE</code>, the candidate variants for selection are
+all possible variants (by default); if <code>TRUE</code>, the candidate variants
+are from the selected variants defined via the previous call
+<code>seqSetFilter()</code></p>
 </td></tr>
 <tr valign="top"><td><code>verbose</code></td>
 <td>
@@ -149,8 +158,9 @@ as 0, and <code>NA</code> in <code>to.bp</code> is treated as the maximum of int
 
 <h3>See Also</h3>
 
-<p><code><a href="seqSetFilter.html">seqSetFilterChrom</a></code>, <code><a href="seqGetFilter.html">seqGetFilter</a></code>,
-<code><a href="seqGetData.html">seqGetData</a></code>, <code><a href="seqApply.html">seqApply</a></code>
+<p><code><a href="seqSetFilter.html">seqSetFilterChrom</a></code>, <code><a href="seqSetFilterCond.html">seqSetFilterCond</a></code>,
+<code><a href="seqGetFilter.html">seqGetFilter</a></code>, <code><a href="seqGetData.html">seqGetData</a></code>,
+<code><a href="seqApply.html">seqApply</a></code>
 </p>
 
 
@@ -237,10 +247,21 @@ seqSummary(f, "genotype", check="none")
 seqGetData(f, "chromosome")
 
 
+## intersection option
+
+seqResetFilter(f)
+seqSetFilterChrom(f, 6, from.bp=29719561, to.bp=32883508)  # MHC
+seqSetFilterChrom(f, include=6)  # chromosome 6
+
+seqResetFilter(f)
+seqSetFilterChrom(f, 6, from.bp=29719561, to.bp=32883508)  # MHC
+seqSetFilterChrom(f, include=6, intersect=TRUE)  # MHC region only
+
+
 
 # close the GDS file
 seqClose(f)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.16.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

@@ -1,0 +1,81 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml"><head><title>R: VariantAnnotation objects</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link rel="stylesheet" type="text/css" href="R.css" />
+</head><body>
+
+<table width="100%" summary="page for seqAsVCF {SeqArray}"><tr><td>seqAsVCF {SeqArray}</td><td style="text-align: right;">R Documentation</td></tr></table>
+
+<h2>VariantAnnotation objects</h2>
+
+<h3>Description</h3>
+
+<p>Imports the VariantAnnotation package and export the generic methods
+associated with SeqVarGDSClass class.
+</p>
+
+
+<h3>Usage</h3>
+
+<pre>
+seqAsVCFInit()
+seqAsVCF(gdsfile, ...)
+</pre>
+
+
+<h3>Arguments</h3>
+
+<table summary="R argblock">
+<tr valign="top"><td><code>gdsfile</code></td>
+<td>
+<p>a <code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object</p>
+</td></tr>
+<tr valign="top"><td><code>...</code></td>
+<td>
+<p>optional arguments to <code>asVCF</code></p>
+</td></tr>
+</table>
+
+
+<h3>Details</h3>
+
+<p>The generic methods <code>ref</code>, <code>alt</code>, <code>qual</code>, <code>filt</code>,
+<code>fixed</code>, <code>header</code>, <code>info</code>, <code>geno</code>, <code>asVCF</code>,
+<code>rowRanges</code> and <code>colData</code> are exported and associated with a
+<code><a href="SeqVarGDSClass-class.html">SeqVarGDSClass</a></code> object after calling <code>seqAsVCFInit()</code>
+or <code>seqAsVCF()</code>.
+</p>
+
+
+<h3>Value</h3>
+
+<p>None or a <code><a href="../../VariantAnnotation/html/CollapsedVCF.html">CollapsedVCF</a></code> object.
+</p>
+
+
+<h3>Author(s)</h3>
+
+<p>Xiuwen Zheng</p>
+
+
+<h3>See Also</h3>
+
+<p><code><a href="SeqVarGDSClass-class.html">asVCF,SeqVarGDSClass-method</a></code>
+</p>
+
+
+<h3>Examples</h3>
+
+<pre>
+gds &lt;- seqOpen(seqExampleFileName("gds"))
+
+## Not run: 
+seqAsVCFInit()  ## enable exporting the generic methods
+seqAsVCF(gds)
+
+## End(Not run)
+
+seqClose(gds)
+</pre>
+
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.17.1 <a href="00Index.html">Index</a>]</div>
+</body></html>

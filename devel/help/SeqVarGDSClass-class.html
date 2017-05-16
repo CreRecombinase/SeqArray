@@ -16,7 +16,7 @@ Variant Call Format (VCF) data. It extends <code><a href="../../gdsfmt/html/gds.
 
 <h3>Details</h3>
 
-<p>A sequence GDS file is created from a VCF file with
+<p>A SeqArray GDS file is created from a VCF file with
 <code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>. This file can be opened with <code><a href="seqOpen.html">seqOpen</a></code>
 to create a <code>SeqVarGDSClass</code> object.
 </p>
@@ -24,7 +24,9 @@ to create a <code>SeqVarGDSClass</code> object.
 
 <h3>Accessors</h3>
 
-<p>In the following code snippets <code>x</code> is a SeqVarGDSClass object.
+<p>In the following code snippets <code>x</code> is a SeqVarGDSClass object. Users
+must call <code>seqAsVCFInit()</code> and <code>seqAsVCF(x)</code> to enable the generic
+methods.
 </p>
 
 <dl>
@@ -36,12 +38,12 @@ Returns the chromosome and position of variants as a
 </dd>
 <dt></dt><dd>
 <p><code>ref(x)</code>:
-Returns the reference alleles as a <code><a href="../../Biostrings/html/XStringSet-class.html">DNAStringSet</a></code>.
+Returns the reference alleles as a <code><a href="../../Biostrings/html/DNAStringSet.html">DNAStringSet</a></code>.
 </p>
 </dd>
 <dt></dt><dd>
 <p><code>alt(x)</code>:
-Returns the alternate alleles as a <code><a href="../../Biostrings/html/XStringSetList-class.html">DNAStringSetList</a></code>.
+Returns the alternate alleles as a <code><a href="../../Biostrings/html/DNAStringSetList.html">DNAStringSetList</a></code>.
 </p>
 </dd>
 <dt></dt><dd>
@@ -92,20 +94,22 @@ Returns the geno (format) fields as a <code>SimpleList</code>. <code>geno</code>
 
 <h3>Coercion methods</h3>
 
-<p>In the following code snippets <code>x</code> is a SeqVarGDSClass object.
+<p>In the following code snippets <code>x</code> is a SeqVarGDSClass object. Users
+must call <code>seqAsVCFInit()</code> and <code>seqAsVCF(x)</code> to enable the generic
+methods.
 </p>
 
 <dl>
 <dt></dt><dd>
 <p><code>asVCF(x, chr.prefix="", info=NULL, geno=NULL)</code>:
 Coerces a SeqVarGDSClass object to a
-<a href="../../VariantAnnotation/html/VCF-class.html">VCF-class</a> object.  Row names correspond
-to the variant.id.  <code>info</code>
-and <code>geno</code> specify the 'INFO' and
-'GENO' (FORMAT) fields to return, respectively.  If not
-specified, all fields are returned; if 'NA' no fields are
-returned.  Use <code><a href="seqSetFilter.html">seqSetFilter</a></code> prior to calling
-<code>asVCF</code> to specify samples and variants to return.
+<a href="../../VariantAnnotation/html/VCF-class.html">VCF-class</a> object.
+Row names correspond to the variant.id.  <code>info</code> and
+<code>geno</code> specify the 'INFO' and 'GENO' (FORMAT) fields to
+return, respectively.  If not specified, all fields are returned;
+if 'NA' no fields are returned.  Use <code><a href="seqSetFilter.html">seqSetFilter</a></code>
+prior to calling <code>asVCF</code> to specify samples and variants to
+return.
 </p>
 </dd>
 </dl>
@@ -119,12 +123,8 @@ returned.  Use <code><a href="seqSetFilter.html">seqSetFilter</a></code> prior t
 
 <h3>See Also</h3>
 
-<p><code><a href="../../gdsfmt/html/gds.class.html">gds.class</a></code>,
-<code><a href="seqVCF2GDS.html">seqVCF2GDS</a></code>,
-<code><a href="seqOpen.html">seqOpen</a></code>,
-<code><a href="seqGetData.html">seqGetData</a></code>,
-<code><a href="seqSetFilter.html">seqSetFilter</a></code>,
-<code><a href="seqClose.html">seqClose</a></code>
+<p><code><a href="../../gdsfmt/html/gds.class.html">gds.class</a></code>, <code><a href="seqOpen.html">seqOpen</a></code>,
+<code><a href="seqAsVCF.html">seqAsVCFInit</a></code>, <code><a href="seqAsVCF.html">seqAsVCF</a></code>
 </p>
 
 
@@ -138,7 +138,10 @@ gds
 head(seqGetData(gds, "sample.id"))
 
 ## variants
-# granges(gds)
+granges(gds)
+
+## Not run: 
+seqAsVCFInit()  ## enable exporting the generic methods
 
 ## alleles as comma-separated character strings
 head(seqGetData(gds, "allele"))
@@ -168,8 +171,10 @@ table(depth$length)
 dim(depth$data)
 depth$data[1:10,1:5]
 
+## End(Not run)
+
 seqClose(gds)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.17.1 <a href="00Index.html">Index</a>]</div>
 </body></html>

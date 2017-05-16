@@ -16,7 +16,7 @@
 <h3>Usage</h3>
 
 <pre>
-seqMerge(gds.fn, out.fn, storage.option="ZIP_RA", info.var=NULL, fmt.var=NULL,
+seqMerge(gds.fn, out.fn, storage.option="LZMA_RA", info.var=NULL, fmt.var=NULL,
     samp.var=NULL, optimize=TRUE, digest=TRUE, verbose=TRUE)
 </pre>
 
@@ -35,9 +35,9 @@ seqMerge(gds.fn, out.fn, storage.option="ZIP_RA", info.var=NULL, fmt.var=NULL,
 <tr valign="top"><td><code>storage.option</code></td>
 <td>
 <p>specify the storage and compression option,
-&quot;ZIP_RA&quot; (<code><a href="seqStorageOption.html">seqStorageOption</a>("ZIP_RA")</code>) by default; or
+&quot;ZIP_RA&quot; (<code><a href="seqStorageOption.html">seqStorageOption</a>("ZIP_RA")</code>); or
 &quot;LZMA_RA&quot; to use LZMA compression algorithm with higher compression
-ratio</p>
+ratio (by default)</p>
 </td></tr>
 <tr valign="top"><td><code>info.var</code></td>
 <td>
@@ -154,5 +154,5 @@ unlink(c("tmp.gds", "test.gds", "output.gds"), force=TRUE)
 unlink(fn, force=TRUE)
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.12.9 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.16.0 <a href="00Index.html">Index</a>]</div>
 </body></html>

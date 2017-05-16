@@ -72,7 +72,8 @@ to the argument <code>cl</code> in <code><a href="seqParallel.html">seqParallel<
 <td>
 <p><code>TRUE</code>, force to use RAW instead of INTEGER for
 genotypes and dosages; <code>FALSE</code>, use INTEGER; <code>NA</code>, use RAW
-instead of INTEGER if possible</p>
+for small numbers instead of INTEGER if possible, it is needed to
+detect data type (RAW or INTEGER) in the user-defined function</p>
 </td></tr>
 <tr valign="top"><td><code>.progress</code></td>
 <td>
@@ -230,5 +231,5 @@ seqClose(f)
 unlink("tmp.txt")
 </pre>
 
-<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.13.6 <a href="00Index.html">Index</a>]</div>
+<hr /><div style="text-align: center;">[Package <em>SeqArray</em> version 1.17.1 <a href="00Index.html">Index</a>]</div>
 </body></html>
